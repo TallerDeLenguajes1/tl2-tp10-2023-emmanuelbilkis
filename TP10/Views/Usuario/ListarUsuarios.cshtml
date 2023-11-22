@@ -1,0 +1,81 @@
+﻿@using Kanban.Models
+@model List<Usuario>
+
+<h1>Listado de usuarios</h1>
+<nav>
+    <button type="button" id="agregarUsuarioBtn">Agregar Usuario</button>
+</nav>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.Id</td>
+                <td>@usuario.Nombre</td>
+                <td>
+                    <a href="#" class="editar" data-id="@usuario.Id">Editar</a> |
+                    <a href="#" class="borrar" data-id="@usuario.Id">Borrar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $(".editar").click(function (e) {
+                e.preventDefault();
+                var userId = $(this).data("id");
+                editarUsuario(userId);
+            });
+
+            $(".borrar").click(function (e) {
+                e.preventDefault();
+                var userId = $(this).data("id");
+
+                if (confirm("¿Estás seguro de que deseas borrar este usuario?")) {
+                    borrarUsuario(userId);
+                }
+            });
+
+
+            $("#agregarUsuarioBtn").click(function () {
+                crearUsuario();
+            });
+
+            function editarUsuario(userId) {
+                window.location.href = "/Usuario/EditarIndex/" + userId;
+            }
+
+            function borrarUsuario(userId) {
+                
+                $.ajax({
+                    type: "POST",
+                    url: "/Usuario/Borrar/" + userId,
+                    success: function (data) {
+                        console.log("Usuario borrado con éxito");
+                    },
+                    error: function (error) {
+                        console.error("Error al borrar usuario: " + error.statusText);
+                    }
+                });
+            }
+
+            function crearUsuario() {
+                window.location.href = '@Url.Action("AltaIndex", "Usuario")';
+            }
+        });
+    </script>
+}
+
+

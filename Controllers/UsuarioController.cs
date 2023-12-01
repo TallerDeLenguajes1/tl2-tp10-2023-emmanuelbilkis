@@ -14,8 +14,16 @@ namespace TableroKanban.Controllers
 
         public IActionResult ListarUsuarios() 
         {
-            var usuarios = _servicioUsuario.GetAll();
-            return View(usuarios);
+            if (IsUser())
+            {
+              var usuarios = _servicioUsuario.GetAll();
+              return View(usuarios);
+            }
+            else
+            {
+                return RedirectToRoute("Login/Index");
+            }
+
         } // este lo hare desp con un return de json 
 
         public IActionResult EditarIndex(int id) 
@@ -47,6 +55,21 @@ namespace TableroKanban.Controllers
         {
             _servicioUsuario.Create(usu);
             return RedirectToAction("Index","Home");
+        }
+        private bool IsAdmin()
+        {
+            if (HttpContext.Session != null && HttpContext.Session.GetString("Rol") == "Admin")
+                return true;
+
+            return false;
+        }
+
+        private bool IsUser()
+        {
+            if (HttpContext.Session != null)
+                return true;
+
+            return false;
         }
     }
 }

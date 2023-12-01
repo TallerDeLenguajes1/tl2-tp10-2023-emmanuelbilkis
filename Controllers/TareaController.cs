@@ -14,8 +14,16 @@ namespace TableroKanban.Controllers
         }
         public IActionResult Index()
         {
-            var tabs = _servicioTarea.GetAll();
-            return View(tabs);
+            if (IsUser())
+            {
+                var tabs = _servicioTarea.GetAll();
+                return View(tabs);
+            }
+            else
+            {
+                return RedirectToRoute("Login/Index");
+            }
+            
         }
         public IActionResult EditarIndex(int id)
         {
@@ -46,6 +54,21 @@ namespace TableroKanban.Controllers
         {
             _servicioTarea.Create(tar);
             return RedirectToAction("Index");
+        }
+        private bool IsAdmin()
+        {
+            if (HttpContext.Session != null && HttpContext.Session.GetString("Rol") == "Admin")
+                return true;
+
+            return false;
+        }
+
+        private bool IsUser()
+        {
+            if (HttpContext.Session != null)
+                return true;
+
+            return false;
         }
     }
 }

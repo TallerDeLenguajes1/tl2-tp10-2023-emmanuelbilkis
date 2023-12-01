@@ -34,13 +34,13 @@ public class LoginController : Controller
         logearUsuario(usuarioLogeado);
         
         //Devuelvo el usuario al Home
-        return RedirectToRoute(new { controller = "Home", action = "Index" });
+        return RedirectToRoute(new { controller = "Usuario", action = "ListarUsuarios" });
     }
 
     private void logearUsuario(Usuario user)
     {
         HttpContext.Session.SetString("Usuario", user.Nombre);
-        HttpContext.Session.SetString("NivelDeAcceso", user.Contrasenia);
+        HttpContext.Session.SetString("Contrasenia", user.Contrasenia);
         HttpContext.Session.SetString("Rol", ObtenerRol(user.IdRol));
     }
 

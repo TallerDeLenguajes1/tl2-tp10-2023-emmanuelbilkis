@@ -1,16 +1,27 @@
 ﻿@model Kanban.Models.Usuario
 
-<h1>Editar Usuario</h1>
+<h1 class="modal-title">Editar Usuario</h1>
 
-<form id="editarUsuarioForm">
+<form class="form-control-color" id="editarUsuarioForm">
     @Html.HiddenFor(model => model.Id) 
 
     <div>
-        <label for="Nombre">Nombre:</label>
-        <input type="text" id="Nombre" name="Nombre" value="@Model.Nombre" />
+        <label asp-for="@Model.Nombre" for="Nombre">Nombre:</label>
+        <input asp-for="@Model.Nombre" type="text" id="Nombre" name="Nombre" value="@Model.Nombre" />
+        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
     </div>
     <div>
-        <button type="button" onclick="guardarEdicion()">Guardar cambios</button>
+        <label asp-for="@Model.Contrasenia" for="contra">Contraseña:</label>
+        <input asp-for="@Model.Contrasenia" type="text" id="contra" name="Contrasenia" value="@Model.Contrasenia" />
+        <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.IdRol" for="rol">Rol:</label>
+        <input asp-for="@Model.IdRol" type="number" id="rol" name="IdRol" value="@Model.IdRol" />
+        <span asp-validation-for="@Model.IdRol" class="text-danger"></span>
+    </div>
+    <div>
+        <button class="btn-primary" type="button" onclick="guardarEdicion()">Guardar cambios</button>
     </div>
 </form>
 

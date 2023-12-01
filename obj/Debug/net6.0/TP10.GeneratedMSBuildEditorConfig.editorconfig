@@ -8,73 +8,77 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = TP10
 build_property.RootNamespace = TP10
-build_property.ProjectDir = C:\Repositorios-Taller2-2023\TP10\
+build_property.ProjectDir = C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Repositorios-Taller2-2023\TP10
+build_property.MSBuildProjectDirectory = C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Home/Index.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Home/Privacy.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Shared/Error.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Login/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Tablero/AltaIndex.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tablero/AltaIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVyb1xBbHRhSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Tablero/EditarIndex.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tablero/EditarIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVyb1xFZGl0YXJJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Tablero/Index.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tablero/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVyb1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Tarea/AltaIndex.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tarea/AltaIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcQWx0YUluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Tarea/EditarIndex.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tarea/EditarIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcRWRpdGFySW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Tarea/Index.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tarea/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Usuario/AltaIndex.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Usuario/AltaIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xBbHRhSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Usuario/EditarIndex.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Usuario/EditarIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xFZGl0YXJJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Usuario/ListarUsuarios.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Usuario/ListarUsuarios.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xMaXN0YXJVc3Vhcmlvcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/_ViewImports.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/_ViewStart.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repositorios-Taller2-2023/TP10/Views/Shared/_Layout.cshtml]
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-omil5lzfrd

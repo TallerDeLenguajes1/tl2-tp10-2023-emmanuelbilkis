@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Repositorios-Taller2-2023\\TP10\\TP10.csproj": {}
+    "C:\\Repositorios-Taller2-2023\\tl2-tp10-2023-emmanuelbilkis\\TP10.csproj": {}
   },
   "projects": {
-    "C:\\Repositorios-Taller2-2023\\TP10\\TP10.csproj": {
+    "C:\\Repositorios-Taller2-2023\\tl2-tp10-2023-emmanuelbilkis\\TP10.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios-Taller2-2023\\TP10\\TP10.csproj",
+        "projectUniqueName": "C:\\Repositorios-Taller2-2023\\tl2-tp10-2023-emmanuelbilkis\\TP10.csproj",
         "projectName": "TP10",
-        "projectPath": "C:\\Repositorios-Taller2-2023\\TP10\\TP10.csproj",
+        "projectPath": "C:\\Repositorios-Taller2-2023\\tl2-tp10-2023-emmanuelbilkis\\TP10.csproj",
         "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios-Taller2-2023\\TP10\\obj\\",
+        "outputPath": "C:\\Repositorios-Taller2-2023\\tl2-tp10-2023-emmanuelbilkis\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\emman\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Session": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "System.Data.SQLite": {
               "target": "Package",
               "version": "[1.0.118, )"

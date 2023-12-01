@@ -1,23 +1,23 @@
 ﻿<h1>Crear Usuario</h1>
 
-<form id="crearUsuarioForm">
+<form id="crearUsuarioForm" class="form-control">
 
-    <div>
-        <label for="Nombre">Nombre:</label>
-        <input type="text" id="Nombre" name="Nombre"/>
-    </div>
+    <label for="Nombre">Nombre:</label>
+    <input type="text" id="Nombre" name="Nombre" />
 
-    <div>
-        <button type="button" onclick="guardar()">Crear</button>
-    </div> 
+    <label for="contra">Contraseña:</label>
+    <input type="password" id="contra" name="Contrasenia" /> <!-- Usa type="password" para datos sensibles -->
+
+    <label for="rol">Rol:</label>
+    <input type="number" id="rol" name="IdRol" />
+
+    <button type="button" onclick="guardar()">Crear</button>
 </form>
 
 @section scripts {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         function guardar(event) {
-            //event.preventDefault();
-
             var formData = $("#crearUsuarioForm").serialize();
 
             $.ajax({
@@ -33,5 +33,4 @@
             });
         }
     </script>
-
 }

@@ -1,5 +1,6 @@
 ﻿using Kanban.Models;
 using System.IO;
+using TP10.Models;
 
 namespace Kanban.Repositorios
 {
@@ -10,5 +11,6 @@ namespace Kanban.Repositorios
         public Usuario GetById(int id);
         public void Remove(int id);
         public void Update(Usuario usuario);
+        public Rol GetRolById(int id);
     }
 }

@@ -41,7 +41,16 @@ namespace Kanban.Repositorios
                 {
                     while (reader.Read())
                     {
-                        var tarea = new Tarea(Convert.ToInt32((reader["Id"])), Convert.ToInt32((reader["Id_tablero"])), reader["nombre"].ToString(), reader["descripcion"].ToString(), reader["color"].ToString(), Convert.ToInt32(reader["estado"]), Convert.ToInt32(reader["id_usuario_asignado"]));                       
+                        var id = Convert.ToInt32((reader["Id"]));
+                        var id_tablero = Convert.ToInt32((reader["Id_tablero"]));
+                        var nombre = reader["nombre"].ToString();
+                        var descripcion = reader["descripcion"].ToString();
+                        var color = reader["color"].ToString();
+                        var estado = Convert.ToInt32(reader["estado"]);
+                        var id_usu_asignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+                        
+                        var tarea = new Tarea(id,id_tablero ,nombre ,descripcion ,color ,estado , id_usu_asignado);   
+                        
                         tareas.Add(tarea);
                     }
                 }
@@ -62,7 +71,14 @@ namespace Kanban.Repositorios
             {
                 while (reader.Read())
                 {
-                    var tarea = new Tarea(Convert.ToInt32((reader["Id"])), Convert.ToInt32((reader["Id_tablero"])), reader["nombre"].ToString(), reader["descripcion"].ToString(), reader["color"].ToString(), Convert.ToInt32(reader["estado"]), Convert.ToInt32(reader["id_usuario_asignado"]));
+                    var id_tablero = Convert.ToInt32((reader["Id_tablero"]));
+                    var nombre = reader["nombre"].ToString();
+                    var descripcion = reader["descripcion"].ToString();
+                    var color = reader["color"].ToString();
+                    var estado = Convert.ToInt32(reader["estado"]);
+                    var id_usu_asignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+
+                    var tarea = new Tarea(id, id_tablero, nombre, descripcion, color, estado, id_usu_asignado);
                     tar = tarea;
                 }
             }

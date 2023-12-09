@@ -13,6 +13,11 @@
             IdUsuarioAsignado = idUsuarioAsignado;
         }
 
+        public CrearTareaViewModel()
+        {
+           
+        }
+
         public int Id { get; set; }
         public int IdTablero { get; set; }
         public string Nombre { get; set; }

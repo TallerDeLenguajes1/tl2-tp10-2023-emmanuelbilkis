@@ -21,27 +21,39 @@ namespace TableroKanban.Controllers
         {
             if (IsAdmin())
             {
-                var tabs = _servicioTarea.GetAll();
-                var model = tabs.Select(u => new TareaViewModel
+                var tareas = _servicioTarea.GetAll();
+                var model = tareas.Select(u => new TareaViewModel
                 {
                     Id = u.Id,
                     Nombre = u.Nombre,
                     Estado = u.Estado,
                     Color = u.Color,
                     Descripcion = u.Descripcion,
-                    UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado).Nombre.ToString(),
-                    TableroAsignado =  _servicioTablero.GetById(u.IdTablero).Nombre.ToString()
+                    UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
+                    TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
 
-                }).ToList();
-                return View(tabs);
+            }).ToList();
+                return View(model);
             }
             else
             {
                 if (!IsAdmin() && IsUser())
                 {
                     string id = HttpContext.Session.GetString("Id");
-                    var tars = _servicioTarea.ListarPorUsuario(int.Parse(id));
-                    return View(tars);
+                    var tareas = _servicioTarea.ListarPorUsuario(int.Parse(id));
+                    var model = tareas.Select(u => new TareaViewModel
+                    {
+                        Id = u.Id,
+                        Nombre = u.Nombre,
+                        Estado = u.Estado,
+                        Color = u.Color,
+                        Descripcion = u.Descripcion,
+                        UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
+                        TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
+
+                    }).ToList();
+                    return View(model);
+            
                 }
                 else
                 {
@@ -51,9 +63,9 @@ namespace TableroKanban.Controllers
         }
         public IActionResult EditarIndex(int id)
         {
-            var tab = _servicioTarea.GetById(id);
-            var model = new ModificarTareaViewModel(tab);
-            return View(tab);
+            var tarea = _servicioTarea.GetById(id);
+            var model = new ModificarTareaViewModel(tarea);
+            return View(model);
         }
 
         [HttpPost]

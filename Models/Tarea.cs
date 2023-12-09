@@ -19,6 +19,7 @@ namespace Kanban.Models
 
         public Tarea(ModificarTareaViewModel tareaModificada) 
         {
+            Id = tareaModificada.Id;
             IdTablero = tareaModificada.IdTablero;
             Nombre=tareaModificada.Nombre;
             Descripcion=tareaModificada.Descripcion;

@@ -1,48 +1,25 @@
 ﻿@model TP10.ViewModels.CrearTareaViewModel
 
-<h1>Crear Taraa</h1>
+<h1>Crear Tarea</h1>
 
-<form id="crearForm">
+<form asp-action="Alta" asp-controller="Tarea" method="post">
 
     <div>
         <label for="IdTab">Id Tablero:</label>
-        <input type="number" id="IdTab" name="IdTab"/>
+        <input type="number" id="IdTab" name="IdTab" />
         <label for="Nombre">Nombre:</label>
         <input type="text" id="Nombre" name="Nombre" />
         <label for="est">Estado:</label>
-        <input type="text" id="est" name="est" />
+        <input type="text" id="est" name="Estado" />
         <label for="desc">Descripción:</label>
-        <input type="text" id="desc" name="descripcion" />
+        <input type="text" id="desc" name="Descripcion" />
         <label for="color">Color:</label>
-        <input type="text" id="color" name="color" />
-         <label for="IdUsu">Id Usuario:</label>
-        <input type="number" id="IdUsu" name="IdUsu"/>
+        <input type="text" id="color" name="Color" />
+        <label for="IdUsu">Id Usuario:</label>
+        <input type="number" id="IdUsu" name="IdUsuario" />
     </div>
 
     <div>
-        <button type="button" onclick="guardar()">Crear</button>
-    </div> 
+        <button type="submit">Crear</button>
+    </div>
 </form>
-
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        function guardar(event) {
-
-            var formData = $("#crearForm").serialize();
-
-            $.ajax({
-                type: "POST",
-                url: "/Tarea/Alta",
-                data: formData,
-                success: function (data) {
-                    console.log("Tarea creada con éxito");
-                },
-                error: function (error) {
-                    console.error("Error al crear: " + error.statusText);
-                }
-            });
-        }
-    </script>
-
-}

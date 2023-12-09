@@ -7,13 +7,13 @@ namespace MVC.Controllers;
 
 public class LoginController : Controller
 {
-  
+
     private readonly ILogger<LoginController> _logger;
     private IUsuarioRepository _servicioUsuario;
     public LoginController(ILogger<LoginController> logger)
     {
         _logger = logger;
-        _servicioUsuario = new UsuarioRepository();     
+        _servicioUsuario = new UsuarioRepository();
     }
 
     public IActionResult Index()
@@ -29,25 +29,18 @@ public class LoginController : Controller
 
         // si el usuario no existe devuelvo al index
         if (usuarioLogeado == null) return RedirectToAction("Index");
-        
+
         //Registro el usuario
         logearUsuario(usuarioLogeado);
         
-        //Devuelvo el usuario al Home
-        return RedirectToRoute(new { controller = "Usuario", action = "ListarUsuarios" });
+        return RedirectToRoute(new { controller = "Usuario", action = "Index" });
     }
 
     private void logearUsuario(Usuario user)
     {
         HttpContext.Session.SetString("Usuario", user.Nombre);
         HttpContext.Session.SetString("Contrasenia", user.Contrasenia);
-        HttpContext.Session.SetString("Rol", ObtenerRol(user.IdRol));
+        HttpContext.Session.SetString("Rol",user.Rol);
+        HttpContext.Session.SetString("Id", Convert.ToString(user.Id));
     }
-
-    private string ObtenerRol(int id) 
-    {
-        string rol = _servicioUsuario.GetRolById(id).ToString();
-        return rol;
-    }
-
 }

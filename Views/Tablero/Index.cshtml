@@ -1,5 +1,5 @@
-﻿@using Kanban.Models
-@model List<Tablero>
+﻿@using TP10.ViewModels
+@model List<TableroViewModel>
 
 <h1>Listado de Tableros</h1>
 <nav>
@@ -9,7 +9,7 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th>Id Usuario Propietario</th>
+            <th>Usuario Propietario</th>
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Acciones</th>
@@ -20,7 +20,7 @@
         {
             <tr>
                 <td>@tab.Id</td>
-                <td>@tab.IdUsuarioPropietario</td>
+                <td>@tab.UsuarioNombre</td>
                 <td>@tab.Nombre</td>
                 <td>@tab.Descripcion</td>
                 <td>
@@ -72,6 +72,10 @@
                         console.error("Error al borrar tablero: " + error.statusText);
                     }
                 });
+            }
+
+            function verTareas(IdUsu) {
+                window.location.href = "/Tablero/EditarIndex/" + IdUsu;
             }
 
             function crearTablero() {

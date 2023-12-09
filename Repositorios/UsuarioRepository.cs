@@ -11,7 +11,7 @@ namespace Kanban.Repositorios
         
         public void Create(Usuario usuario)
         {
-            var query = $"INSERT INTO Usuario (nombre_de_usuario,contrasenia,id_rol) VALUES (@nombre_de_usuario,@contra,@id_rol)";
+            var query = $"INSERT INTO Usuario (nombre_de_usuario,contrasenia,rol) VALUES (@nombre_de_usuario,@contra,@rol)";
             using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
             {
                 connection.Open();
@@ -19,7 +19,7 @@ namespace Kanban.Repositorios
 
                 command.Parameters.Add(new SQLiteParameter("@nombre_de_usuario", usuario.Nombre));
                 command.Parameters.Add(new SQLiteParameter("@contra", usuario.Contrasenia));
-                command.Parameters.Add(new SQLiteParameter("@id_rol", usuario.IdRol));
+                command.Parameters.Add(new SQLiteParameter("@rol", usuario.Rol));
 
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -43,8 +43,7 @@ namespace Kanban.Repositorios
                             usuario.Id = Convert.ToInt32(reader["id"]);
                             usuario.Nombre = reader["nombre_de_usuario"].ToString();
                             usuario.Contrasenia = reader["contrasenia"].ToString();
-                            var v = reader["id_rol"].ToString();
-                            usuario.IdRol = int.Parse(v); 
+                            usuario.Rol = reader["rol"].ToString();
 
 
                         usuarios.Add(usuario);
@@ -71,6 +70,8 @@ namespace Kanban.Repositorios
                 {
                     usuario.Id = Convert.ToInt32(reader["id"]);
                     usuario.Nombre = reader["nombre_de_usuario"].ToString();
+                    usuario.Contrasenia = reader["contrasenia"].ToString();
+                    usuario.Rol = reader["rol"].ToString();
                 }
             }
             connection.Close();
@@ -82,7 +83,7 @@ namespace Kanban.Repositorios
         {
             SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"UPDATE Usuario SET nombre_de_usuario = '{usuario.Nombre}',contrasenia = '{usuario.Contrasenia}',id_rol='{usuario.IdRol}' WHERE id = '{usuario.Id}';";
+            command.CommandText = $"UPDATE Usuario SET nombre_de_usuario = '{usuario.Nombre}',contrasenia = '{usuario.Contrasenia}',rol='{usuario.Rol}' WHERE id = '{usuario.Id}';";
             connection.Open();
             command.ExecuteNonQuery();
             connection.Close();
@@ -96,28 +97,6 @@ namespace Kanban.Repositorios
             connection.Open();
             command.ExecuteNonQuery();
             connection.Close();
-        }
-
-        Rol IUsuarioRepository.GetRolById(int id)
-        {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
-            var rol = new Rol();
-            SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Roles WHERE Id = @idRol";
-            command.Parameters.Add(new SQLiteParameter("@idRol", id));
-            connection.Open();
-
-            using (SQLiteDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    rol.Id = Convert.ToInt32(reader["Id"]);
-                    rol.NombreRol = reader["Rol"].ToString();
-                }
-            }
-            connection.Close();
-
-            return (rol);
         }
     }
 }

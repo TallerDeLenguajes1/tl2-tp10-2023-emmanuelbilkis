@@ -1,38 +1,71 @@
 ﻿using Kanban.Models;
 using Kanban.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Entity.Core.Metadata.Edm;
+using TP10.ViewModels;
 
 namespace TableroKanban.Controllers
 {
     public class TableroController : Controller
     {
         private ITableroRepositorio _servicioTablero;
+        private IUsuarioRepository _servicioUsuario;
 
         public TableroController()
         {
-            _servicioTablero = new TableroRepositorio();   
+            _servicioTablero = new TableroRepositorio();
+            _servicioUsuario = new UsuarioRepository();
         }
         public IActionResult Index()
         {
-            if (IsUser())
+            if (IsAdmin())
             {
                 var tabs = _servicioTablero.GetAll();
-                return View(tabs);
+                var model = tabs.Select(u => new TableroViewModel
+                {
+                    Id = u.Id,
+                    Nombre = u.Nombre,
+                    Descripcion = u.Descripcion,
+                    UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario).Nombre.ToString(),
+                    UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario).Rol.ToString()
+
+                }).ToList();
+                return View(model);
             }
             else
             {
-                return RedirectToRoute("Login/Index");
+                if (!IsAdmin() && IsUser())
+                {
+                    string id = HttpContext.Session.GetString("Id");
+                    var tabs = _servicioTablero.ListarPorUsuario(int.Parse(id));
+                    var model = tabs.Select(u => new TableroViewModel
+                    {
+                        Id = u.Id,
+                        Nombre = u.Nombre,
+                        Descripcion = u.Descripcion,
+                        UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario).Nombre.ToString(),
+                        UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario).Rol.ToString()
+
+                    }).ToList();
+                    return View(model);
+                }
+                else
+                {
+                    return RedirectToRoute(new { controller = "Login", action = "Index" });
+                }
             }
         }
         public IActionResult EditarIndex(int id)
         {
             var tab = _servicioTablero.GetById(id);
-            return View(tab);
+            var tabView = new ModificarTableroViewModel(tab);
+            return View(tabView);
         }
 
         [HttpPost]
-        public IActionResult Editar(Tablero tableroEditado)
+        public IActionResult Editar(ModificarTableroViewModel tablero)
         {
+            var tableroEditado = new Tablero(tablero);
             _servicioTablero.Update(tableroEditado);
             return RedirectToAction("Index");
         }
@@ -49,9 +82,10 @@ namespace TableroKanban.Controllers
         }
 
         [HttpPost]
-        public IActionResult Alta(Tablero tab)
+        public IActionResult Alta(CrearTableroViewModel tab)
         {
-            _servicioTablero.Create(tab);
+            var _tab = new Tablero(tab);
+            _servicioTablero.Create(_tab);
             return RedirectToAction("Index");
         }
 
@@ -65,7 +99,7 @@ namespace TableroKanban.Controllers
 
         private bool IsUser()
         {
-            if (HttpContext.Session != null)
+            if ((HttpContext.Session != null) && (HttpContext.Session.GetString("Rol") == "Admin" || HttpContext.Session.GetString("Rol") == "Operador"))
                 return true;
 
             return false;

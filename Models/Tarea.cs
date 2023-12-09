@@ -1,4 +1,6 @@
-﻿namespace Kanban.Models
+﻿using TP10.ViewModels;
+
+namespace Kanban.Models
 {
     public class Tarea
     {
@@ -14,6 +16,26 @@
         }
 
         public Tarea() { }
+
+        public Tarea(ModificarTareaViewModel tareaModificada) 
+        {
+            IdTablero = tareaModificada.IdTablero;
+            Nombre=tareaModificada.Nombre;
+            Descripcion=tareaModificada.Descripcion;
+            Color=tareaModificada.Color;
+            Estado=tareaModificada.Estado;
+            IdUsuarioAsignado=tareaModificada.IdUsuarioAsignado;
+        }
+
+        public Tarea(CrearTareaViewModel tarea)
+        {
+            IdTablero = tarea.IdTablero;
+            Nombre = tarea.Nombre;
+            Descripcion = tarea.Descripcion;
+            Color = tarea.Color;
+            Estado = tarea.Estado;
+            IdUsuarioAsignado = tarea.IdUsuarioAsignado;
+        }
 
         public int Id { get; set; }
         public int IdTablero { get; set; }

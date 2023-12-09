@@ -1,5 +1,4 @@
-﻿@using Kanban.Models
-@model List<Tarea>
+﻿@model List<TP10.ViewModels.TareaViewModel>
 
 <h1>Listado de Tareas</h1>
 <nav>
@@ -9,12 +8,12 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th>Id Tablero</th>
+            <th>Tablero</th>
             <th>Nombre</th>
             <th>Estado</th>
-            <th>descripción</th>
+            <th>Descripción</th>
             <th>Color</th>
-            <th>Id Usuario Asignado</th>
+            <th>Usuario</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -23,12 +22,12 @@
         {
             <tr>
                 <td>@tar.Id</td>
-                <td>@tar.IdTablero</td>
+                <td>@tar.TableroAsignado</td>
                 <td>@tar.Nombre</td>
                 <td>@tar.Estado</td>
                 <td>@tar.Descripcion</td>
                 <td>@tar.Color</td>
-                <td>@tar.IdUsuarioAsignado</td>
+                <td>@tar.UsuarioAsignado</td>
                 <td>
                     <a href="#" class="editar" data-id="@tar.Id">Editar</a> |
                     <a href="#" class="borrar" data-id="@tar.Id">Borrar</a>

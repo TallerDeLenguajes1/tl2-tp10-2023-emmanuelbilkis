@@ -104,3 +104,4 @@ C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\refin
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\TP10.pdb
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\TP10.genruntimeconfig.cache
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\ref\TP10.dll
+C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\bin\Debug\net6.0\AutoMapper.dll

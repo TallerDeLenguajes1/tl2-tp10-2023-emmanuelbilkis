@@ -1,0 +1,33 @@
+﻿@using TP10.ViewModels
+@model List<UsuarioViewModel>
+
+<h1>Listado de usuarios</h1>
+<nav>
+    <a asp-action="AltaIndex" asp-controller="Usuario">Agregar Usuario</a>
+</nav>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.Id</td>
+                <td>@usuario.Nombre</td>
+                <td>@usuario.Rol</td>
+                <td>
+                    <a asp-action="EditarIndex" asp-controller="Usuario" asp-route-id="@usuario.Id">Editar</a> |
+                    <a asp-action="Borrar" asp-controller="Usuario" asp-route-id="@usuario.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este usuario?')">Borrar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

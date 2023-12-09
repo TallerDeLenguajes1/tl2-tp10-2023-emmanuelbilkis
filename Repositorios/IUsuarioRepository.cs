@@ -11,6 +11,5 @@ namespace Kanban.Repositorios
         public Usuario GetById(int id);
         public void Remove(int id);
         public void Update(Usuario usuario);
-        public Rol GetRolById(int id);
     }
 }

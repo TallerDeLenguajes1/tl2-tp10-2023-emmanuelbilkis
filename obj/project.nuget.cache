@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Ge5LqxTbOeBKa75Yd/HSduMCLVT5NmyvPZ/6LzanGjaqyhhO/2v/5TQMuZax1bXvzWJQ3bG0PelZq2bEpiiZgw==",
+  "dgSpecHash": "TXIG88DCVBtzmaak4DYSslGqIXuFbSpFrQs2eWB7THhaFoaF5gmt4F7Cz5Eh+YDbQ8x5ARXh8lqpekvcxgtDVQ==",
   "success": true,
   "projectFilePath": "C:\\Repositorios-Taller2-2023\\tl2-tp10-2023-emmanuelbilkis\\TP10.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\emman\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\emman\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\emman\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\2.2.0\\microsoft.aspnetcore.cryptography.internal.2.2.0.nupkg.sha512",
     "C:\\Users\\emman\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.2.0\\microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",

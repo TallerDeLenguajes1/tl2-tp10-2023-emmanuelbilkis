@@ -1,6 +1,7 @@
 ﻿using Kanban.Models;
 using Kanban.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using TP10.ViewModels;
 
 namespace TableroKanban.Controllers
 {
@@ -12,37 +13,57 @@ namespace TableroKanban.Controllers
             _servicioUsuario = new UsuarioRepository();
         }
 
-        public IActionResult ListarUsuarios() 
+        public IActionResult Index() 
         {
             if (IsUser())
             {
-              var usuarios = _servicioUsuario.GetAll();
-              return View(usuarios);
+                var usuarios = _servicioUsuario.GetAll();
+                var model = usuarios.Select(u => new UsuarioViewModel
+                {
+                    Id = u.Id,
+                    Nombre = u.Nombre,
+                    Rol = u.Rol
+                }).ToList();
+                return View(model);
             }
             else
             {
-                return RedirectToRoute("Login/Index");
+                return RedirectToRoute(new { controller = "Login", action = "Index" });
             }
-
-        } // este lo hare desp con un return de json 
+        }  
 
         public IActionResult EditarIndex(int id) 
         {
-            var usu = _servicioUsuario.GetById(id);
-            return View(usu);   
+            var usuario = _servicioUsuario.GetById(id);
+
+            if (usuario != null)
+            {
+                var model = new ModificarUsuarioViewModel
+                {
+                    Id = usuario.Id,
+                    Nombre = usuario.Nombre,
+                    Contrasenia = usuario.Contrasenia,
+                    Rol = usuario.Rol
+                };
+
+                return View(model); 
+            }
+
+            return RedirectToAction("Index"); 
         }
 
         [HttpPost]
-        public IActionResult Editar(Usuario usuarioEditado)
+        public IActionResult Editar(ModificarUsuarioViewModel usuarioEditado)
         {
-            _servicioUsuario.Update(usuarioEditado);
-            return RedirectToAction("ListarUsuarios");   
+            var usuario = new Usuario(usuarioEditado);
+            _servicioUsuario.Update(usuario);
+            return RedirectToRoute(new { controller = "Usuario", action = "Index" });
         }
 
         public IActionResult Borrar(int id)
         {
             _servicioUsuario.Remove(id);
-            return RedirectToAction("ListarUsuarios");
+            return RedirectToAction("Index");
         }
 
         public IActionResult AltaIndex()
@@ -51,10 +72,11 @@ namespace TableroKanban.Controllers
         }
 
         [HttpPost]
-        public IActionResult Alta(Usuario usu)
+        public IActionResult Alta(CrearUsuarioViewModel usu)
         {
-            _servicioUsuario.Create(usu);
-            return RedirectToAction("Index","Home");
+            var usuario = new Usuario(usu);
+            _servicioUsuario.Create(usuario);
+            return RedirectToAction("Index");
         }
         private bool IsAdmin()
         {
@@ -66,7 +88,7 @@ namespace TableroKanban.Controllers
 
         private bool IsUser()
         {
-            if (HttpContext.Session != null)
+            if (HttpContext.Session != null && (HttpContext.Session.GetString("Rol") == "Admin" || HttpContext.Session.GetString("Rol") == "Operador"))
                 return true;
 
             return false;

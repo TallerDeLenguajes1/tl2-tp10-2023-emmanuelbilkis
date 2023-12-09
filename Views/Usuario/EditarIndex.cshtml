@@ -1,48 +1,27 @@
-﻿@model Kanban.Models.Usuario
+﻿@model TP10.ViewModels.ModificarUsuarioViewModel
 
 <h1 class="modal-title">Editar Usuario</h1>
 
-<form class="form-control-color" id="editarUsuarioForm">
-    @Html.HiddenFor(model => model.Id) 
+<form asp-action="Editar" asp-controller="Usuario" method="post">
+
+    <input asp-for="@Model.Id" type="hidden" />
 
     <div>
-        <label asp-for="@Model.Nombre" for="Nombre">Nombre:</label>
-        <input asp-for="@Model.Nombre" type="text" id="Nombre" name="Nombre" value="@Model.Nombre" />
+        <label asp-for="@Model.Nombre">Nombre:</label>
+        <input asp-for="@Model.Nombre" />
         <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
     </div>
     <div>
-        <label asp-for="@Model.Contrasenia" for="contra">Contraseña:</label>
-        <input asp-for="@Model.Contrasenia" type="text" id="contra" name="Contrasenia" value="@Model.Contrasenia" />
+        <label asp-for="@Model.Contrasenia">Contraseña:</label>
+        <input asp-for="@Model.Contrasenia" />
         <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
     </div>
     <div>
-        <label asp-for="@Model.IdRol" for="rol">Rol:</label>
-        <input asp-for="@Model.IdRol" type="number" id="rol" name="IdRol" value="@Model.IdRol" />
-        <span asp-validation-for="@Model.IdRol" class="text-danger"></span>
+        <label asp-for="@Model.Rol">Rol:</label>
+        <input asp-for="@Model.Rol" />
+        <span asp-validation-for="@Model.Rol" class="text-danger"></span>
     </div>
     <div>
-        <button class="btn-primary" type="button" onclick="guardarEdicion()">Guardar cambios</button>
+        <button class="btn-primary" type="submit">Guardar cambios</button>
     </div>
 </form>
-
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        function guardarEdicion() {
-            var formData = $("#editarUsuarioForm").serialize();
-
-            $.ajax({
-                type: "POST",
-                url: "/Usuario/Editar",
-                data: formData,
-                success: function (data) {
-                   
-                    console.log("Usuario editado con éxito");
-                },
-                error: function (error) {
-                    console.error("Error al editar usuario: " + error.statusText);
-                }
-            });
-        }
-    </script>
-}

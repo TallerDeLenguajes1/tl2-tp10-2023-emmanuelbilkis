@@ -1,4 +1,6 @@
-﻿namespace Kanban.Models
+﻿using TP10.ViewModels;
+
+namespace Kanban.Models
 {
     public class Tablero
     {
@@ -8,6 +10,20 @@
             IdUsuarioPropietario = idUsuarioPropietario;
             Nombre = nombre;
             Descripcion = descripcion;
+        }
+
+        public Tablero (ModificarTableroViewModel tab) 
+        {
+            IdUsuarioPropietario = tab.IdUsuarioPropietario;
+            Nombre= tab.Nombre;
+            Descripcion= tab.Descripcion;
+        }
+
+        public Tablero(CrearTableroViewModel tab)
+        {
+            IdUsuarioPropietario = tab.IdUsuarioPropietario;
+            Nombre = tab.Nombre;
+            Descripcion = tab.Descripcion;
         }
 
         public Tablero() { }

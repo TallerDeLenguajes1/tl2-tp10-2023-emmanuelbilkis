@@ -1,36 +1,18 @@
-﻿<h1>Crear Usuario</h1>
+﻿@model TP10.ViewModels.CrearUsuarioViewModel
 
-<form id="crearUsuarioForm" class="form-control">
+<h1>Crear Usuario</h1>
+
+<form asp-action="Alta" asp-controller="Usuario" method="post" class="form-control">
 
     <label for="Nombre">Nombre:</label>
     <input type="text" id="Nombre" name="Nombre" />
 
     <label for="contra">Contraseña:</label>
-    <input type="password" id="contra" name="Contrasenia" /> <!-- Usa type="password" para datos sensibles -->
+    <input type="password" id="contra" name="Contrasenia" />
 
     <label for="rol">Rol:</label>
-    <input type="number" id="rol" name="IdRol" />
+    <input type="text" id="rol" name="Rol" />
 
-    <button type="button" onclick="guardar()">Crear</button>
+    <button type="submit">Crear</button>
 </form>
 
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        function guardar(event) {
-            var formData = $("#crearUsuarioForm").serialize();
-
-            $.ajax({
-                type: "POST",
-                url: "/Usuario/Alta",
-                data: formData,
-                success: function (data) {
-                    console.log("Usuario creado con éxito");
-                },
-                error: function (error) {
-                    console.error("Error al crear usuario: " + error.statusText);
-                }
-            });
-        }
-    </script>
-}

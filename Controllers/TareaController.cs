@@ -1,40 +1,66 @@
 ﻿using Kanban.Models;
 using Kanban.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using TP10.ViewModels;
 
 namespace TableroKanban.Controllers
 {
     public class TareaController : Controller
     {
         private ITareaRepositorio _servicioTarea;
+        private IUsuarioRepository _servicioUsuario;
+        private ITableroRepositorio _servicioTablero;
 
         public TareaController()
         {
             _servicioTarea = new TareaRepositorio();
+            _servicioUsuario = new UsuarioRepository();
+            _servicioTablero = new TableroRepositorio();
         }
         public IActionResult Index()
         {
-            if (IsUser())
+            if (IsAdmin())
             {
                 var tabs = _servicioTarea.GetAll();
+                var model = tabs.Select(u => new TareaViewModel
+                {
+                    Id = u.Id,
+                    Nombre = u.Nombre,
+                    Estado = u.Estado,
+                    Color = u.Color,
+                    Descripcion = u.Descripcion,
+                    UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado).Nombre.ToString(),
+                    TableroAsignado =  _servicioTablero.GetById(u.IdTablero).Nombre.ToString()
+
+                }).ToList();
                 return View(tabs);
             }
             else
             {
-                return RedirectToRoute("Login/Index");
+                if (!IsAdmin() && IsUser())
+                {
+                    string id = HttpContext.Session.GetString("Id");
+                    var tars = _servicioTarea.ListarPorUsuario(int.Parse(id));
+                    return View(tars);
+                }
+                else
+                {
+                    return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+                }
             }
-            
         }
         public IActionResult EditarIndex(int id)
         {
             var tab = _servicioTarea.GetById(id);
+            var model = new ModificarTareaViewModel(tab);
             return View(tab);
         }
 
         [HttpPost]
-        public IActionResult Editar(Tarea tareaEditada)
+        public IActionResult Editar(ModificarTareaViewModel tareaEditada)
         {
-            _servicioTarea.Update(tareaEditada);
+            var tarea = new Tarea(tareaEditada);
+            _servicioTarea.Update(tarea);
             return RedirectToAction("Index");
         }
 
@@ -50,9 +76,10 @@ namespace TableroKanban.Controllers
         }
 
         [HttpPost]
-        public IActionResult Alta(Tarea tar)
+        public IActionResult Alta(CrearTareaViewModel tar)
         {
-            _servicioTarea.Create(tar);
+            var tarea = new Tarea(tar);
+            _servicioTarea.Create(tarea);
             return RedirectToAction("Index");
         }
         private bool IsAdmin()
@@ -65,10 +92,11 @@ namespace TableroKanban.Controllers
 
         private bool IsUser()
         {
-            if (HttpContext.Session != null)
+            if (HttpContext.Session != null && (HttpContext.Session.GetString("Rol") == "Admin" || HttpContext.Session.GetString("Rol") == "Operador"))
                 return true;
 
             return false;
         }
+
     }
 }

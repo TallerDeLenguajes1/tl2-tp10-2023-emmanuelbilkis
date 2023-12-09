@@ -14,6 +14,7 @@ namespace Kanban.Models
 
         public Tablero (ModificarTableroViewModel tab) 
         {
+            Id = tab.Id;
             IdUsuarioPropietario = tab.IdUsuarioPropietario;
             Nombre= tab.Nombre;
             Descripcion= tab.Descripcion;

@@ -37,11 +37,17 @@ namespace Kanban.Repositorios
 
                     using (SQLiteDataReader reader = command.ExecuteReader())
                     {
-                        while (reader.Read())
-                        {
-                            var tablero = new Tablero(Convert.ToInt32(reader["Id"]), Convert.ToInt32(reader["Id_usuario_propietario"]), reader["nombre"].ToString(), reader["descripcion"].ToString());
-                            tableros.Add(tablero);
-                        }
+                      while (reader.Read())
+                      {
+                        var id = Convert.ToInt32(reader["Id"]);
+                        var id_usu_propietario = Convert.ToInt32(reader["Id_usuario_propietario"]);
+                        var nombre = reader["nombre"].ToString();
+                        var descripcion = reader["descripcion"].ToString();
+                        var tablero = new Tablero(id,id_usu_propietario ,nombre ,descripcion);
+                        
+                        tableros.Add(tablero);
+                        
+                      }
                     }
                     connection.Close();
                 }

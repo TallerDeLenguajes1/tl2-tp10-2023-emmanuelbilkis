@@ -3,7 +3,7 @@
 
 <h1>Listado de Tableros</h1>
 <nav>
-    <button type="button" id="agregarTableroBtn">Agregar Tablero</button>
+    <a asp-action="AltaIndex" asp-controller="Tablero">Agregar Tablero</a>
 </nav>
 <table>
     <thead>
@@ -24,64 +24,13 @@
                 <td>@tab.Nombre</td>
                 <td>@tab.Descripcion</td>
                 <td>
-                    <a href="#" class="editar" data-id="@tab.Id">Editar</a> |
-                    <a href="#" class="borrar" data-id="@tab.Id">Borrar</a>
+                    <a asp-action="EditarIndex" asp-controller="Tablero" asp-route-id="@tab.Id">Editar</a> |
+                    <a asp-action="Borrar" asp-controller="Tablero" asp-route-id="@tab.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este Tablero?')">Borrar</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function () {
 
-            $(".editar").click(function (e) {
-                e.preventDefault();
-                var Id = $(this).data("id");
-                editar(Id);
-            });
-
-            $(".borrar").click(function (e) {
-                e.preventDefault();
-                var Id = $(this).data("id");
-
-                if (confirm("¿Estás seguro de que deseas borrar este tablero?")) {
-                    borrar(Id);
-                }
-            });
-
-            $("#agregarTableroBtn").click(function () {
-                crearTablero();
-            });
-
-            function editar(Id) {
-                window.location.href = "/Tablero/EditarIndex/" + Id;
-            }
-
-            function borrar(Id) {
-
-                $.ajax({
-                    type: "POST",
-                    url: "/Tablero/Borrar/" + Id,
-                    success: function (data) {
-                        console.log("Tablero borrado con éxito");
-                    },
-                    error: function (error) {
-                        console.error("Error al borrar tablero: " + error.statusText);
-                    }
-                });
-            }
-
-            function verTareas(IdUsu) {
-                window.location.href = "/Tablero/EditarIndex/" + IdUsu;
-            }
-
-            function crearTablero() {
-                window.location.href = '@Url.Action("AltaIndex", "Tablero")';
-            }
-        });
-    </script>
-}
 

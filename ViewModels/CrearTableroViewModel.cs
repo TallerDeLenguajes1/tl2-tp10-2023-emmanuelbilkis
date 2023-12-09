@@ -14,5 +14,10 @@ namespace TP10.ViewModels
             Nombre = tab.Nombre;
             Descripcion = tab.Descripcion;
         }
+
+        public CrearTableroViewModel()
+        {
+         
+        }
     }
 }

@@ -26,10 +26,10 @@ namespace TableroKanban.Controllers
                     Id = u.Id,
                     Nombre = u.Nombre,
                     Descripcion = u.Descripcion,
-                    UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario).Nombre.ToString(),
-                    UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario).Rol.ToString()
-
+                    UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Nombre ?? "-",
+                    UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Rol ?? "-"
                 }).ToList();
+
                 return View(model);
             }
             else
@@ -43,8 +43,8 @@ namespace TableroKanban.Controllers
                         Id = u.Id,
                         Nombre = u.Nombre,
                         Descripcion = u.Descripcion,
-                        UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario).Nombre.ToString(),
-                        UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario).Rol.ToString()
+                        UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Nombre ?? "-",
+                        UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Rol ?? "-"
 
                     }).ToList();
                     return View(model);

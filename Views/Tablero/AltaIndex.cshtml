@@ -2,7 +2,7 @@
 
 <h1>Crear Tablero</h1>
 
-<form id="crearForm">
+<form asp-action="Alta" asp-controller="Tablero" method="post">
 
     <div>
         <label for="IdUsu">Id Usuario:</label>
@@ -14,29 +14,6 @@
     </div>
 
     <div>
-        <button type="button" onclick="guardar()">Crear</button>
-    </div> 
+        <button type="submit">Crear</button>
+    </div>
 </form>
-
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        function guardar(event) {
-
-            var formData = $("#crearForm").serialize();
-
-            $.ajax({
-                type: "POST",
-                url: "/Tablero/Alta",
-                data: formData,
-                success: function (data) {
-                    console.log("Tablero creado con éxito");
-                },
-                error: function (error) {
-                    console.error("Error al crear: " + error.statusText);
-                }
-            });
-        }
-    </script>
-
-}

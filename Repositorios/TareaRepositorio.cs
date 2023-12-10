@@ -143,11 +143,16 @@ namespace Kanban.Repositorios
         {
             SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"UPDATE Tarea SET id = '{tarea.Id}', Id_tablero = '{tarea.IdTablero}', nombre = '{tarea.Nombre}', estado = '{tarea.Estado}', descripcion = '{tarea.Descripcion}', color = '{tarea.Color}', id_usuario_asignado = '{tarea.IdUsuarioAsignado}' WHERE id = '{tarea.Id}';";
+
+            int estadoInt = (int)tarea.Estado;
+
+            command.CommandText = $"UPDATE Tarea SET id = '{tarea.Id}', Id_tablero = '{tarea.IdTablero}', nombre = '{tarea.Nombre}', estado = '{estadoInt}', descripcion = '{tarea.Descripcion}', color = '{tarea.Color}', id_usuario_asignado = '{tarea.IdUsuarioAsignado}' WHERE id = '{tarea.Id}';";
+
             connection.Open();
             command.ExecuteNonQuery();
             connection.Close();
         }
+
 
         public void Asignar(int idUsuario, int idTarea)
         {

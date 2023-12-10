@@ -94,6 +94,26 @@ namespace TableroKanban.Controllers
             _servicioTarea.Create(tarea);
             return RedirectToAction("Index");
         }
+
+
+        [HttpGet]
+        public IActionResult TareasDeTablero(int Id) 
+        {
+            var tareas = _servicioTarea.ListarPorTablero(Id);
+            var model = tareas.Select(u => new TareaViewModel
+            {
+                Id = u.Id,
+                Nombre = u.Nombre,
+                Estado = u.Estado,
+                Color = u.Color,
+                Descripcion = u.Descripcion,
+                UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
+                TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
+
+            }).ToList();
+
+            return View(model);
+        }
         private bool IsAdmin()
         {
             if (HttpContext.Session != null && HttpContext.Session.GetString("Rol") == "Admin")

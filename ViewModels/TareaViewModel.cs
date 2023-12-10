@@ -1,4 +1,5 @@
 ﻿using Kanban.Models;
+using TP10.Models;
 
 namespace TP10.ViewModels
 {
@@ -9,18 +10,18 @@ namespace TP10.ViewModels
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public string Color { get; set; }
-        public int Estado { get; set; }
+        public EstadoTarea Estado { get; set; }  
         public string UsuarioAsignado { get; set; }
         public string TableroAsignado { get; set; }
 
-        public TareaViewModel(Tarea tarea,TableroViewModel tab,UsuarioViewModel usu) 
+        public TareaViewModel(Tarea tarea, TableroViewModel tab, UsuarioViewModel usu)
         {
-            Id= tarea.Id;
+            Id = tarea.Id;
             Tablero = tab.Nombre;
             Nombre = tarea.Nombre;
             Descripcion = tarea.Descripcion;
             Color = tarea.Color;
-            Estado = tarea.Estado;
+            Estado = tarea.Estado;  
             UsuarioAsignado = usu.Nombre;
             TableroAsignado = tab.Nombre;
         }
@@ -28,3 +29,4 @@ namespace TP10.ViewModels
         public TareaViewModel() { }
     }
 }
+

@@ -26,6 +26,7 @@
                 <td>
                     <a asp-action="EditarIndex" asp-controller="Tablero" asp-route-id="@tab.Id">Editar</a> |
                     <a asp-action="Borrar" asp-controller="Tablero" asp-route-id="@tab.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este Tablero?')">Borrar</a>
+                    <a asp-action="TareasDeTablero" asp-controller="Tarea" asp-route-id="@tab.Id">Ver tareas</a>
                 </td>
             </tr>
         }

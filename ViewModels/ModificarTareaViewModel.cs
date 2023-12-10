@@ -1,4 +1,5 @@
 ﻿using Kanban.Models;
+using TP10.Models;
 
 namespace TP10.ViewModels
 {
@@ -9,23 +10,23 @@ namespace TP10.ViewModels
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public string Color { get; set; }
-        public int Estado { get; set; }
+        public EstadoTarea Estado { get; set; }  
         public int IdUsuarioAsignado { get; set; }
-        
-        public ModificarTareaViewModel(Tarea tarea) 
+
+        public ModificarTareaViewModel(Tarea tarea)
         {
             Id = tarea.Id;
             IdTablero = tarea.IdTablero;
             Nombre = tarea.Nombre;
             Descripcion = tarea.Descripcion;
             Color = tarea.Color;
-            Estado = tarea.Estado;
+            Estado = tarea.Estado;  
             IdUsuarioAsignado = tarea.IdUsuarioAsignado;
         }
 
         public ModificarTareaViewModel()
         {
-        
+            
         }
     }
 }

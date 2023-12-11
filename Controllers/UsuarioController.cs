@@ -7,10 +7,10 @@ namespace TableroKanban.Controllers
 {
     public class UsuarioController : Controller
     {
-        private UsuarioRepository _servicioUsuario;  
-        public UsuarioController()
+        private readonly IUsuarioRepository _servicioUsuario;  
+        public UsuarioController(IUsuarioRepository usuarioRepositorio)
         {
-            _servicioUsuario = new UsuarioRepository();
+            _servicioUsuario = usuarioRepositorio;
         }
 
         public IActionResult Index() 

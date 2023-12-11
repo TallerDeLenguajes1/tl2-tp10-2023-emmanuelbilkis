@@ -9,11 +9,11 @@ public class LoginController : Controller
 {
 
     private readonly ILogger<LoginController> _logger;
-    private IUsuarioRepository _servicioUsuario;
-    public LoginController(ILogger<LoginController> logger)
+    private readonly IUsuarioRepository _servicioUsuario;
+    public LoginController(ILogger<LoginController> logger,IUsuarioRepository usuarioRepositorio)
     {
         _logger = logger;
-        _servicioUsuario = new UsuarioRepository();
+        _servicioUsuario = usuarioRepositorio;
     }
 
     public IActionResult Index()

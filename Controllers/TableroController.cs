@@ -8,13 +8,13 @@ namespace TableroKanban.Controllers
 {
     public class TableroController : Controller
     {
-        private ITableroRepositorio _servicioTablero;
-        private IUsuarioRepository _servicioUsuario;
+        private readonly ITableroRepositorio _servicioTablero;
+        private readonly IUsuarioRepository _servicioUsuario;
 
-        public TableroController()
+        public TableroController(ITableroRepositorio tableroRepositorio,IUsuarioRepository usuarioRepositorio)
         {
-            _servicioTablero = new TableroRepositorio();
-            _servicioUsuario = new UsuarioRepository();
+            _servicioTablero = tableroRepositorio;
+            _servicioUsuario = usuarioRepositorio;
         }
         public IActionResult Index()
         {

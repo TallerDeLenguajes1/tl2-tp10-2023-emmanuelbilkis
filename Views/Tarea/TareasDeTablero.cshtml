@@ -4,7 +4,7 @@
 
 @if (Model.Count > 0)
 {
-    <!-- Crear secciones para cada estado -->
+   
     @foreach (var estado in Model.Select(t => t.Estado).Distinct())
     {
         var tareasPorEstado = Model.Where(t => t.Estado == estado).ToList();
@@ -12,7 +12,6 @@
         <section>
             <h2>@estado</h2>
 
-            <!-- Utilizar tarjetas de Bootstrap para mostrar las tareas -->
             <div class="row">
                 @foreach (var tar in tareasPorEstado)
                 {
@@ -35,7 +34,6 @@ else
     <p>No hay tareas disponibles.</p>
 }
 
-<!-- Agregar Bootstrap y jQuery (JavaScript) al final del documento para su funcionamiento -->
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>

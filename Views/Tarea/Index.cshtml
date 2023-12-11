@@ -2,7 +2,7 @@
 
 <h1>Listado de Tareas</h1>
 <nav>
-    <a asp-action="AltaIndex" asp-controller="Tarea">Agregar Tarea</a>
+    <a asp-action="Alta" asp-controller="Tarea">Agregar Tarea</a>
 </nav>
 <table>
     <thead>
@@ -29,7 +29,7 @@
                 <td>@tar.Color</td>
                 <td>@tar.UsuarioAsignado</td>
                 <td>
-                    <a asp-action="EditarIndex" asp-controller="Tarea" asp-route-id="@tar.Id">Editar</a> |
+                    <a asp-action="Editar" asp-controller="Tarea" asp-route-id="@tar.Id">Editar</a> |
                     <a asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tar.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
                 </td>
             </tr>

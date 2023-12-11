@@ -55,9 +55,12 @@ namespace TableroKanban.Controllers
                 }
             }
         }
-        public IActionResult EditarIndex(int id)
+
+        [HttpGet]
+        public IActionResult Editar(int id)
         {
             var tab = _servicioTablero.GetById(id);
+            // hacer control de null
             var tabView = new ModificarTableroViewModel(tab);
             return View(tabView);
         }
@@ -65,9 +68,16 @@ namespace TableroKanban.Controllers
         [HttpPost]
         public IActionResult Editar(ModificarTableroViewModel tablero)
         {
-            var tableroEditado = new Tablero(tablero);
-            _servicioTablero.Update(tableroEditado);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid) 
+            {
+                var tableroEditado = new Tablero(tablero);
+                _servicioTablero.Update(tableroEditado);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(tablero);
+            }
         }
 
         public IActionResult Borrar(int id)
@@ -76,7 +86,7 @@ namespace TableroKanban.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult AltaIndex()
+        public IActionResult Alta()
         {
             return View();
         }
@@ -84,9 +94,16 @@ namespace TableroKanban.Controllers
         [HttpPost]
         public IActionResult Alta(CrearTableroViewModel tab)
         {
-            var _tab = new Tablero(tab);
-            _servicioTablero.Create(_tab);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                var _tab = new Tablero(tab);
+                _servicioTablero.Create(_tab);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(tab);
+            }
         }
 
         private bool IsAdmin()

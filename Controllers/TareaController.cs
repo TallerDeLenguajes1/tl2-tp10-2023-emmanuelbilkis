@@ -61,7 +61,7 @@ namespace TableroKanban.Controllers
                 }
             }
         }
-        public IActionResult EditarIndex(int id)
+        public IActionResult Editar(int id)
         {
             var tarea = _servicioTarea.GetById(id);
             var model = new ModificarTareaViewModel(tarea);
@@ -71,6 +71,10 @@ namespace TableroKanban.Controllers
         [HttpPost]
         public IActionResult Editar(ModificarTareaViewModel tareaEditada)
         {
+            if (!ModelState.IsValid) 
+            {
+                return View(tareaEditada);
+            }
             var tarea = new Tarea(tareaEditada);
             _servicioTarea.Update(tarea);
             return RedirectToAction("Index");
@@ -82,7 +86,7 @@ namespace TableroKanban.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult AltaIndex()
+        public IActionResult Alta()
         {
             return View();
         }
@@ -90,8 +94,12 @@ namespace TableroKanban.Controllers
         [HttpPost]
         public IActionResult Alta(CrearTareaViewModel tar)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(tar);
+            }
             var tarea = new Tarea(tar);
-            _servicioTarea.Create(tarea);
+            _servicioTarea.Create(tarea);   
             return RedirectToAction("Index");
         }
 

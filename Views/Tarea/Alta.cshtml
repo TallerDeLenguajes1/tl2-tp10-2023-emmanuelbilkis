@@ -1,0 +1,50 @@
+﻿@model TP10.ViewModels.CrearTareaViewModel
+
+<h1>Crear Tarea</h1>
+
+<form asp-action="Alta" asp-controller="Tarea" method="post">
+
+    <div class="mb-3">
+        <label asp-for="@Model.IdTablero" class="form-label"></label>
+        <input asp-for="@Model.IdTablero" class="form-control" />
+        <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="@Model.Nombre" class="form-label"></label>
+        <input asp-for="@Model.Nombre" class="form-control" />
+        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="@Model.Estado" class="form-label"></label>
+        <input asp-for="@Model.Estado" class="form-control"/>
+        <span asp-validation-for="@Model.Estado" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="@Model.Descripcion" class="form-label"></label>
+        <input asp-for="@Model.Descripcion" class="form-control" />
+        <span asp-validation-for="@Model.Descripcion" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="@Model.Color" class="form-label"></label>
+        <input asp-for="@Model.Color" class="form-control" />
+        <span asp-validation-for="@Model.Color" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="@Model.IdUsuarioAsignado" class="form-label"></label>
+        <input asp-for="@Model.IdUsuarioAsignado" class="form-control" />
+        <span asp-validation-for="@Model.IdUsuarioAsignado" class="text-danger"></span>
+    </div>
+        
+    <button type="submit" class="btn-primary">Crear</button>
+   
+</form>
+@section Scripts
+    {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

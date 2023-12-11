@@ -32,7 +32,7 @@ namespace TableroKanban.Controllers
             }
         }  
 
-        public IActionResult EditarIndex(int id) 
+        public IActionResult Editar(int id) 
         {
             var usuario = _servicioUsuario.GetById(id);
 
@@ -55,6 +55,11 @@ namespace TableroKanban.Controllers
         [HttpPost]
         public IActionResult Editar(ModificarUsuarioViewModel usuarioEditado)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(usuarioEditado);
+            }
+
             var usuario = new Usuario(usuarioEditado);
             _servicioUsuario.Update(usuario);
             return RedirectToRoute(new { controller = "Usuario", action = "Index" });
@@ -66,7 +71,7 @@ namespace TableroKanban.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult AltaIndex()
+        public IActionResult Alta()
         {
             return View();  
         }
@@ -74,6 +79,10 @@ namespace TableroKanban.Controllers
         [HttpPost]
         public IActionResult Alta(CrearUsuarioViewModel usu)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(usu);
+            }
             var usuario = new Usuario(usu);
             _servicioUsuario.Create(usuario);
             return RedirectToAction("Index");

@@ -1,10 +1,8 @@
-﻿@model TP10.ViewModels.ModificarUsuarioViewModel
+﻿@model TP10.ViewModels.CrearUsuarioViewModel
 
-<h1 class="modal-title">Editar Usuario</h1>
+<h1>Crear Usuario</h1>
 
-<form asp-action="Editar" asp-controller="Usuario" method="post">
-
-    <input asp-for="@Model.Id" type="hidden" />
+<form asp-action="Alta" asp-controller="Usuario" method="post" class="form-control">
 
     <div>
         <label asp-for="@Model.Nombre">Nombre:</label>
@@ -22,6 +20,11 @@
         <span asp-validation-for="@Model.Rol" class="text-danger"></span>
     </div>
     <div>
-        <button class="btn-primary" type="submit">Guardar cambios</button>
+        <button class="btn-primary" type="submit">Crear</button>
     </div>
 </form>
+@section Scripts
+    {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

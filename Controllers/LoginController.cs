@@ -1,6 +1,7 @@
 using Kanban.Models;
 using Kanban.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MVC.ViewModels;
 
 namespace MVC.Controllers;
@@ -28,7 +29,17 @@ public class LoginController : Controller
         var usuarioLogeado = usuarios.FirstOrDefault(u => u.Nombre == usuario.Nombre && u.Contrasenia == usuario.Contrasenia);
 
         // si el usuario no existe devuelvo al index
-        if (usuarioLogeado == null) return RedirectToAction("Index");
+        if (usuarioLogeado == null) 
+        {
+            string mensaje = $"Intento de acceso inválido - Usuario: {usuarioLogeado} ";
+            _logger.LogWarning(mensaje);
+            return RedirectToAction("Index");
+        }
+        else
+        {
+            string mensaje = $"El usuario {usuarioLogeado} ingresó correctamente.";
+            _logger.LogInformation(mensaje);
+        }
 
         //Registro el usuario
         logearUsuario(usuarioLogeado);

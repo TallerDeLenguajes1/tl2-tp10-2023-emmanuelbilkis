@@ -1,33 +1,35 @@
 ﻿@using TP10.ViewModels
 @model List<UsuarioViewModel>
 
-<h1>Listado de usuarios</h1>
-<nav>
-    <a asp-action="Alta" asp-controller="Usuario">Agregar Usuario</a>
-</nav>
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var usuario in Model)
-        {
+<div class="container mt-4">
+    <h1>Listado de Usuarios</h1>
+    <nav class="mb-3">
+        <a class="btn btn-primary" asp-action="Alta" asp-controller="Usuario">Agregar Usuario</a>
+    </nav>
+    <table class="table table-striped">
+        <thead class="thead-dark">
             <tr>
-                <td>@usuario.Id</td>
-                <td>@usuario.Nombre</td>
-                <td>@usuario.Rol</td>
-                <td>
-                    <a asp-action="Editar" asp-controller="Usuario" asp-route-id="@usuario.Id">Editar</a> |
-                    <a asp-action="Borrar" asp-controller="Usuario" asp-route-id="@usuario.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este usuario?')">Borrar</a>
-                </td>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Acciones</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model)
+            {
+                <tr>
+                    <td>@usuario.Id</td>
+                    <td>@usuario.Nombre</td>
+                    <td>@usuario.Rol</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Usuario" asp-route-id="@usuario.Id">Editar</a>
+                        <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Usuario" asp-route-id="@usuario.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este usuario?')">Borrar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 

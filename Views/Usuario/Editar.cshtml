@@ -1,30 +1,36 @@
 ﻿@model TP10.ViewModels.ModificarUsuarioViewModel
 
-<h1 class="modal-title">Editar Usuario</h1>
+<div class="container mt-4">
+    <h1 class="modal-title">Editar Usuario</h1>
 
-<form asp-action="Editar" asp-controller="Usuario" method="post">
+    <form asp-action="Editar" asp-controller="Usuario" method="post">
 
-    <input asp-for="@Model.Id" type="hidden" />
+        <input asp-for="@Model.Id" type="hidden" />
 
-    <div>
-        <label asp-for="@Model.Nombre">Nombre:</label>
-        <input asp-for="@Model.Nombre" />
-        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="@Model.Contrasenia">Contraseña:</label>
-        <input asp-for="@Model.Contrasenia" />
-        <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="@Model.Rol">Rol:</label>
-        <input asp-for="@Model.Rol" />
-        <span asp-validation-for="@Model.Rol" class="text-danger"></span>
-    </div>
-    <div>
-        <button class="btn-primary" type="submit">Guardar cambios</button>
-    </div>
-</form>
+        <div class="mb-3">
+            <label asp-for="@Model.Nombre" class="form-label">Nombre:</label>
+            <input asp-for="@Model.Nombre" class="form-control" />
+            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="@Model.Contrasenia" class="form-label">Contraseña:</label>
+            <input asp-for="@Model.Contrasenia" class="form-control" />
+            <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="@Model.Rol" class="form-label">Rol:</label>
+            <input asp-for="@Model.Rol" class="form-control" />
+            <span asp-validation-for="@Model.Rol" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <button class="btn btn-primary" type="submit">Guardar cambios</button>
+        </div>
+    </form>
+</div>
+
 @section Scripts
     {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>

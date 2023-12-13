@@ -1,19 +1,26 @@
 @model MVC.ViewModels.LoginViewModel
 
-<form asp-controller="Login" asp-action="Login" method="post">
-    <div class="form-group">
-        <label asp-for="@Model.Nombre"></label>
-        <input asp-for="@Model.Nombre" class="form-control" />
-        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>    
-    </div>
+<div class="container mt-4">
+    <h1>Iniciar Sesión</h1>
+    <form asp-controller="Login" asp-action="Login" method="post">
+        <div class="form-group">
+            <label asp-for="@Model.Nombre" class="font-weight-bold">Nombre de Usuario:</label>
+            <input asp-for="@Model.Nombre" class="form-control" />
+            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="@Model.Contrasenia"></label>
-        <input asp-for="@Model.Contrasenia" class="form-control" />
-        <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Enviar</button>
-</form>
+        <div class="form-group">
+            <label asp-for="@Model.Contrasenia" class="font-weight-bold">Contraseña:</label>
+            <input asp-for="@Model.Contrasenia" type="password" class="form-control" />
+            <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
+        </div>
 
-@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
 

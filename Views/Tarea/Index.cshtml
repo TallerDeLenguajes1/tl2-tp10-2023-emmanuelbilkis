@@ -1,41 +1,45 @@
 ﻿@model List<TP10.ViewModels.TareaViewModel>
 
-<h1>Listado de Tareas</h1>
-<nav>
-    <a asp-action="Alta" asp-controller="Tarea">Agregar Tarea</a>
-</nav>
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Tablero</th>
-            <th>Nombre</th>
-            <th>Estado</th>
-            <th>Descripción</th>
-            <th>Color</th>
-            <th>Usuario</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tar in Model)
-        {
+<div class="container mt-4">
+    <h1>Listado de Tareas</h1>
+    <nav class="mb-3">
+        <a class="btn btn-primary" asp-action="Alta" asp-controller="Tarea">Agregar Tarea</a>
+    </nav>
+    <table class="table table-striped">
+        <thead class="thead-dark">
             <tr>
-                <td>@tar.Id</td>
-                <td>@tar.TableroAsignado</td>
-                <td>@tar.Nombre</td>
-                <td>@tar.Estado.ToString()</td>
-                <td>@tar.Descripcion</td>
-                <td>@tar.Color</td>
-                <td>@tar.UsuarioAsignado</td>
-                <td>
-                    <a asp-action="Editar" asp-controller="Tarea" asp-route-id="@tar.Id">Editar</a> |
-                    <a asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tar.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
-                </td>
+                <th>Id</th>
+                <th>Tablero</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Color</th>
+                <th>Usuario</th>
+                <th>Acciones</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var tarea in Model)
+            {
+                <tr>
+                    <td>@tarea.Id</td>
+                    <td>@tarea.TableroAsignado</td>
+                    <td>@tarea.Nombre</td>
+                    <td>@tarea.Estado.ToString()</td>
+                    <td>@tarea.Descripcion</td>
+                    <td>
+                        <span class="badge" style="background-color: @tarea.Color; color: white;">@tarea.Color</span>
+                    </td>
+                    <td>@tarea.UsuarioAsignado</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tarea.Id">Editar</a>
+                        <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tarea.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 
 

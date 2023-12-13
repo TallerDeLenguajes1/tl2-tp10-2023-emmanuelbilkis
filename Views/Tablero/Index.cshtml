@@ -1,18 +1,18 @@
 ﻿@using TP10.ViewModels
 @model List<TableroViewModel>
 
-<h1>Listado de Tableros</h1>
-<nav>
-    <a asp-action="Alta" asp-controller="Tablero">Agregar Tablero</a>
+<h1 class="mt-4 mb-4">Listado de Tableros</h1>
+<nav class="mb-3">
+    <a class="btn btn-primary" asp-action="Alta" asp-controller="Tablero">Agregar Tablero</a>
 </nav>
-<table>
-    <thead>
+<table class="table table-striped">
+    <thead class="thead-dark">
         <tr>
-            <th>Id</th>
-            <th>Usuario Propietario</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
+            <th scope="col">Id</th>
+            <th scope="col">Usuario Propietario</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -24,9 +24,9 @@
                 <td>@tab.Nombre</td>
                 <td>@tab.Descripcion</td>
                 <td>
-                    <a asp-action="Editar" asp-controller="Tablero" asp-route-id="@tab.Id">Editar</a> |
-                    <a asp-action="Borrar" asp-controller="Tablero" asp-route-id="@tab.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este Tablero?')">Borrar</a>
-                    <a asp-action="TareasDeTablero" asp-controller="Tarea" asp-route-id="@tab.Id">Ver tareas</a>
+                    <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tablero" asp-route-id="@tab.Id">Editar</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tablero" asp-route-id="@tab.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este Tablero?')">Borrar</a>
+                    <a class="btn btn-info btn-sm" asp-action="TareasDeTablero" asp-controller="Tarea" asp-route-id="@tab.Id">Ver tareas</a>
                 </td>
             </tr>
         }

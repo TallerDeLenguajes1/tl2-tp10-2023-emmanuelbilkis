@@ -5,12 +5,18 @@ namespace Kanban.Repositorios
 {
     public class TableroRepositorio : ITableroRepositorio
     {
-        private string cadenaConexion = "Data Source=DB/Taller2.db;Cache=Shared";
+        //private string _cadenaConexion = "Data Source=DB/Taller2.db;Cache=Shared";
+        private readonly string _cadenaConexion;
+     
+        public TableroRepositorio(IConfiguration configuration) 
+        {
+            _cadenaConexion = configuration.GetConnectionString("SqliteConexion");
+        }
 
         public void Create(Tablero tablero)
         {
             var query = $"INSERT INTO Tablero (Id_usuario_propietario,nombre,descripcion) VALUES (@id_usu,@nombre,@desc)";
-            using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
             {
 
                 connection.Open();
@@ -30,7 +36,7 @@ namespace Kanban.Repositorios
         {
                 var queryString = @"SELECT * FROM Tablero;";
                 List<Tablero> tableros = new List<Tablero>();
-                using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
                 {
                     SQLiteCommand command = new SQLiteCommand(queryString, connection);
                     connection.Open();
@@ -57,7 +63,7 @@ namespace Kanban.Repositorios
 
         public Tablero GetById(int idTablero)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
             command.CommandText = "SELECT * FROM Tablero WHERE id = @idTab;";
             command.Parameters.Add(new SQLiteParameter("@idTab", idTablero));
@@ -78,9 +84,9 @@ namespace Kanban.Repositorios
 
         public List<Tablero> ListarPorUsuario(int idUsuario)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = @"SELECT * FROM Tablero WHERE Id_usuario_propietario = @idUsu;";
+            command.CommandText = @"SELECT * FROM Tablero WHERE Id_usuario_propietario = @idUsu;"; // cambiarlo a innerjoin
             command.Parameters.Add(new SQLiteParameter("@idUsu", idUsuario));
             connection.Open();
             var lista = new List<Tablero>();    
@@ -100,7 +106,7 @@ namespace Kanban.Repositorios
         
         public void Remove(int id)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
             command.CommandText = $"DELETE FROM Tablero WHERE id = '{id}';";
             connection.Open();
@@ -110,7 +116,7 @@ namespace Kanban.Repositorios
 
         public void Update(Tablero tablero)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
             command.CommandText = $"UPDATE Tablero SET Id = '{tablero.Id}', Id_usuario_propietario = '{tablero.IdUsuarioPropietario}',nombre='{tablero.Nombre}',descripcion='{tablero.Descripcion}' WHERE id = '{tablero.Id}';";
             connection.Open();

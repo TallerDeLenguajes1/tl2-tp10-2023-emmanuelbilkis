@@ -5,7 +5,7 @@ namespace Kanban.Repositorios
 {
     public class TableroRepositorio : ITableroRepositorio
     {
-        //private string _cadenaConexion = "Data Source=DB/Taller2.db;Cache=Shared";
+        
         private readonly string _cadenaConexion;
      
         public TableroRepositorio(IConfiguration configuration) 

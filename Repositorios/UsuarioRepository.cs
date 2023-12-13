@@ -7,7 +7,13 @@ namespace Kanban.Repositorios
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private string cadenaConexion = "Data Source=DB/Taller2.db;Cache=Shared";
+
+        private readonly string _cadenaConexion;
+
+        public UsuarioRepository(IConfiguration configuration)
+        {
+            _cadenaConexion = configuration.GetConnectionString("SqliteConexion");
+        }
 
         public void Create(Usuario usuario)
         {
@@ -18,7 +24,7 @@ namespace Kanban.Repositorios
 
             var query = "INSERT INTO Usuario (nombre_de_usuario, contrasenia, rol) VALUES (@nombre_de_usuario, @contra, @rol)";
 
-            using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
             {
                 connection.Open();
 
@@ -58,7 +64,7 @@ namespace Kanban.Repositorios
 
             try
             {
-                using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
                 {
                     SQLiteCommand command = new SQLiteCommand(queryString, connection);
                     connection.Open();
@@ -88,7 +94,7 @@ namespace Kanban.Repositorios
 
         public Usuario GetById(int idUsuario)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             Usuario usuario = null;
 
             using (SQLiteCommand command = connection.CreateCommand())
@@ -131,7 +137,7 @@ namespace Kanban.Repositorios
                 throw new ArgumentNullException(nameof(usuario), "El usuario no puede ser nulo.");
             }
 
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
 
             if (usuario.Id <= 0)
             {
@@ -163,7 +169,7 @@ namespace Kanban.Repositorios
                 throw new ArgumentException("El ID del usuario no es válido.", nameof(id));
             }
 
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
             command.CommandText = $"DELETE FROM Usuario WHERE id = '{id}';";
 

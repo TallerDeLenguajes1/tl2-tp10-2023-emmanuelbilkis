@@ -6,14 +6,20 @@ namespace Kanban.Repositorios
 {
     public class TareaRepositorio : ITareaRepositorio
     {
-        private string cadenaConexion = "Data Source=DB/Taller2.db;Cache=Shared";
+
+        private readonly string _cadenaConexion;
+
+        public TareaRepositorio(IConfiguration configuration)
+        {
+            _cadenaConexion = configuration.GetConnectionString("SqliteConexion");
+        }
 
         public void Create(Tarea tarea)
         {
             try
             {
                 var query = "INSERT INTO Tarea (Id_tablero, nombre, estado, descripcion, color, id_usuario_asignado) VALUES (@idTab, @nombre, @estado, @desc, @color, @idUsu)";
-                using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
                 {
                     connection.Open();
                     var command = new SQLiteCommand(query, connection);
@@ -51,7 +57,7 @@ namespace Kanban.Repositorios
         {
             var queryString = @"SELECT * FROM Tarea;";
             List<Tarea> tareas = new List<Tarea>();
-            using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
             {
                 SQLiteCommand command = new SQLiteCommand(queryString, connection);
                 connection.Open();
@@ -82,7 +88,7 @@ namespace Kanban.Repositorios
         {
             try
             {
-                using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
                 {
                     SQLiteCommand command = connection.CreateCommand();
                     command.CommandText = "SELECT * FROM Tarea WHERE id = @idTarea;";
@@ -132,7 +138,7 @@ namespace Kanban.Repositorios
         {
             try
             {
-                using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
                 {
                     SQLiteCommand command = connection.CreateCommand();
                     command.CommandText = @"SELECT * FROM Tarea WHERE Id_tablero = @id;";
@@ -184,7 +190,7 @@ namespace Kanban.Repositorios
         {
             try
             {
-                using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
                 {
                     SQLiteCommand command = connection.CreateCommand();
                     command.CommandText = @"SELECT * FROM Tarea WHERE id_usuario_asignado = @id;";
@@ -238,7 +244,7 @@ namespace Kanban.Repositorios
                 throw new ArgumentException("El ID del usuario no es válido.", nameof(id));
             }
 
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
             command.CommandText = $"DELETE FROM Tarea WHERE id = '{id}';";
             try
@@ -263,7 +269,7 @@ namespace Kanban.Repositorios
                 throw new ArgumentNullException(nameof(tarea), "La tarea no puede ser nulo.");
             }
 
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
 
             if (tarea.Id <= 0)
             {

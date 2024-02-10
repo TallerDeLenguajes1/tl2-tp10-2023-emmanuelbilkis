@@ -4,7 +4,7 @@ using TP10.Models;
 
 namespace Kanban.Repositorios
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioRepositorio
     {
         public void Create(Usuario usuario);
         public List<Usuario> GetAll();

@@ -5,12 +5,12 @@ using TP10.Models;
 
 namespace Kanban.Repositorios
 {
-    public class UsuarioRepository : IUsuarioRepository
+    public class UsuarioRepositorio : IUsuarioRepositorio
     {
 
         private readonly string _cadenaConexion;
 
-        public UsuarioRepository(IConfiguration configuration)
+        public UsuarioRepositorio(IConfiguration configuration)
         {
             _cadenaConexion = configuration.GetConnectionString("SqliteConexion");
         }
@@ -20,6 +20,11 @@ namespace Kanban.Repositorios
             if (usuario is null)
             {
                 throw new ArgumentNullException(nameof(usuario), "El usuario no puede ser nulo.");
+            }
+
+            if (usuario.Rol != "Admin" && usuario.Rol != "Operador")
+            {
+                throw new ArgumentException("El Rol del usuario debe ser Admin u Operador");
             }
 
             var query = "INSERT INTO Usuario (nombre_de_usuario, contrasenia, rol) VALUES (@nombre_de_usuario, @contra, @rol)";
@@ -135,6 +140,11 @@ namespace Kanban.Repositorios
             if (usuario is null)
             {
                 throw new ArgumentNullException(nameof(usuario), "El usuario no puede ser nulo.");
+            }
+
+            if (usuario.Rol != "Admin" && usuario.Rol != "Operador")
+            {
+                throw new ArgumentException("El Rol del usuario debe ser Admin u Operador");
             }
 
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);

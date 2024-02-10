@@ -7,8 +7,8 @@ namespace TableroKanban.Controllers
 {
     public class UsuarioController : Controller
     {
-        private readonly IUsuarioRepository _servicioUsuario;  
-        public UsuarioController(IUsuarioRepository usuarioRepositorio)
+        private readonly IUsuarioRepositorio _servicioUsuario;  
+        public UsuarioController(IUsuarioRepositorio usuarioRepositorio)
         {
             _servicioUsuario = usuarioRepositorio;
         }
@@ -34,22 +34,26 @@ namespace TableroKanban.Controllers
 
         public IActionResult Editar(int id) 
         {
-            var usuario = _servicioUsuario.GetById(id);
-
-            if (usuario != null)
+            try
             {
+                var usuario = _servicioUsuario.GetById(id);
+
                 var model = new ModificarUsuarioViewModel
                 {
-                    Id = usuario.Id,
-                    Nombre = usuario.Nombre,
-                    Contrasenia = usuario.Contrasenia,
-                    Rol = usuario.Rol
+                     Id = usuario.Id,
+                     Nombre = usuario.Nombre,
+                     Contrasenia = usuario.Contrasenia,
+                     Rol = usuario.Rol
                 };
 
-                return View(model); 
+                return View(model);
+                
             }
-
-            return RedirectToAction("Index"); 
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                return View();
+            }
         }
 
         [HttpPost]
@@ -60,15 +64,33 @@ namespace TableroKanban.Controllers
                 return View(usuarioEditado);
             }
 
-            var usuario = new Usuario(usuarioEditado);
-            _servicioUsuario.Update(usuario);
-            return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+            try
+            {
+                var usuario = new Usuario(usuarioEditado);
+                _servicioUsuario.Update(usuario);
+                return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                return View();
+            }
+            
         }
 
         public IActionResult Borrar(int id)
         {
-            _servicioUsuario.Remove(id);
-            return RedirectToAction("Index");
+            try
+            {
+                _servicioUsuario.Remove(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                return View();
+            }
+         
         }
 
         public IActionResult Alta()
@@ -83,9 +105,19 @@ namespace TableroKanban.Controllers
             {
                 return View(usu);
             }
-            var usuario = new Usuario(usu);
-            _servicioUsuario.Create(usuario);
-            return RedirectToAction("Index");
+
+            try
+            {
+                var usuario = new Usuario(usu);
+                _servicioUsuario.Create(usuario);
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                return View();
+            }
+         
         }
         private bool IsAdmin()
         {

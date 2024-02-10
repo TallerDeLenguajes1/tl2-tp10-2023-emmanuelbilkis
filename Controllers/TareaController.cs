@@ -8,10 +8,10 @@ namespace TableroKanban.Controllers
     public class TareaController : Controller
     {
         private readonly ITareaRepositorio _servicioTarea;
-        private readonly IUsuarioRepository _servicioUsuario;
+        private readonly IUsuarioRepositorio _servicioUsuario;
         private readonly ITableroRepositorio _servicioTablero;
 
-        public TareaController(ITableroRepositorio tableroRepositorio, IUsuarioRepository usuarioRepositorio,ITareaRepositorio tareaRepositorio)
+        public TareaController(ITableroRepositorio tableroRepositorio, IUsuarioRepositorio usuarioRepositorio,ITareaRepositorio tareaRepositorio)
         {
             _servicioTarea = tareaRepositorio;
             _servicioUsuario = usuarioRepositorio;

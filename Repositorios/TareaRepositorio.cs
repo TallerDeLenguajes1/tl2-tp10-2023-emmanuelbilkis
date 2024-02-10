@@ -134,6 +134,108 @@ namespace Kanban.Repositorios
             }
         }
 
+        public Tarea GetByIdConTablero(int idTab)
+        {
+            try
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
+                {
+                    SQLiteCommand command = connection.CreateCommand();
+                    command.CommandText = "SELECT * FROM Tarea t INNER JOIN Tablero tab on tab.Id = t.Id_tablero WHERE t.Id_tablero = @idTab;";
+                    command.Parameters.Add(new SQLiteParameter("@idTab", idTab));
+                    connection.Open();
+
+                    Tarea tarea = null;
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var id = Convert.ToInt32(reader["Id"]);
+                            var id_tablero = Convert.ToInt32(reader["Id_tablero"]);
+                            var nombre = reader["nombre"].ToString();
+                            var descripcion = reader["descripcion"].ToString();
+                            var color = reader["color"].ToString();
+                            var estado = Convert.ToInt32(reader["estado"]);
+                            var id_usu_asignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+
+                            tarea = new Tarea(id, id_tablero, nombre, descripcion, color, estado, id_usu_asignado);
+                        }
+                    }
+
+                    connection.Close();
+
+                    if (tarea == null)
+                    {
+                        throw new InvalidOperationException($"No se encontró una tarea asociada al tablero con el ID de tablero {idTab}.");
+                    }
+
+                    return tarea;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine($"Error SQLite al obtener tarea por ID: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error general al obtener tarea por ID: {ex.Message}");
+                throw;
+            }
+        }
+
+        public Tarea GetByIdConUsuario(int idUsu)
+        {
+            try
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
+                {
+                    SQLiteCommand command = connection.CreateCommand();
+                    command.CommandText = "SELECT * FROM Tarea t INNER JOIN Usuario usu on usu.id = t.id_usuario_asignado WHERE t.id_usuario_asignado = @idUsu;";
+                    command.Parameters.Add(new SQLiteParameter("@idTab", idUsu));
+                    connection.Open();
+
+                    Tarea tarea = null;
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var id = Convert.ToInt32(reader["Id"]);
+                            var id_tablero = Convert.ToInt32(reader["Id_tablero"]);
+                            var nombre = reader["nombre"].ToString();
+                            var descripcion = reader["descripcion"].ToString();
+                            var color = reader["color"].ToString();
+                            var estado = Convert.ToInt32(reader["estado"]);
+                            var id_usu_asignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+
+                            tarea = new Tarea(id, id_tablero, nombre, descripcion, color, estado, id_usu_asignado);
+                        }
+                    }
+
+                    connection.Close();
+
+                    if (tarea == null)
+                    {
+                        throw new InvalidOperationException($"No se encontró una tarea asociada al usuario con el ID de usuario {idUsu}.");
+                    }
+
+                    return tarea;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine($"Error SQLite al obtener tarea por ID: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error general al obtener tarea por ID: {ex.Message}");
+                throw;
+            }
+        }
+
         public List<Tarea> ListarPorTablero(int idTablero)
         {
             try

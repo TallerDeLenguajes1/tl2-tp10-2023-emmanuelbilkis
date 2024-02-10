@@ -3,6 +3,7 @@ using Kanban.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVC.ViewModels;
+using TP10.Models;
 
 namespace MVC.Controllers;
 
@@ -10,8 +11,8 @@ public class LoginController : Controller
 {
 
     private readonly ILogger<LoginController> _logger;
-    private readonly IUsuarioRepository _servicioUsuario;
-    public LoginController(ILogger<LoginController> logger,IUsuarioRepository usuarioRepositorio)
+    private readonly IUsuarioRepositorio _servicioUsuario;
+    public LoginController(ILogger<LoginController> logger,IUsuarioRepositorio usuarioRepositorio)
     {
         _logger = logger;
         _servicioUsuario = usuarioRepositorio;
@@ -51,7 +52,7 @@ public class LoginController : Controller
     {
         HttpContext.Session.SetString("Usuario", user.Nombre);
         HttpContext.Session.SetString("Contrasenia", user.Contrasenia);
-        HttpContext.Session.SetString("Rol",user.Rol);
-        HttpContext.Session.SetString("Id", Convert.ToString(user.Id));
+        HttpContext.Session.SetString("Rol",user.Rol.ToString());
+        HttpContext.Session.SetString("Id", user.Id.ToString());
     }
 }

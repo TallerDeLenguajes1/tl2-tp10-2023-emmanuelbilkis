@@ -18,17 +18,6 @@ namespace TP10.ViewModels
         [ValidateNever]
         public string Descripcion { get; set; }
 
-        public CrearTableroViewModel(Tablero tab)
-        {
-            IdUsuarioPropietario = tab.IdUsuarioPropietario;
-            Nombre = tab.Nombre;
-            if (string.IsNullOrEmpty(tab.Descripcion))
-            {
-                Descripcion = "Sin descripción";
-            }
-            Descripcion = tab.Descripcion;
-        }
-
         public CrearTableroViewModel()
         {
         }

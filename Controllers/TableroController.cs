@@ -20,14 +20,14 @@ namespace TableroKanban.Controllers
         {
             if (IsAdmin())
             {
-                var tabs = _servicioTablero.GetAll();
+                var tabs = _servicioTablero.ObtenerTablerosConUsuario(); // llamar a un inner join y adaptarlo al view model 
                 var model = tabs.Select(u => new TableroViewModel
                 {
-                    Id = u.Id,
+                    Id = u.IdTablero,
                     Nombre = u.Nombre,
                     Descripcion = u.Descripcion,
-                    UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Nombre ?? "-",
-                    UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Rol ?? "-"
+                    UsuarioNombre = u.UsuarioNombre,
+                    UsuarioRol = u.UsuarioRol
                 }).ToList();
 
                 return View(model);
@@ -40,7 +40,6 @@ namespace TableroKanban.Controllers
                     var tabs = _servicioTablero.ListarPorUsuario(int.Parse(id));
                     var model = tabs.Select(u => new TableroViewModel
                     {
-                        Id = u.Id,
                         Nombre = u.Nombre,
                         Descripcion = u.Descripcion,
                         UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Nombre ?? "-",
@@ -59,10 +58,17 @@ namespace TableroKanban.Controllers
         [HttpGet]
         public IActionResult Editar(int id)
         {
-            var tab = _servicioTablero.GetById(id);
-            // hacer control de null
-            var tabView = new ModificarTableroViewModel(tab);
-            return View(tabView);
+            try
+            {
+               var tab = _servicioTablero.GetById(id);
+               var tabView = new ModificarTableroViewModel(tab);
+               return View(tabView);
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                return View();
+            }
         }
 
         [HttpPost]
@@ -70,20 +76,35 @@ namespace TableroKanban.Controllers
         {
             if (ModelState.IsValid) 
             {
-                var tableroEditado = new Tablero(tablero);
-                _servicioTablero.Update(tableroEditado);
-                return RedirectToAction("Index");
+                try
+                {
+                    var idUSuario = _servicioUsuario.GetById(tablero.IdUsuarioPropietario).Id;
+                    var tableroEditado = new Tablero(tablero);
+                    _servicioTablero.Update(tableroEditado);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    TempData["ErrorMessage"] = e.Message;
+                }
             }
-            else
-            {
-                return View(tablero);
-            }
+
+             return View(tablero);
         }
 
         public IActionResult Borrar(int id)
         {
-            _servicioTablero.Remove(id);
+            try
+            {
+                _servicioTablero.Remove(id);
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
+            
             return RedirectToAction("Index");
+            
         }
 
         public IActionResult Alta()
@@ -97,13 +118,20 @@ namespace TableroKanban.Controllers
             if (ModelState.IsValid)
             {
                 var _tab = new Tablero(tab);
-                _servicioTablero.Create(_tab);
-                return RedirectToAction("Index");
+
+                try
+                {
+                    var idUSuario = _servicioUsuario.GetById(tab.IdUsuarioPropietario).Id;
+                    _servicioTablero.Create(_tab);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    TempData["ErrorMessage"] = e.Message;
+                }
+                
             }
-            else
-            {
                 return View(tab);
-            }
         }
 
         private bool IsAdmin()

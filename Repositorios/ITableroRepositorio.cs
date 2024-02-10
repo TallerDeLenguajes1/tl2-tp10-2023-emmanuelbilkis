@@ -1,4 +1,6 @@
 ﻿using Kanban.Models;
+using TP10.Models;
+using TP10.ViewModels;
 
 namespace Kanban.Repositorios
 {
@@ -10,5 +12,6 @@ namespace Kanban.Repositorios
         public void Remove(int id);
         public void Update(Tablero tablero);
         public List<Tablero> ListarPorUsuario(int idUsuario);
+        public List<TableroConUsuario> ObtenerTablerosConUsuario();
     }
 }

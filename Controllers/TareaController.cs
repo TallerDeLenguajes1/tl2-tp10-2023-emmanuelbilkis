@@ -107,20 +107,29 @@ namespace TableroKanban.Controllers
         [HttpGet]
         public IActionResult TareasDeTablero(int Id) 
         {
-            var tareas = _servicioTarea.ListarPorTablero(Id);
-            var model = tareas.Select(u => new TareaViewModel
+            try
             {
-                Id = u.Id,
-                Nombre = u.Nombre,
-                Estado = u.Estado,
-                Color = u.Color,
-                Descripcion = u.Descripcion,
-                UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
-                TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
+                var tareas = _servicioTarea.ListarPorTablero(Id);
+                var model = tareas.Select(u => new TareaViewModel
+                {
+                    Id = u.Id,
+                    Nombre = u.Nombre,
+                    Estado = u.Estado,
+                    Color = u.Color,
+                    Descripcion = u.Descripcion,
+                    UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
+                    TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
 
-            }).ToList();
+                }).ToList();
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception e )
+            {
+                // logs
+                return RedirectToRoute(new { controller = "Tablero", action = "Index" });
+            }
+            
         }
         private bool IsAdmin()
         {

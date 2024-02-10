@@ -36,9 +36,9 @@ namespace Kanban.Repositorios
 
                     try
                     {
-                        int rowsAffected = command.ExecuteNonQuery();
+                        int filasAfectadas = command.ExecuteNonQuery();
 
-                        if (rowsAffected <= 0)
+                        if (filasAfectadas <= 0)
                         {
                             throw new InvalidOperationException("No se insertaron filas en la base de datos.");
                         }

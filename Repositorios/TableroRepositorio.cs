@@ -1,5 +1,7 @@
 ﻿using Kanban.Models;
 using System.Data.SQLite;
+using TP10.Models;
+using TP10.ViewModels;
 
 namespace Kanban.Repositorios
 {
@@ -15,6 +17,11 @@ namespace Kanban.Repositorios
 
         public void Create(Tablero tablero)
         {
+            if (tablero is null)
+            {
+                throw new ArgumentNullException(nameof(tablero), "El tablero no puede ser nulo.");
+            }
+
             var query = $"INSERT INTO Tablero (Id_usuario_propietario,nombre,descripcion) VALUES (@id_usu,@nombre,@desc)";
             using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
             {
@@ -26,16 +33,34 @@ namespace Kanban.Repositorios
                 command.Parameters.Add(new SQLiteParameter("@nombre", tablero.Nombre));
                 command.Parameters.Add(new SQLiteParameter("@desc", tablero.Descripcion));
 
-                command.ExecuteNonQuery();
+                try
+                {
+                    int filasAfectadas = command.ExecuteNonQuery();
 
-                connection.Close();
+                    if (filasAfectadas <= 0)
+                    {
+                        throw new InvalidOperationException("No se insertaron filas en la base de datos.");
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine($"Error SQLite: {ex.Message}");
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
 
         public List<Tablero> GetAll()
         {
-                var queryString = @"SELECT * FROM Tablero;";
-                List<Tablero> tableros = new List<Tablero>();
+            var queryString = @"SELECT * FROM Tablero;";
+            List<Tablero> tableros = new List<Tablero>();
+
+            try
+            {  
                 using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
                 {
                     SQLiteCommand command = new SQLiteCommand(queryString, connection);
@@ -43,22 +68,27 @@ namespace Kanban.Repositorios
 
                     using (SQLiteDataReader reader = command.ExecuteReader())
                     {
-                      while (reader.Read())
-                      {
-                        var id = Convert.ToInt32(reader["Id"]);
-                        var id_usu_propietario = Convert.ToInt32(reader["Id_usuario_propietario"]);
-                        var nombre = reader["nombre"].ToString();
-                        var descripcion = reader["descripcion"].ToString();
-                        var tablero = new Tablero(id,id_usu_propietario ,nombre ,descripcion);
-                        
-                        tableros.Add(tablero);
-                        
-                      }
+                        while (reader.Read())
+                        {
+                            var id = Convert.ToInt32(reader["Id"]);
+                            var id_usu_propietario = Convert.ToInt32(reader["Id_usuario_propietario"]);
+                            var nombre = reader["nombre"].ToString();
+                            var descripcion = reader["descripcion"].ToString();
+                            var tablero = new Tablero(id, id_usu_propietario, nombre, descripcion);
+
+                            tableros.Add(tablero);
+
+                        }
                     }
                     connection.Close();
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error al obtener la lista de tableros desde la base de datos.", ex);
+            }
 
-                return tableros;
+            return tableros;
         }
 
         public Tablero GetById(int idTablero)
@@ -78,6 +108,11 @@ namespace Kanban.Repositorios
                 }
             }
             connection.Close();
+
+            if (tab == null)
+            {
+                throw new InvalidOperationException($"No se encontró un tablero con el ID {idTablero}.");
+            }
 
             return (tab);
         }
@@ -100,28 +135,105 @@ namespace Kanban.Repositorios
             }
             connection.Close();
 
+            if (lista is null || lista.Count==0)
+            {
+                throw new InvalidOperationException($"No se encontraron tableros con el id {idUsuario} solicitado");
+            }
+
             return (lista);
 
         }
         
         public void Remove(int id)
         {
+            if (id <= 0)
+            {
+                throw new ArgumentException("El ID del Tablero no es válido.", nameof(id));
+            }
+
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"DELETE FROM Tablero WHERE id = '{id}';";
-            connection.Open();
-            command.ExecuteNonQuery();
-            connection.Close();
+            try
+            {
+                command.CommandText = $"DELETE FROM Tablero WHERE id = '{id}';";
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"No se puedo borrar el tablero | Información: {e.Data} + {e.StackTrace}");
+            }
+            finally 
+            {
+                connection.Close();
+            }
         }
 
         public void Update(Tablero tablero)
         {
+            if (tablero is null || tablero.Id < 0)
+            {
+                throw new InvalidOperationException("Tablero inválido");
+            }
+
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"UPDATE Tablero SET Id = '{tablero.Id}', Id_usuario_propietario = '{tablero.IdUsuarioPropietario}',nombre='{tablero.Nombre}',descripcion='{tablero.Descripcion}' WHERE id = '{tablero.Id}';";
-            connection.Open();
-            command.ExecuteNonQuery();
-            connection.Close();
+
+            try
+            {
+                command.CommandText = $"UPDATE Tablero SET Id = '{tablero.Id}', Id_usuario_propietario = '{tablero.IdUsuarioPropietario}',nombre='{tablero.Nombre}',descripcion='{tablero.Descripcion}' WHERE id = '{tablero.Id}';";
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"No se puedo actualizar el tablero | Información: {e.Data } + {e.StackTrace}");
+            }
+            finally 
+            {
+                connection.Close();
+            }
         }
+
+        public List<TableroConUsuario> ObtenerTablerosConUsuario()
+        {
+            var queryString = @"SELECT tab.Id,tab.nombre,tab.descripcion,usu.nombre_de_usuario,usu.rol FROM Tablero as tab
+                                inner join Usuario as usu ON tab.Id_usuario_propietario = usu.id
+                                order by usu.nombre_de_usuario asc;";
+            List<TableroConUsuario> tableros = new List<TableroConUsuario>();
+
+            try
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
+                {
+                    SQLiteCommand command = new SQLiteCommand(queryString, connection);
+                    connection.Open();
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var IDTablero = Convert.ToInt32(reader["Id"]);
+                            var nombreTablero = reader["nombre"].ToString();
+                            var descripcionTablero = reader["descripcion"].ToString();
+                            var nombreUsu = reader["nombre_de_usuario"].ToString();
+                            var rolUsuario = reader["rol"].ToString();
+                            var tablero = new TableroConUsuario(IDTablero, nombreTablero, descripcionTablero, nombreUsu, rolUsuario);
+
+                            tableros.Add(tablero);
+
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new InvalidOperationException($"No se pudo obtener los tableros con usuarios | Información: {e.Data} + {e.StackTrace}");
+            }
+          
+            return tableros;
+        } // retornar un json y mapearlo a el view model . preguntar q conviene mas 
     }
 }

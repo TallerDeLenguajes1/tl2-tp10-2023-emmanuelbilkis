@@ -10,13 +10,13 @@ namespace TP10.ViewModels
         public string UsuarioNombre { get; set; }
         public string UsuarioRol { get; set; }
 
-        public TableroViewModel(Tablero tab, UsuarioViewModel usu) 
+        public TableroViewModel(int idTablero,string nombreTablero,string descripcionTablero,string nombreUsu,string rolUsu) 
         {
-            Id = tab.Id;
-            Nombre = tab.Nombre;
-            Descripcion = tab.Descripcion;
-            UsuarioNombre = usu.Nombre;
-            UsuarioRol = usu.Rol;
+            Id = idTablero;
+            Nombre = nombreTablero; 
+            Descripcion = descripcionTablero;   
+            UsuarioNombre = nombreUsu;  
+            UsuarioRol = rolUsu;    
         }
 
         public TableroViewModel() { }

@@ -19,7 +19,8 @@
 
         <div class="mb-3">
             <label asp-for="@Model.Descripcion" class="form-label">Descripción:</label>
-            <input asp-for="@Model.Descripcion" class="form-control" />
+            <input asp-for="@Model.Descripcion" class="form-control" data-val="false" />
+            <span asp-validation-for="@Model.Descripcion" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-primary">Crear</button>
@@ -31,4 +32,13 @@
     {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        var errorMessage = '@Html.Raw(TempData["ErrorMessage"])'; // Utiliza Html.Raw para evitar el escape de caracteres especiales
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+    </script>
 }
+
+

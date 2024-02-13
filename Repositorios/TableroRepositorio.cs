@@ -236,6 +236,48 @@ namespace Kanban.Repositorios
             }
           
             return tableros;
-        } // retornar un json y mapearlo a el view model . preguntar q conviene mas 
+        }
+
+        public List<TableroConUsuario> ObtenerTablerosConUsuario(int idUsuario, int idTab)
+        {
+            var queryString = $@"SELECT tab.Id,tab.nombre,tab.descripcion,usu.nombre_de_usuario,usu.rol FROM Tablero as tab
+                                inner join Usuario as usu ON tab.Id_usuario_propietario = usu.id 
+                                WHERE usu.id = '{idUsuario}' AND tab.Id = '{idTab}'
+                                order by usu.nombre_de_usuario asc;";
+            List<TableroConUsuario> tableros = new List<TableroConUsuario>();
+
+            try
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
+                {
+                    SQLiteCommand command = new SQLiteCommand(queryString, connection);
+                    connection.Open();
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var IDTablero = Convert.ToInt32(reader["Id"]);
+                            var nombreTablero = reader["nombre"].ToString();
+                            var descripcionTablero = reader["descripcion"].ToString();
+                            var nombreUsu = reader["nombre_de_usuario"].ToString();
+                            var rolUsuario = reader["rol"].ToString();
+                            var tablero = new TableroConUsuario(IDTablero, nombreTablero, descripcionTablero, nombreUsu, rolUsuario);
+
+                            tableros.Add(tablero);
+
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new InvalidOperationException($"No se pudo obtener los tableros con usuarios | Información: {e.Data} + {e.StackTrace}");
+            }
+
+            return tableros;
+        }
     }
 }

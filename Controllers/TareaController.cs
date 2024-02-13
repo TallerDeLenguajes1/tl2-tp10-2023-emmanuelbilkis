@@ -175,6 +175,16 @@ namespace TableroKanban.Controllers
         {
             try
             {
+                if (!IsAdmin())
+                {
+                    int idUsu = Convert.ToInt32 (HttpContext.Session.GetString("Id"));
+                    var TablerosConUsus = _servicioTablero.ObtenerTablerosConUsuario(idUsu, Id);
+                    if (TablerosConUsus is null || TablerosConUsus.Count == 0)
+                    {
+                        HttpContext.Response.StatusCode = 404;
+                        return NotFound(); 
+                    }
+                }
                 var tareas = _servicioTarea.ListarPorTablero(Id);
                 var model = tareas.Select(u => new TareaViewModel
                 {

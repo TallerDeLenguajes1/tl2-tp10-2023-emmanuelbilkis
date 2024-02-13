@@ -94,11 +94,13 @@ namespace Kanban.Repositorios
         public Tablero GetById(int idTablero)
         {
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
+            Tablero tab = null;
+
             SQLiteCommand command = connection.CreateCommand();
             command.CommandText = "SELECT * FROM Tablero WHERE id = @idTab;";
             command.Parameters.Add(new SQLiteParameter("@idTab", idTablero));
             connection.Open();
-            var tab = new Tablero();
+            
             using (SQLiteDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
@@ -146,7 +148,7 @@ namespace Kanban.Repositorios
         
         public void Remove(int id)
         {
-            if (id <= 0)
+            if (id < 0)
             {
                 throw new ArgumentException("El ID del Tablero no es válido.", nameof(id));
             }

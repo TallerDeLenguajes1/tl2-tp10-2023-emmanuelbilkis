@@ -2,6 +2,9 @@
 using Kanban.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Diagnostics;
+using TP10.Models;
+using TP10.Servicios;
 using TP10.ViewModels;
 
 namespace TableroKanban.Controllers
@@ -10,48 +13,67 @@ namespace TableroKanban.Controllers
     {
         private readonly ITableroRepositorio _servicioTablero;
         private readonly IUsuarioRepositorio _servicioUsuario;
+       
 
         public TableroController(ITableroRepositorio tableroRepositorio,IUsuarioRepositorio usuarioRepositorio)
         {
             _servicioTablero = tableroRepositorio;
             _servicioUsuario = usuarioRepositorio;
+            
         }
         public IActionResult Index()
         {
-            if (IsAdmin())
+            if (IsUser())
             {
-                var tabs = _servicioTablero.ObtenerTablerosConUsuario(); // llamar a un inner join y adaptarlo al view model 
-                var model = tabs.Select(u => new TableroViewModel
-                {
-                    Id = u.IdTablero,
-                    Nombre = u.Nombre,
-                    Descripcion = u.Descripcion,
-                    UsuarioNombre = u.UsuarioNombre,
-                    UsuarioRol = u.UsuarioRol
-                }).ToList();
 
-                return View(model);
+            
+                    try
+                    {
+                        if (IsAdmin())
+                        {
+                            var tabs = _servicioTablero.ObtenerTablerosConUsuario();  
+                            var model = tabs.Select(u => new TableroViewModel
+                            {
+                                Id = u.IdTablero,
+                                Nombre = u.Nombre,
+                                Descripcion = u.Descripcion,
+                                UsuarioNombre = u.UsuarioNombre,
+                                UsuarioRol = u.UsuarioRol
+                            }).ToList();
+
+                            return View(model);
+                        }
+                        else
+                        {
+                            string id = HttpContext.Session.GetString("Id");
+                            var tabs = _servicioTablero.ListarPorUsuario(int.Parse(id));
+                            var model = tabs.Select(u => new TableroViewModel
+                            {
+                                Id = u.Id,
+                                Nombre = u.Nombre,
+                                Descripcion = u.Descripcion,
+                                UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Nombre ?? "-",
+                                UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Rol ?? "-"
+                            }).ToList();
+
+                            return View(model);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        var errorViewModel = new ErrorViewModel
+                        {
+                            ErrorMessage = e.Message,
+                            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                        };
+
+                        return RedirectToAction("Error", errorViewModel);
+                    }
+
             }
             else
             {
-                if (!IsAdmin() && IsUser())
-                {
-                    string id = HttpContext.Session.GetString("Id");
-                    var tabs = _servicioTablero.ListarPorUsuario(int.Parse(id));
-                    var model = tabs.Select(u => new TableroViewModel
-                    {
-                        Nombre = u.Nombre,
-                        Descripcion = u.Descripcion,
-                        UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Nombre ?? "-",
-                        UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Rol ?? "-"
-
-                    }).ToList();
-                    return View(model);
-                }
-                else
-                {
-                    return RedirectToRoute(new { controller = "Login", action = "Index" });
-                }
+                return RedirectToRoute(new { controller = "Login", action = "Index" });
             }
         }
 
@@ -66,8 +88,13 @@ namespace TableroKanban.Controllers
             }
             catch (Exception e)
             {
-                TempData["ErrorMessage"] = e.Message;
-                return View();
+                var errorViewModel = new ErrorViewModel
+                {
+                    ErrorMessage = e.Message,
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                };
+
+                return RedirectToAction("Error", errorViewModel);
             }
         }
 
@@ -85,7 +112,13 @@ namespace TableroKanban.Controllers
                 }
                 catch (Exception e)
                 {
-                    TempData["ErrorMessage"] = e.Message;
+                    var errorViewModel = new ErrorViewModel
+                    {
+                        ErrorMessage = e.Message,
+                        RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                    };
+
+                    return RedirectToAction("Error", errorViewModel);
                 }
             }
 
@@ -100,9 +133,15 @@ namespace TableroKanban.Controllers
             }
             catch (Exception e)
             {
-                TempData["ErrorMessage"] = e.Message;
+                var errorViewModel = new ErrorViewModel
+                {
+                    ErrorMessage = e.Message,
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                };
+
+                return RedirectToAction("Error", errorViewModel);
             }
-            
+
             return RedirectToAction("Index");
             
         }
@@ -127,7 +166,13 @@ namespace TableroKanban.Controllers
                 }
                 catch (Exception e)
                 {
-                    TempData["ErrorMessage"] = e.Message;
+                    var errorViewModel = new ErrorViewModel
+                    {
+                        ErrorMessage = e.Message,
+                        RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                    };
+
+                    return RedirectToAction("Error", errorViewModel);
                 }
                 
             }

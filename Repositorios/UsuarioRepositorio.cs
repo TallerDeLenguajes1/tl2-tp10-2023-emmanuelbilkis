@@ -149,9 +149,9 @@ namespace Kanban.Repositorios
 
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
 
-            if (usuario.Id <= 0)
+            if (usuario.Id < 0)
             {
-                throw new ArgumentException("El ID del usuario no es válido.", nameof(usuario));
+                throw new ArgumentException("El ID del usuario no es válido: " + usuario.Id.ToString());
             }
 
             SQLiteCommand command = connection.CreateCommand();

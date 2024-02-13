@@ -1,4 +1,5 @@
 ﻿using Kanban.Models;
+using TP10.ViewModels;
 
 namespace Kanban.Repositorios
 {
@@ -12,5 +13,6 @@ namespace Kanban.Repositorios
         public List<Tarea> ListarPorUsuario(int idUsuario);
         public List<Tarea> ListarPorTablero(int idTablero);
         public void Asignar(int idUsuario,int idTarea);
+        public List<TareaViewModel> ObtenerTareasConUsuTablero();
     }
 }

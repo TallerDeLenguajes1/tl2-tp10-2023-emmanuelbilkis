@@ -6,24 +6,26 @@ namespace TP10.ViewModels
     public class TareaViewModel
     {
         public int Id { get; set; }
-        public string Tablero { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public string Color { get; set; }
         public EstadoTarea Estado { get; set; }  
         public string UsuarioAsignado { get; set; }
+        public string RolUsu { get; set; }
         public string TableroAsignado { get; set; }
+        public string TableroDesc { get; set; }
 
-        public TareaViewModel(Tarea tarea, TableroViewModel tab, UsuarioViewModel usu)
+        public TareaViewModel(int id,string nombre,string desc,string color,EstadoTarea estado,string usu,string rol,string tab,string descTab)
         {
-            Id = tarea.Id;
-            Tablero = tab.Nombre;
-            Nombre = tarea.Nombre;
-            Descripcion = tarea.Descripcion;
-            Color = tarea.Color;
-            Estado = tarea.Estado;  
-            UsuarioAsignado = usu.Nombre;
-            TableroAsignado = tab.Nombre;
+            Id = id;
+            Nombre = nombre;
+            Descripcion = desc;
+            Color = color;
+            Estado = estado;
+            UsuarioAsignado = usu;
+            RolUsu = rol;
+            TableroAsignado = tab;
+            TableroDesc = descTab;
         }
 
         public TareaViewModel() { }

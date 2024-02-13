@@ -1,6 +1,7 @@
 ﻿using Kanban.Models;
 using System.Data.SQLite;
 using System.IO;
+using TP10.ViewModels;
 
 namespace Kanban.Repositorios
 {
@@ -84,6 +85,66 @@ namespace Kanban.Repositorios
             return tareas;
         }
 
+        public List<TareaViewModel> ObtenerTareasConUsuTablero()
+        {
+            List<TareaViewModel> tareas = new List<TareaViewModel>();
+
+            try
+            {
+                var queryString = @"SELECT tar.Id, tar.color, tar.descripcion, tar.nombre, tar.estado,
+                            tab.nombre as nombreTab,
+                            tab.descripcion as descTab,
+                            usu.nombre_de_usuario,
+                            usu.rol
+                            FROM Tarea tar
+                            INNER JOIN Tablero tab on tab.Id = tar.Id_tablero
+                            INNER JOIN Usuario usu on usu.id = tar.id_usuario_asignado";    
+
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
+                {
+                    SQLiteCommand command = new SQLiteCommand(queryString, connection);
+                    connection.Open();
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var tareaViewModel = new TareaViewModel
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Nombre = reader["nombre"].ToString(),
+                                Descripcion = reader["descripcion"].ToString(),
+                                Color = reader["color"].ToString(),
+                                Estado = (TP10.Models.EstadoTarea)Convert.ToInt32(reader["estado"]),
+                                UsuarioAsignado = reader["nombre_de_usuario"].ToString(),
+                                RolUsu = reader["rol"].ToString(),
+                                TableroAsignado = reader["nombreTab"].ToString(),
+                                TableroDesc = reader["descTab"].ToString()
+                            };
+
+                            tareas.Add(tareaViewModel);
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine($"Error SQLite al obtener tareas : {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error general al obtener tareas : {ex.Message}");
+                throw;
+            }
+
+
+            return tareas;
+        }
+
+
         public Tarea GetById(int id)
         {
             try
@@ -134,7 +195,7 @@ namespace Kanban.Repositorios
             }
         }
 
-        public Tarea GetByIdConTablero(int idTab)
+       /* public Tarea GetByIdConTablero(int idTab)
         {
             try
             {
@@ -235,6 +296,7 @@ namespace Kanban.Repositorios
                 throw;
             }
         }
+       */
 
         public List<Tarea> ListarPorTablero(int idTablero)
         {

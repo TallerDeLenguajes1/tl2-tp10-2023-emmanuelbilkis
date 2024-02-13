@@ -1,6 +1,6 @@
 ﻿namespace TP10.Servicios
 {
-    public class ServicioRol
+    public class ServicioRol: IServicioRol
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 

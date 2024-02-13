@@ -87,6 +87,11 @@ namespace TableroKanban.Controllers
             {
                 valdiadIdTablero(tareaEditada.IdTablero);
                 valdiadIdUsuario(tareaEditada.IdUsuarioAsignado);
+                var TablerosConUsus = _servicioTablero.ObtenerTablerosConUsuario(tareaEditada.IdUsuarioAsignado, tareaEditada.IdTablero);
+                if (TablerosConUsus is null || TablerosConUsus.Count == 0)
+                {
+                    throw new InvalidOperationException("El tablero no es administrado por el usuario seleccionado");
+                }
                 var tarea = new Tarea(tareaEditada);
                 _servicioTarea.Update(tarea);
                 return RedirectToAction("Index");

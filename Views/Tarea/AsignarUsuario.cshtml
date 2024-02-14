@@ -1,0 +1,48 @@
+﻿@model TP10.ViewModels.TareaUsuarioViewModel
+
+<div class="container mt-4">
+    <h1>Asignar Usuario</h1>
+
+    <form asp-action="Editar" asp-controller="Tarea" method="post">
+
+        <input asp-for="@Model.Id" type="hidden" />
+
+        <div class="mb-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var usuario in Model.Usuarios)
+                    {
+                        <tr>
+                            <td>@usuario.Nombre</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="@Model.IdUsuarioAsignado" class="form-label">Id Usuario Asignado:</label>
+            <input asp-for="@Model.IdUsuarioAsignado" class="form-control" />
+            <span asp-validation-for="@Model.IdUsuarioAsignado" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>
+
+@section Scripts
+    {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        var errorMessage = '@Html.Raw(TempData["ErrorMessage"])';
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+    </script>
+}

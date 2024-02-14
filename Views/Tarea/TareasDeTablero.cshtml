@@ -22,6 +22,7 @@
                                 <h5 class="card-title">@tar.Nombre</h5>
                                 <p class="card-text">@tar.Descripcion</p>
                                 <p class="card-text">Usuario: @tar.UsuarioAsignado</p>
+                                <a href="@Url.Action("AsignarUsuarios", "Tareas", new { id = tar.Id })" class="btn btn-primary">Asignar Usuario</a>
                             </div>
                         </div>
                     </div>

@@ -2,16 +2,19 @@
 
 <div class="container mt-4">
     <h1>Asignar Usuario</h1>
-
-    <form asp-action="Editar" asp-controller="Tarea" method="post">
-
-        <input asp-for="@Model.Id" type="hidden" />
-
-        <div class="mb-3">
+    <div class="mb-3">
+        <h2>Nombre tarea: @Model.Nombre</h2>
+        <h3>Descripcion: @Model.Descripcion</h3>
+        <h3>Usuario actual:  @Model.UsuarioAsignadoActual</h3>
+    </div>
+     <div class="mb-3">
             <table class="table">
+                <leyend>Usuarios para asignar</leyend>
                 <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Rol</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -19,20 +22,16 @@
                     {
                         <tr>
                             <td>@usuario.Nombre</td>
+                            <td>@usuario.Rol</td>
+
+                            <td>
+                            <a class="btn btn-info btn-sm" asp-action="Asignar" asp-controller="Tarea" asp-route-idUsuario="@usuario.Id" asp-route-idTarea="@Model.Id">Asignar</a>
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-
-        <div class="mb-3">
-            <label asp-for="@Model.IdUsuarioAsignado" class="form-label">Id Usuario Asignado:</label>
-            <input asp-for="@Model.IdUsuarioAsignado" class="form-control" />
-            <span asp-validation-for="@Model.IdUsuarioAsignado" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-    </form>
 </div>
 
 @section Scripts

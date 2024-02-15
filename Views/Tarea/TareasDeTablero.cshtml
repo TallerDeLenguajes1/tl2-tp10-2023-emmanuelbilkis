@@ -22,7 +22,7 @@
                                 <h5 class="card-title">@tar.Nombre</h5>
                                 <p class="card-text">@tar.Descripcion</p>
                                 <p class="card-text">Usuario: @tar.UsuarioAsignado</p>
-                                <a href="@Url.Action("AsignarUsuarios", "Tareas", new { id = tar.Id })" class="btn btn-primary">Asignar Usuario</a>
+                                <a class="btn btn-info btn-sm" asp-action="AsignarUsuarios" asp-controller="Tarea" asp-route-idTarea="@tar.Id" asp-route-usuarioAsignado="@tar.UsuarioAsignado">Asignar Usuario</a>
                             </div>
                         </div>
                     </div>

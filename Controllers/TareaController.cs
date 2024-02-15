@@ -212,6 +212,39 @@ namespace TableroKanban.Controllers
             }
             
         }
+
+        public IActionResult AsignarUsuarios(int idTarea,string usuarioAsignado)
+        {
+            
+            var tarea = _servicioTarea.GetById(idTarea);
+            var usuarios = _servicioUsuario.GetAll().Where(a => a.Id != tarea.IdUsuarioAsignado);
+            var model = new TareaUsuarioViewModel(idTarea,tarea.Nombre,"descripcion",usuarios,usuarioAsignado);
+            return View(model);
+        }
+
+        
+        public IActionResult Asignar(int idUsuario, int idTarea)
+        {
+            try
+            {
+                valdiadIdUsuario(idUsuario);
+
+                _servicioTarea.Asignar(idUsuario,idTarea);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception e)
+            {
+                var errorViewModel = new ErrorViewModel
+                {
+                    ErrorMessage = e.Message,
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                };
+
+                return View("~/Views/Shared/Error.cshtml", errorViewModel);
+            }
+
+        }
         private bool IsAdmin()
         {
             if (HttpContext.Session != null && HttpContext.Session.GetString("Rol") == "Admin")

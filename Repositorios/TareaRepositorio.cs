@@ -1,6 +1,7 @@
 ﻿using Kanban.Models;
 using System.Data.SQLite;
 using System.IO;
+using System.Threading;
 using TP10.ViewModels;
 
 namespace Kanban.Repositorios
@@ -464,7 +465,33 @@ namespace Kanban.Repositorios
 
         public void Asignar(int idUsuario, int idTarea)
         {
-            throw new NotImplementedException();
+            if (idUsuario < 0 || idTarea < 0)
+            {
+                throw new ArgumentException("El ID del usuario o tarea no es válido.");
+            }
+
+            using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
+            {
+                string query = "UPDATE Tarea SET id_usuario_asignado = @idUsuario WHERE Id = @idTarea;";
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idUsuario", idUsuario);
+                    command.Parameters.AddWithValue("@idTarea", idTarea);
+
+                    try
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ApplicationException("Error al actualizar la tarea en la base de datos.", ex);
+                    }
+                }
+            }
         }
+
+
     }
 }

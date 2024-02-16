@@ -1,0 +1,42 @@
+﻿@model TP10.ViewModels.ModificarTareaViewModel
+
+<div class="container mt-4">
+    <h1>Editar Tarea</h1>
+
+    <form asp-action="Editar" asp-controller="Tarea" method="post">
+
+        <input asp-for="@Model.Id" type="hidden" />
+        <input asp-for="@Model.IdTablero" type="hidden" />
+        <input asp-for="@Model.Nombre" type="hidden" />
+        <input asp-for="@Model.Descripcion" type="hidden" />
+        <input asp-for="@Model.Color" type="hidden" />
+        <input asp-for="@Model.IdUsuarioAsignado" type="hidden" />
+
+        <div class="mb-3">
+            <label asp-for="@Model.Estado" class="form-label">Estado:</label>
+            <select asp-for="@Model.Estado" class="form-control">
+                <option value="">Selecciona un estado</option>
+                @foreach (var value in Enum.GetValues(typeof(EstadoTarea)))
+                {
+                    <option value="@value">@value</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.Estado" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>
+
+@section Scripts
+    {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        var errorMessage = '@Html.Raw(TempData["ErrorMessage"])'; // Utiliza Html.Raw para evitar el escape de caracteres especiales
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+    </script>
+}
+
+

@@ -14,5 +14,6 @@ namespace Kanban.Repositorios
         public List<Tablero> ListarPorUsuario(int idUsuario);
         public List<TableroConUsuario> ObtenerTablerosConUsuario();
         public List<TableroConUsuario> ObtenerTablerosConUsuario(int idUsuario,int idTab);
+        public List<Tablero> ListarTablerosPropiosYConTareas(int idUsuario);
     }
 }

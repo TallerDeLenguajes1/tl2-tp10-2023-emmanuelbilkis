@@ -22,8 +22,11 @@
                 <td>@tab.Nombre</td>
                 <td>@tab.Descripcion</td>
                 <td>
-                    <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tablero" asp-route-id="@tab.Id">Editar</a>
-                    <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tablero" asp-route-id="@tab.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este Tablero?')">Borrar</a>
+                    @if (tab.IdUsuarioConectado == tab.IdUsuarioAsignado)
+                    {
+                        <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tablero" asp-route-id="@tab.Id">Editar</a>
+                        <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tablero" asp-route-id="@tab.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este Tablero?')">Borrar</a>
+                    }
                     <a class="btn btn-info btn-sm" asp-action="TareasDeTablero" asp-controller="Tarea" asp-route-id="@tab.Id">Ver tareas</a>
                 </td>
             </tr>

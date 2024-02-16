@@ -5,6 +5,8 @@ namespace TP10.ViewModels
 {
     public class TareaViewModel
     {
+        public int IdUsuarioConectado { get; set; }
+        public int UsuarioTableroAsignadoId { get; set; }
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
@@ -14,8 +16,9 @@ namespace TP10.ViewModels
         public string RolUsu { get; set; }
         public string TableroAsignado { get; set; }
         public string TableroDesc { get; set; }
+        public string RolUsuarioConectado  { get; set; }
 
-        public TareaViewModel(int id,string nombre,string desc,string color,EstadoTarea estado,string usu,string rol,string tab,string descTab)
+        public TareaViewModel(int id,string nombre,string desc,string color,EstadoTarea estado,string usu,string rol,string tab,string descTab,int usuarioTableroAsignadoId,int usuarioConectado, string rolUsuarioConectado)
         {
             Id = id;
             Nombre = nombre;
@@ -26,6 +29,9 @@ namespace TP10.ViewModels
             RolUsu = rol;
             TableroAsignado = tab;
             TableroDesc = descTab;
+            IdUsuarioConectado = usuarioConectado;
+            UsuarioTableroAsignadoId = usuarioTableroAsignadoId;
+            RolUsuarioConectado = rolUsuarioConectado;
         }
 
         public TareaViewModel() { }

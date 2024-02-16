@@ -358,7 +358,9 @@ namespace Kanban.Repositorios
                 using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
                 {
                     SQLiteCommand command = connection.CreateCommand();
-                    command.CommandText = @"SELECT * FROM Tarea WHERE id_usuario_asignado = @id;";
+                    command.CommandText = @"select * from Tarea tar
+                        inner join Usuario u on u.id=tar.id_usuario_asignado
+                        where u.id = @id";
                     command.Parameters.Add(new SQLiteParameter("@id", idUsuario));
                     connection.Open();
 

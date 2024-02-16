@@ -36,9 +36,11 @@ namespace TableroKanban.Controllers
                         {
 
                             string id = HttpContext.Session.GetString("Id");
+                            string rolConectado = HttpContext.Session.GetString("Rol");
                             var tareas = _servicioTarea.ListarPorUsuario(int.Parse(id));
                             var model = tareas.Select(u => new TareaViewModel
                             {
+                                RolUsuarioConectado = rolConectado,
                                 Id = u.Id,
                                 Nombre = u.Nombre,
                                 Estado = u.Estado,
@@ -46,7 +48,7 @@ namespace TableroKanban.Controllers
                                 Descripcion = u.Descripcion,
                                 UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
                                 TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
-
+                                
                             }).ToList();
                             return View(model);
                         }
@@ -87,11 +89,11 @@ namespace TableroKanban.Controllers
             {
                 valdiadIdTablero(tareaEditada.IdTablero);
                 valdiadIdUsuario(tareaEditada.IdUsuarioAsignado);
-                var TablerosConUsus = _servicioTablero.ObtenerTablerosConUsuario(tareaEditada.IdUsuarioAsignado, tareaEditada.IdTablero);
+                /*var TablerosConUsus = _servicioTablero.ObtenerTablerosConUsuario(tareaEditada.IdUsuarioAsignado, tareaEditada.IdTablero);
                 if (TablerosConUsus is null || TablerosConUsus.Count == 0)
                 {
                     throw new InvalidOperationException("El tablero no es administrado por el usuario seleccionado");
-                }
+                }*/
                 var tarea = new Tarea(tareaEditada);
                 _servicioTarea.Update(tarea);
                 return RedirectToAction("Index");
@@ -175,7 +177,7 @@ namespace TableroKanban.Controllers
         {
             try
             {
-                if (!IsAdmin())
+                /*if (!IsAdmin())
                 {
                     int idUsu = Convert.ToInt32 (HttpContext.Session.GetString("Id"));
                     var TablerosConUsus = _servicioTablero.ObtenerTablerosConUsuario(idUsu, Id);
@@ -184,10 +186,14 @@ namespace TableroKanban.Controllers
                         HttpContext.Response.StatusCode = 404;
                         return NotFound(); 
                     }
-                }
+                }*/
+                string id = HttpContext.Session.GetString("Id");
+                int idUsuarioConectado = int.Parse(id);
                 var tareas = _servicioTarea.ListarPorTablero(Id);
                 var model = tareas.Select(u => new TareaViewModel
                 {
+                    UsuarioTableroAsignadoId = _servicioTablero.GetById(u.IdTablero).IdUsuarioPropietario,
+                    IdUsuarioConectado=idUsuarioConectado,  
                     Id = u.Id,
                     Nombre = u.Nombre,
                     Estado = u.Estado,
@@ -245,6 +251,15 @@ namespace TableroKanban.Controllers
             }
 
         }
+
+        public IActionResult CambiarEstado(int idTarea) 
+        {
+            var tarea = _servicioTarea.GetById(idTarea);
+            var model = new ModificarTareaViewModel(tarea);
+             
+            return View(model);
+        }
+
         private bool IsAdmin()
         {
             if (HttpContext.Session != null && HttpContext.Session.GetString("Rol") == "Admin")

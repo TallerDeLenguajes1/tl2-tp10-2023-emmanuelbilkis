@@ -146,6 +146,51 @@ namespace Kanban.Repositorios
 
         }
         
+        public List<Tablero> ListarTablerosPropiosYConTareas(int idUsuario)
+        {
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
+            SQLiteCommand command = connection.CreateCommand();
+                    command.CommandText = @"SELECT 
+                    tab.Id,
+                    tab.Id_usuario_propietario,
+                    tab.nombre,
+                    tab.descripcion 
+                FROM 
+                    Tarea tar
+                    INNER JOIN Usuario u ON u.id = tar.id_usuario_asignado
+                    INNER JOIN Tablero tab ON tab.Id = tar.Id_tablero 
+                WHERE 
+                    u.id = @idUsu
+
+                UNION 
+
+                SELECT 
+                    * 
+                FROM 
+                    Tablero 
+                WHERE 
+                    Id_usuario_propietario = @idUsu;
+                "; 
+            command.Parameters.Add(new SQLiteParameter("@idUsu", idUsuario));
+            connection.Open();
+            var lista = new List<Tablero>();
+            using (SQLiteDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var tablero = new Tablero(Convert.ToInt32(reader["Id"]), Convert.ToInt32(reader["Id_usuario_propietario"]), reader["nombre"].ToString(), reader["descripcion"].ToString());
+                    lista.Add(tablero);
+                }
+            }
+            connection.Close();
+
+            if (lista is null || lista.Count == 0)
+            {
+                throw new InvalidOperationException($"No se encontraron tableros con el id {idUsuario} solicitado, ni tableros con tareas asignadas a este usuario");
+            }
+
+            return (lista);
+        }
         public void Remove(int id)
         {
             if (id < 0)

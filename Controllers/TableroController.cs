@@ -39,6 +39,7 @@ namespace TableroKanban.Controllers
                                 Descripcion = u.Descripcion,
                                 UsuarioNombre = u.UsuarioNombre,
                                 UsuarioRol = u.UsuarioRol
+
                             }).ToList();
 
                             return View(model);
@@ -46,9 +47,13 @@ namespace TableroKanban.Controllers
                         else
                         {
                             string id = HttpContext.Session.GetString("Id");
-                            var tabs = _servicioTablero.ListarPorUsuario(int.Parse(id));
-                            var model = tabs.Select(u => new TableroViewModel
+                            int idUsuarioConectado = int.Parse(id);
+                            var tableros = _servicioTablero.ListarTablerosPropiosYConTareas(idUsuarioConectado);
+                            
+                            var model = tableros.Select(u => new TableroViewModel
                             {
+                                IdUsuarioConectado=idUsuarioConectado,  
+                                IdUsuarioAsignado = u.IdUsuarioPropietario,
                                 Id = u.Id,
                                 Nombre = u.Nombre,
                                 Descripcion = u.Descripcion,
@@ -83,7 +88,8 @@ namespace TableroKanban.Controllers
             try
             {
                var tab = _servicioTablero.GetById(id);
-               var tabView = new ModificarTableroViewModel(tab);
+               var usuarios = _servicioUsuario.GetAll(); 
+               var tabView = new ModificarTableroViewModel(tab,usuarios);
                return View(tabView);
             }
             catch (Exception e)

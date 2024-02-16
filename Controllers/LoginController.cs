@@ -45,7 +45,7 @@ public class LoginController : Controller
         //Registro el usuario
         logearUsuario(usuarioLogeado);
         
-        return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+        return RedirectToRoute(new { controller = "Home", action = "Index" });
     }
 
     private void logearUsuario(Usuario user)

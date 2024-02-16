@@ -15,6 +15,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Login/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

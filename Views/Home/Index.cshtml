@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Bienvenidos a Tablerin";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+
+    <div class="container">
+        <h1 style="padding-top: 50px;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Bienvenido al sistema de gestión de tableros - Tablerin</h1>
+        <div class="row" style="margin-top: 50px;">
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="img/usuarios.jpg" class="card-img-top" alt="imagen de usuarios">
+                    <div class="card-body">
+                        <h5 class="card-title">Usuarios</h5>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Index">Ir a Usuarios</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/tablero.jpg" class="card-img-top" alt="imagen de tableros">
+                    <div class="card-body">
+                        <h5 class="card-title">Tablero</h5>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Tablero" asp-action="Index">Ir a Tableros</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/img/tarea.jpg" class="card-img-top" alt="imagen de tareas">
+                    <div class="card-body">
+                        <h5 class="card-title">Tareas</h5>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Tarea" asp-action="Index">Ir a Tareas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+<style>
+    .card-img-top {
+        height: 200px; 
+        object-fit: cover; 
+    }
+
+    .card {
+        margin-bottom: 20px; 
+        transition: box-shadow 0.3s ease; 
+    }
+
+        .card:hover {
+            box-shadow: 0 0 20px rgba(0,0,0,0.3); 
+        }
+
+    .card-title {
+        margin-top: 40px; 
+    }
+
+    .btn:hover {
+        transform: translateY(-3px); /* Este efecto q seleccione translateY(-3px); desplaza verticalmente el botón hacia arriba (-3px) cuando el mouse está sobre él.*/
+    }
+
+</style>

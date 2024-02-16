@@ -1,0 +1,23 @@
+﻿@using TP10.ViewModels
+@model List<UsuarioViewModel>
+
+<div class="container mt-4">
+    <h1>Listado de Usuarios</h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model)
+            {
+                <tr>
+                    <td>@usuario.Nombre</td>
+                    <td>@usuario.Rol</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

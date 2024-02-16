@@ -7,6 +7,7 @@ using System.Diagnostics;
 using TP10.Models;
 using TP10.Servicios;
 using TP10.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace TableroKanban.Controllers
 {
@@ -28,8 +29,6 @@ namespace TableroKanban.Controllers
         {
             if (IsUser())
             {
-
-            
                     try
                     {
                         if (IsAdmin())
@@ -63,18 +62,19 @@ namespace TableroKanban.Controllers
                                 UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Nombre ?? "-",
                                 UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Rol ?? "-"
                             }).ToList();
-
+                            
                             return View(model);
                         }
                     }
                     catch (Exception e)
                     {
-                        var errorViewModel = new ErrorViewModel
-                        {
-                            ErrorMessage = e.Message,
-                            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                        };
-
+                    var errorViewModel = new ErrorViewModel
+                    {
+                        ErrorMessage = e.Message,
+                        RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                        
+                    };
+                        _logger.LogError(e.Message);
                         return RedirectToAction("Error", errorViewModel);
                     }
 
@@ -103,6 +103,7 @@ namespace TableroKanban.Controllers
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                 };
 
+                _logger.LogError(e.Message);
                 return RedirectToAction("Error", errorViewModel);
             }
         }
@@ -127,6 +128,7 @@ namespace TableroKanban.Controllers
                         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                     };
 
+                    _logger.LogError(e.Message);
                     return RedirectToAction("Error", errorViewModel);
                 }
             }
@@ -148,6 +150,7 @@ namespace TableroKanban.Controllers
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                 };
 
+                _logger.LogError(e.Message);
                 return RedirectToAction("Error", errorViewModel);
             }
 
@@ -178,6 +181,7 @@ namespace TableroKanban.Controllers
                 {
                     var idUSuario = _servicioUsuario.GetById(tab.IdUsuarioPropietario).Id;
                     _servicioTablero.Create(_tab);
+                    _logger.LogInformation("Se creo con éxito el tablero - Fecha: " + DateTime.Now.ToString());
                     return RedirectToAction("Index");
                 }
                 catch (Exception e)
@@ -188,6 +192,7 @@ namespace TableroKanban.Controllers
                         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                     };
 
+                    _logger.LogError(e.Message);
                     return RedirectToAction("Error", errorViewModel);
                 }
                 

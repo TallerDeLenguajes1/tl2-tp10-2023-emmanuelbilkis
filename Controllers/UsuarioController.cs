@@ -19,22 +19,41 @@ namespace TableroKanban.Controllers
 
         public IActionResult Index() 
         {
-            if (IsUser())
+            var model = ObtenerUsuarios();
+
+            if (IsAdmin())
             {
-                var usuarios = _servicioUsuario.GetAll();
-                var model = usuarios.Select(u => new UsuarioViewModel
-                {
-                    Id = u.Id,
-                    Nombre = u.Nombre,
-                    Rol = u.Rol
-                }).ToList();
                 return View(model);
             }
             else
             {
-                return RedirectToRoute(new { controller = "Login", action = "Index" });
+                return RedirectToAction("IndexOperador", "Usuario");
             }
         }  
+        private List<UsuarioViewModel> ObtenerUsuarios() 
+        {
+            var usuarios = _servicioUsuario.GetAll();
+            var model = usuarios.Select(u => new UsuarioViewModel
+            {
+                Id = u.Id,
+                Nombre = u.Nombre,
+                Rol = u.Rol
+            }).ToList();
+            return model;
+        }
+        public IActionResult IndexOperador() 
+        {
+
+            var model = ObtenerUsuarios();
+            if (model is not null)
+            {
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+        }
 
         public IActionResult Editar(int id) 
         {

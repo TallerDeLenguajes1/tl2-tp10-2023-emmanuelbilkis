@@ -9,7 +9,7 @@ namespace TP10.ViewModels
     {
         [Required(ErrorMessage = "El campo es obligatorio.")]
         [Display(Name = "Id del Usuario Propietario")]
-        [Range(0,int.MaxValue,ErrorMessage ="El valor debe ser mayor o igual q cero.")]
+        [Range(0, int.MaxValue, ErrorMessage = "El valor debe ser mayor o igual que cero.")]
         public int IdUsuarioPropietario { get; set; }
 
         [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
@@ -18,8 +18,16 @@ namespace TP10.ViewModels
         [ValidateNever]
         public string Descripcion { get; set; }
 
+        public List<Usuario> ListaUsuarios { get; set; } 
+
+        public CrearTableroViewModel(List<Usuario> listaUsuarios)
+        {
+            ListaUsuarios = listaUsuarios;
+        }
+
         public CrearTableroViewModel()
         {
+            ListaUsuarios = new List<Usuario>(); 
         }
     }
 }

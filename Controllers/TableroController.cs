@@ -154,7 +154,14 @@ namespace TableroKanban.Controllers
 
         public IActionResult Alta()
         {
-            return View();
+            
+            var listaUsuarios = _servicioUsuario.GetAll(); 
+
+            
+            var viewModel = new CrearTableroViewModel(listaUsuarios);
+
+            
+            return View(viewModel);
         }
 
         [HttpPost]

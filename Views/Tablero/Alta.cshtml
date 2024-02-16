@@ -6,8 +6,13 @@
     <form asp-action="Alta" asp-controller="Tablero" method="post">
 
         <div class="mb-3">
-            <label asp-for="@Model.IdUsuarioPropietario" class="form-label">Id Usuario Propietario:</label>
-            <input asp-for="@Model.IdUsuarioPropietario" class="form-control" />
+            <label asp-for="@Model.IdUsuarioPropietario" class="form-label">Usuario Propietario:</label>
+            <select asp-for="@Model.IdUsuarioPropietario" class="form-control">
+                @foreach (var usuario in Model.ListaUsuarios)
+                {
+                    <option value="@usuario.Id">@usuario.Nombre</option>
+                }
+            </select>
             <span asp-validation-for="@Model.IdUsuarioPropietario" class="text-danger"></span>
         </div>
 
@@ -19,7 +24,7 @@
 
         <div class="mb-3">
             <label asp-for="@Model.Descripcion" class="form-label">Descripción:</label>
-            <input asp-for="@Model.Descripcion" class="form-control" data-val="false" />
+            <input asp-for="@Model.Descripcion" class="form-control" />
             <span asp-validation-for="@Model.Descripcion" class="text-danger"></span>
         </div>
 
@@ -27,6 +32,7 @@
 
     </form>
 </div>
+
 
 @section Scripts
     {

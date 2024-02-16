@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Kanban.Models;
+using System.ComponentModel.DataAnnotations;
 using TP10.Models;
 
 namespace TP10.ViewModels
@@ -18,7 +19,14 @@ namespace TP10.ViewModels
 
         public CrearTareaViewModel()
         {
-            
+            Tableros = new List<Tablero>(); 
+            Usuarios = new List<Usuario>(); 
+        }
+
+        public CrearTareaViewModel(List<Tablero> tableros, List<Usuario> usuarios)
+        {
+            Tableros = tableros;
+            Usuarios = usuarios;
         }
 
         [Required (ErrorMessage ="Numero de id requerido.")]
@@ -41,6 +49,9 @@ namespace TP10.ViewModels
         [Required(ErrorMessage = "Número de id requerido")]
         [Range(0, int.MaxValue, ErrorMessage = "El valor de {0} debe ser mayor o igual que cero.")]
         public int IdUsuarioAsignado { get; set; }
+        public List<Usuario> Usuarios { get; set; }
+
+        public List<Tablero> Tableros { get; set; }
     }
 }
 

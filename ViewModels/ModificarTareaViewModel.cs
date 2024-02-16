@@ -6,11 +6,11 @@ namespace TP10.ViewModels
 {
     public class ModificarTareaViewModel
     {
-        [Required(ErrorMessage = "Numero de id requerido.")]
+        [Required(ErrorMessage = "Número de id requerido.")]
         [Range(0, int.MaxValue, ErrorMessage = "El valor de {0} debe ser mayor o igual que cero.")]
-        public int Id { get; set; } 
+        public int Id { get; set; }
 
-        [Required(ErrorMessage = "Numero de id requerido.")]
+        [Required(ErrorMessage = "Número de id requerido.")]
         [Range(0, int.MaxValue, ErrorMessage = "El valor de {0} debe ser mayor o igual que cero.")]
         public int IdTablero { get; set; }
 
@@ -21,12 +21,29 @@ namespace TP10.ViewModels
 
         public string Color { get; set; }
 
-        [Required(ErrorMessage ="Se debe ingresar un valor")]
+        [Required(ErrorMessage = "Se debe ingresar un valor")]
         public EstadoTarea Estado { get; set; }
 
-        [Required(ErrorMessage = "Numero de id requerido.")]
+        [Required(ErrorMessage = "Número de id requerido.")]
         [Range(0, int.MaxValue, ErrorMessage = "El valor de {0} debe ser mayor o igual que cero.")]
         public int IdUsuarioAsignado { get; set; }
+
+        public List<Usuario> Usuarios { get; set; }
+
+        public List<Tablero> Tableros { get; set; } // Lista de tableros disponibles
+
+        public ModificarTareaViewModel(Tarea tarea, List<Usuario> usuarios, List<Tablero> tableros)
+        {
+            Id = tarea.Id;
+            IdTablero = tarea.IdTablero;
+            Nombre = tarea.Nombre;
+            Descripcion = tarea.Descripcion;
+            Color = tarea.Color;
+            Estado = tarea.Estado;
+            IdUsuarioAsignado = tarea.IdUsuarioAsignado;
+            Usuarios = usuarios;
+            Tableros = tableros;
+        }
 
         public ModificarTareaViewModel(Tarea tarea)
         {
@@ -35,13 +52,16 @@ namespace TP10.ViewModels
             Nombre = tarea.Nombre;
             Descripcion = tarea.Descripcion;
             Color = tarea.Color;
-            Estado = tarea.Estado;  
+            Estado = tarea.Estado;
             IdUsuarioAsignado = tarea.IdUsuarioAsignado;
+            Usuarios = new List<Usuario>();
+            Tableros = new List<Tablero>();
         }
 
         public ModificarTareaViewModel()
         {
-            
+            Usuarios = new List<Usuario>();
+            Tableros = new List<Tablero>();
         }
     }
 }

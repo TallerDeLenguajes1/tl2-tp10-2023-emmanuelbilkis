@@ -1,7 +1,8 @@
 ﻿using TP10.ViewModels;
 using TP10.Models;
 
-    namespace Kanban.Models
+
+namespace Kanban.Models
     {
         public class Tarea
         {

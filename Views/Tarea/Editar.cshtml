@@ -1,17 +1,9 @@
 ﻿@model TP10.ViewModels.ModificarTareaViewModel
 
 <div class="container mt-4">
-    <h1>Editar Tarea</h1>
+    <h1>Modificar Tarea</h1>
 
     <form asp-action="Editar" asp-controller="Tarea" method="post">
-
-        <input asp-for="@Model.Id" type="hidden" />
-
-        <div class="mb-3">
-            <label asp-for="@Model.IdTablero" class="form-label">Id Tablero:</label>
-            <input asp-for="@Model.IdTablero" class="form-control" />
-            <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
-        </div>
 
         <div class="mb-3">
             <label asp-for="@Model.Nombre" class="form-label">Nombre:</label>
@@ -19,7 +11,19 @@
             <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
         </div>
 
-         <div class="mb-3">
+        <div class="mb-3">
+            <label asp-for="@Model.Descripcion" class="form-label">Descripción:</label>
+            <input asp-for="@Model.Descripcion" class="form-control" />
+            <span asp-validation-for="@Model.Descripcion" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="@Model.Color" class="form-label">Color:</label>
+            <input asp-for="@Model.Color" class="form-control" />
+            <span asp-validation-for="@Model.Color" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
             <label asp-for="@Model.Estado" class="form-label">Estado:</label>
             <select asp-for="@Model.Estado" class="form-control">
                 <option value="">Selecciona un estado</option>
@@ -32,23 +36,31 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="@Model.Descripcion" class="form-label">Descripción:</label>
-            <input asp-for="@Model.Descripcion" class="form-control" />
+            <label asp-for="@Model.IdTablero" class="form-label">Tablero:</label>
+            <select asp-for="@Model.IdTablero" class="form-control">
+                @foreach (var tablero in Model.Tableros)
+                {
+                    <option value="@tablero.Id">@tablero.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="@Model.Color" class="form-label">Color:</label>
-            <input asp-for="@Model.Color" class="form-control" />
-            <span asp-validation-for="@Model.Color" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="@Model.IdUsuarioAsignado" class="form-label">Id Usuario Asignado:</label>
-            <input asp-for="@Model.IdUsuarioAsignado" class="form-control" />
+            <label asp-for="@Model.IdUsuarioAsignado" class="form-label">Usuario Asignado:</label>
+            <select asp-for="@Model.IdUsuarioAsignado" class="form-control">
+                @foreach (var usuario in Model.Usuarios)
+                {
+                    <option value="@usuario.Id">@usuario.Nombre</option>
+                }
+            </select>
             <span asp-validation-for="@Model.IdUsuarioAsignado" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <input type="hidden" asp-for="@Model.Id" />
+
+        <button type="submit" class="btn btn-primary">Modificar</button>
+
     </form>
 </div>
 

@@ -73,7 +73,9 @@ namespace TableroKanban.Controllers
         public IActionResult Editar(int id)
         {
             var tarea = _servicioTarea.GetById(id);
-            var model = new ModificarTareaViewModel(tarea);
+            var usuarios = _servicioUsuario.GetAll();
+            var tableros = _servicioTablero.GetAll();
+            var model = new ModificarTareaViewModel(tarea,usuarios,tableros);
             return View(model);
         }
 
@@ -134,7 +136,10 @@ namespace TableroKanban.Controllers
 
         public IActionResult Alta()
         {
-            return View();
+            var tableros = _servicioTablero.GetAll();
+            var usuarios = _servicioUsuario.GetAll();
+            var model = new CrearTareaViewModel(tableros,usuarios);
+            return View(model);
         }
 
         [HttpPost]

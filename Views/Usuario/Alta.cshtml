@@ -35,16 +35,14 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     <script>
+        $(document).ready(function () {
+            $('.hidden-menu').removeClass('hidden-menu');
+        });
+
         var errorMessage = '@Html.Raw(TempData["ErrorMessage"])'; // Utiliza Html.Raw para evitar el escape de caracteres especiales
         if (errorMessage) {
             alert(errorMessage);
         }
     </script>
 }
-    @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('.hidden-menu').removeClass('hidden-menu');
-        });
-    </script>
-}
+   

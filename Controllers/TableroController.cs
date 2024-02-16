@@ -1,6 +1,7 @@
 ﻿using Kanban.Models;
 using Kanban.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Controllers;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Diagnostics;
 using TP10.Models;
@@ -13,12 +14,14 @@ namespace TableroKanban.Controllers
     {
         private readonly ITableroRepositorio _servicioTablero;
         private readonly IUsuarioRepositorio _servicioUsuario;
-       
+        private readonly ILogger<LoginController> _logger;
 
-        public TableroController(ITableroRepositorio tableroRepositorio,IUsuarioRepositorio usuarioRepositorio)
+
+        public TableroController(ITableroRepositorio tableroRepositorio,IUsuarioRepositorio usuarioRepositorio, ILogger<LoginController> logger)
         {
             _servicioTablero = tableroRepositorio;
             _servicioUsuario = usuarioRepositorio;
+            _logger = logger;   
             
         }
         public IActionResult Index()

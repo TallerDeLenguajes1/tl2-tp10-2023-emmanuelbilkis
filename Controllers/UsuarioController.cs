@@ -2,15 +2,19 @@
 using Kanban.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using TP10.ViewModels;
+using Microsoft.Extensions.Logging;
+using MVC.Controllers;
 
 namespace TableroKanban.Controllers
 {
     public class UsuarioController : Controller
     {
-        private readonly IUsuarioRepositorio _servicioUsuario;  
-        public UsuarioController(IUsuarioRepositorio usuarioRepositorio)
+        private readonly IUsuarioRepositorio _servicioUsuario;
+        private readonly ILogger<LoginController> _logger;
+        public UsuarioController(IUsuarioRepositorio usuarioRepositorio, ILogger<LoginController> logger)
         {
             _servicioUsuario = usuarioRepositorio;
+            _logger = logger;
         }
 
         public IActionResult Index() 
@@ -51,6 +55,7 @@ namespace TableroKanban.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 TempData["ErrorMessage"] = e.Message;
                 return View();
             }
@@ -72,6 +77,7 @@ namespace TableroKanban.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 TempData["ErrorMessage"] = e.Message;
                 return View();
             }
@@ -87,6 +93,7 @@ namespace TableroKanban.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 TempData["ErrorMessage"] = e.Message;
                 return View();
             }
@@ -110,10 +117,12 @@ namespace TableroKanban.Controllers
             {
                 var usuario = new Usuario(usu);
                 _servicioUsuario.Create(usuario);
+                _logger.LogInformation("Se creé con éxito el usuario | Fecha: " + DateTime.Now.ToString());
                 return RedirectToAction("Index");
             }
             catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 TempData["ErrorMessage"] = e.Message;
                 return View();
             }

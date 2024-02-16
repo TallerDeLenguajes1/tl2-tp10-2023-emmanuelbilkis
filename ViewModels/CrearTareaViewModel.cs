@@ -43,7 +43,7 @@ namespace TP10.ViewModels
 
         public string Color { get; set; }
 
-        [Range(0,4, ErrorMessage = "Se debe ingresar un valor entre 0 y 4 | 0 (Ideas),1(ToDo),2(Doing),3(Review),4(Done)")]
+        [Required(ErrorMessage = "Se requiere el campo nombre.")]
         public EstadoTarea Estado { get; set; }
 
         [Required(ErrorMessage = "Número de id requerido")]

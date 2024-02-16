@@ -1,9 +1,11 @@
 ﻿using Kanban.Models;
 using Kanban.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Controllers;
 using System.Diagnostics;
 using TP10.Models;
 using TP10.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace TableroKanban.Controllers
 {
@@ -12,12 +14,13 @@ namespace TableroKanban.Controllers
         private readonly ITareaRepositorio _servicioTarea;
         private readonly IUsuarioRepositorio _servicioUsuario;
         private readonly ITableroRepositorio _servicioTablero;
-
-        public TareaController(ITableroRepositorio tableroRepositorio, IUsuarioRepositorio usuarioRepositorio,ITareaRepositorio tareaRepositorio)
+        private readonly ILogger<LoginController> _logger;
+        public TareaController(ITableroRepositorio tableroRepositorio, IUsuarioRepositorio usuarioRepositorio,ITareaRepositorio tareaRepositorio, ILogger<LoginController> logger)
         {
             _servicioTarea = tareaRepositorio;
             _servicioUsuario = usuarioRepositorio;
             _servicioTablero = tableroRepositorio;
+            _logger = logger;   
         }
         public IActionResult Index()
         {
@@ -61,8 +64,8 @@ namespace TableroKanban.Controllers
                             ErrorMessage = e.Message,
                             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                         };
-
-                        return View("~/Views/Shared/Error.cshtml", errorViewModel);
+                            _logger.LogError(e.Message);
+                            return View("~/Views/Shared/Error.cshtml", errorViewModel);
                     }
             }
             else
@@ -91,11 +94,6 @@ namespace TableroKanban.Controllers
             {
                 valdiadIdTablero(tareaEditada.IdTablero);
                 valdiadIdUsuario(tareaEditada.IdUsuarioAsignado);
-                /*var TablerosConUsus = _servicioTablero.ObtenerTablerosConUsuario(tareaEditada.IdUsuarioAsignado, tareaEditada.IdTablero);
-                if (TablerosConUsus is null || TablerosConUsus.Count == 0)
-                {
-                    throw new InvalidOperationException("El tablero no es administrado por el usuario seleccionado");
-                }*/
                 var tarea = new Tarea(tareaEditada);
                 _servicioTarea.Update(tarea);
                 return RedirectToAction("Index");
@@ -108,7 +106,7 @@ namespace TableroKanban.Controllers
                     ErrorMessage = e.Message,
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                 };
-
+                _logger.LogError(e.Message);
                 return View("~/Views/Shared/Error.cshtml", errorViewModel);
             }
         }
@@ -128,7 +126,7 @@ namespace TableroKanban.Controllers
                     ErrorMessage = e.Message,
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                 };
-
+                _logger.LogError(e.Message);
                 return View("~/Views/Shared/Error.cshtml", errorViewModel);
             }
           
@@ -162,6 +160,7 @@ namespace TableroKanban.Controllers
 
                 var tarea = new Tarea(tar);
                 _servicioTarea.Create(tarea);
+                _logger.LogInformation("Se creó con éxito la tarea | Fecha: "+ DateTime.Now.ToString());
                 return RedirectToAction("Index");
             }
             catch (Exception e)
@@ -171,7 +170,7 @@ namespace TableroKanban.Controllers
                     ErrorMessage = e.Message,
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                 };
-
+                _logger.LogError(e.Message);
                 return View("~/Views/Shared/Error.cshtml", errorViewModel);
             }
             
@@ -182,16 +181,7 @@ namespace TableroKanban.Controllers
         {
             try
             {
-                /*if (!IsAdmin())
-                {
-                    int idUsu = Convert.ToInt32 (HttpContext.Session.GetString("Id"));
-                    var TablerosConUsus = _servicioTablero.ObtenerTablerosConUsuario(idUsu, Id);
-                    if (TablerosConUsus is null || TablerosConUsus.Count == 0)
-                    {
-                        HttpContext.Response.StatusCode = 404;
-                        return NotFound(); 
-                    }
-                }*/
+               
                 string id = HttpContext.Session.GetString("Id");
                 int idUsuarioConectado = int.Parse(id);
                 var tareas = _servicioTarea.ListarPorTablero(Id);
@@ -218,7 +208,7 @@ namespace TableroKanban.Controllers
                     ErrorMessage = e.Message,
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                 };
-
+                _logger.LogError(e.Message);
                 return View("~/Views/Shared/Error.cshtml", errorViewModel);
             }
             
@@ -252,6 +242,7 @@ namespace TableroKanban.Controllers
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                 };
 
+                _logger.LogWarning(e.Message);
                 return View("~/Views/Shared/Error.cshtml", errorViewModel);
             }
 

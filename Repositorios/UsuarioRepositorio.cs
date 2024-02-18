@@ -185,7 +185,7 @@ namespace Kanban.Repositorios
             {
                 connection.Open();
 
-                // Primer comando para desactivar el usuario
+                
                 using (SQLiteCommand commandUsuario = connection.CreateCommand())
                 {
                     commandUsuario.CommandText = $"UPDATE Usuario SET activo = 0 WHERE id = '{id}';";
@@ -201,7 +201,7 @@ namespace Kanban.Repositorios
             }
             catch (Exception ex)
             {
-                // Manejo de la excepción
+              
                 throw new ApplicationException("Error al eliminar el usuario de la base de datos.", ex);
             }
             finally

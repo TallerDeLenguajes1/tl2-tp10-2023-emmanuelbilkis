@@ -1,5 +1,5 @@
 ﻿@using TP10.ViewModels
-@model List<UsuarioViewModel>
+@model UsuarioOperadorViewModel
 
 <div class="container mt-4">
     <h1>Listado de Usuarios</h1>
@@ -12,14 +12,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var usuario in Model)
+            @foreach (var usuario in Model.Usuarios)
             {
                 <tr>
                     <td>@usuario.Nombre</td>
                     <td>@usuario.Rol</td>
-                    <td>
-                        <a class="btn btn-warning btn-sm" asp-action="EditarOperador" asp-controller="Usuario" asp-route-id="@usuario.Id">Editar</a>
-                    </td>
+                    @if(Model.IdUsuarioConectado == usuario.Id)
+                    {
+                        <td>
+                            <a class="btn btn-warning btn-sm" asp-action="EditarSinRol" asp-controller="Usuario" asp-route-id="@usuario.Id">Editar</a>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

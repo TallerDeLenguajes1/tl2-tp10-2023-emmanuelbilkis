@@ -44,7 +44,10 @@ namespace TableroKanban.Controllers
         public IActionResult IndexOperador() 
         {
 
-            var model = ObtenerUsuarios();
+            int id = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+            var usus = _servicioUsuario.GetAll();   
+            UsuarioOperadorViewModel model = new UsuarioOperadorViewModel(id, usus);
+
             if (model is not null)
             {
                 return View(model);
@@ -59,15 +62,14 @@ namespace TableroKanban.Controllers
         {
             try
             {
+                int idUsuConectado = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+                if (id == idUsuConectado)
+                {
+                    return RedirectToAction("EditarSinRol", new { id = id });
+                }
                 var usuario = _servicioUsuario.GetById(id);
 
-                var model = new ModificarUsuarioViewModel
-                {
-                     Id = usuario.Id,
-                     Nombre = usuario.Nombre,
-                     Contrasenia = usuario.Contrasenia,
-                     Rol = usuario.Rol
-                };
+                var model = new ModificarUsuarioViewModel(usuario);
 
                 return View(model);
                 
@@ -103,7 +105,7 @@ namespace TableroKanban.Controllers
             
         }
 
-        public IActionResult EditarOperador(int id) 
+        public IActionResult EditarSinRol(int id) 
         {
             try
             {
@@ -130,7 +132,7 @@ namespace TableroKanban.Controllers
 
 
         [HttpPost]
-        public IActionResult EditarOperador(ModificarUsuarioViewModel usuarioEditado)
+        public IActionResult EditarSinRol(ModificarUsuarioViewModel usuarioEditado)
         {
             if (!ModelState.IsValid)
             {

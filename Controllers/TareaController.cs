@@ -181,35 +181,33 @@ namespace TableroKanban.Controllers
         {
             try
             {
-               
-                string id = HttpContext.Session.GetString("Id");
-                int idUsuarioConectado = int.Parse(id);
+                int idUsuarioConectado = int.Parse(HttpContext.Session.GetString("Id"));
                 var tareas = _servicioTarea.ListarPorTablero(Id);
+
+                /*if (tareas.Count == 0 || tareas is null)
+                {
+                    return en este caso mandare para crear tareas 
+                }*/
+
                 var model = tareas.Select(u => new TareaViewModel
                 {
-                    UsuarioTableroAsignadoId = _servicioTablero.GetById(u.IdTablero).IdUsuarioPropietario,
                     IdUsuarioConectado=idUsuarioConectado,  
                     Id = u.Id,
                     Nombre = u.Nombre,
                     Estado = u.Estado,
                     Color = u.Color,
                     Descripcion = u.Descripcion,
-                    UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
-                    TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
-
+                    UsuarioAsignado = u.IdUsuarioAsignado == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioAsignado).Nombre,
+                    TableroAsignado = u.IdTablero == 0 ? "Sin tablero asignado": _servicioTablero.GetById(u.IdTablero)?.Nombre 
                 }).ToList();
 
                 return View(model);
             }
             catch (Exception e )
             {
-                var errorViewModel = new ErrorViewModel
-                {
-                    ErrorMessage = e.Message,
-                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                };
+              
                 _logger.LogError(e.Message);
-                return View("~/Views/Shared/Error.cshtml", errorViewModel);
+                return RedirectToAction("Index");
             }
             
         }

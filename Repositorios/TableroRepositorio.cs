@@ -56,7 +56,7 @@ namespace Kanban.Repositorios
 
         public List<Tablero> GetAll()
         {
-            var queryString = @"SELECT * FROM Tablero;";
+            var queryString = @"SELECT * FROM Tablero";
             List<Tablero> tableros = new List<Tablero>();
 
             try
@@ -71,7 +71,7 @@ namespace Kanban.Repositorios
                         while (reader.Read())
                         {
                             var id = Convert.ToInt32(reader["Id"]);
-                            var id_usu_propietario = Convert.ToInt32(reader["Id_usuario_propietario"]);
+                            var id_usu_propietario = reader["Id_usuario_propietario"] != DBNull.Value && Convert.ToInt32(reader["Id_usuario_propietario"]) != 0 ? Convert.ToInt32(reader["Id_usuario_propietario"]) : 0;
                             var nombre = reader["nombre"].ToString();
                             var descripcion = reader["descripcion"].ToString();
                             var tablero = new Tablero(id, id_usu_propietario, nombre, descripcion);
@@ -105,7 +105,8 @@ namespace Kanban.Repositorios
             {
                 while (reader.Read())
                 {
-                    var tablero = new Tablero(Convert.ToInt32(reader["Id"]), Convert.ToInt32(reader["Id_usuario_propietario"]), reader["nombre"].ToString(), reader["descripcion"].ToString());
+                    var idUsu = reader["Id_usuario_propietario"] != DBNull.Value? Convert.ToInt32(reader["Id_usuario_propietario"]) : 0;
+                    var tablero = new Tablero(Convert.ToInt32(reader["Id"]),idUsu , reader["nombre"].ToString(), reader["descripcion"].ToString());
                     tab = tablero;
                 }
             }
@@ -119,31 +120,41 @@ namespace Kanban.Repositorios
             return (tab);
         }
 
-        public List<Tablero> ListarPorUsuario(int idUsuario)
+        public List<TableroConUsuario> ListarPorUsuario(int idUsuario)
         {
-            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
-            SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = @"SELECT * FROM Tablero WHERE Id_usuario_propietario = @idUsu;"; // cambiarlo a innerjoin
-            command.Parameters.Add(new SQLiteParameter("@idUsu", idUsuario));
-            connection.Open();
-            var lista = new List<Tablero>();    
-            using (SQLiteDataReader reader = command.ExecuteReader())
+            try
             {
-                while (reader.Read())
+                SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
+                SQLiteCommand command = connection.CreateCommand();
+                command.CommandText = @"SELECT * FROM Tablero t
+                                   INNER JOIN Usuario u ON (u.id = t.Id_usuario_propietario)
+                                   WHERE Id_usuario_propietario = @idUsu;";
+                command.Parameters.Add(new SQLiteParameter("@idUsu", idUsuario));
+                connection.Open();
+                var lista = new List<TableroConUsuario>();
+                using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    var tablero = new Tablero(Convert.ToInt32(reader["Id"]), Convert.ToInt32(reader["Id_usuario_propietario"]), reader["nombre"].ToString(), reader["descripcion"].ToString());
-                    lista.Add(tablero);
+                    while (reader.Read())
+                    {
+                        var IdTablero = Convert.ToInt32(reader["Id"]);
+                        var descripcionTablero = reader["descripcion"].ToString();
+                        var nombreTablero = reader["nombre"].ToString();
+                        var nombreUsuario = reader["nombre_de_usuario"].ToString();
+
+                        var tablero = new TableroConUsuario(IdTablero, nombreTablero, descripcionTablero, nombreUsuario);
+                        lista.Add(tablero);
+                    }
                 }
-            }
-            connection.Close();
+                connection.Close();
 
-            if (lista is null || lista.Count==0)
+                return (lista);
+
+            }
+            catch (Exception)
             {
-                throw new InvalidOperationException($"No se encontraron tableros con el id {idUsuario} solicitado");
+
+                throw;
             }
-
-            return (lista);
-
         }
         
         public List<Tablero> ListarTablerosPropiosYConTareas(int idUsuario)
@@ -218,16 +229,12 @@ namespace Kanban.Repositorios
 
         public void Update(Tablero tablero)
         {
-            if (tablero is null || tablero.Id < 0)
-            {
-                throw new InvalidOperationException("Tablero inválido");
-            }
-
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
 
             try
             {
+               
                 command.CommandText = $"UPDATE Tablero SET Id = '{tablero.Id}', Id_usuario_propietario = '{tablero.IdUsuarioPropietario}',nombre='{tablero.Nombre}',descripcion='{tablero.Descripcion}' WHERE id = '{tablero.Id}';";
                 connection.Open();
                 command.ExecuteNonQuery();
@@ -244,7 +251,7 @@ namespace Kanban.Repositorios
 
         public List<TableroConUsuario> ObtenerTablerosConUsuario()
         {
-            var queryString = @"SELECT tab.Id,tab.nombre,tab.descripcion,usu.nombre_de_usuario,usu.rol FROM Tablero as tab
+            var queryString = @"SELECT tab.Id,tab.nombre,tab.descripcion,usu.nombre_de_usuario,usu.rol,usu.id,tab.Id_usuario_propietario FROM Tablero as tab
                                 inner join Usuario as usu ON tab.Id_usuario_propietario = usu.id
                                 order by usu.nombre_de_usuario asc;";
             List<TableroConUsuario> tableros = new List<TableroConUsuario>();
@@ -265,7 +272,8 @@ namespace Kanban.Repositorios
                             var descripcionTablero = reader["descripcion"].ToString();
                             var nombreUsu = reader["nombre_de_usuario"].ToString();
                             var rolUsuario = reader["rol"].ToString();
-                            var tablero = new TableroConUsuario(IDTablero, nombreTablero, descripcionTablero, nombreUsu, rolUsuario);
+                            var idUsuarioAsignado = Convert.ToInt32(reader["Id_usuario_propietario"]);
+                            var tablero = new TableroConUsuario(IDTablero, nombreTablero, descripcionTablero, nombreUsu, rolUsuario, idUsuarioAsignado);
 
                             tableros.Add(tablero);
 
@@ -307,7 +315,8 @@ namespace Kanban.Repositorios
                             var descripcionTablero = reader["descripcion"].ToString();
                             var nombreUsu = reader["nombre_de_usuario"].ToString();
                             var rolUsuario = reader["rol"].ToString();
-                            var tablero = new TableroConUsuario(IDTablero, nombreTablero, descripcionTablero, nombreUsu, rolUsuario);
+                            var idUsuarioAsignado = Convert.ToInt32(reader["Id_usuario_propietario"]);
+                            var tablero = new TableroConUsuario(IDTablero, nombreTablero, descripcionTablero, nombreUsu, rolUsuario,idUsuarioAsignado);
 
                             tableros.Add(tablero);
 

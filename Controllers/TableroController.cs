@@ -8,6 +8,8 @@ using TP10.Models;
 using TP10.Servicios;
 using TP10.ViewModels;
 using Microsoft.Extensions.Logging;
+//using AspNetCore;
+using System;
 
 namespace TableroKanban.Controllers
 {
@@ -33,56 +35,67 @@ namespace TableroKanban.Controllers
                     {
                         if (IsAdmin())
                         {
-                            var tabs = _servicioTablero.ObtenerTablerosConUsuario();  
+                            var tabs = _servicioTablero.GetAll();
                             var model = tabs.Select(u => new TableroViewModel
                             {
-                                Id = u.IdTablero,
+                                Id = u.Id,
                                 Nombre = u.Nombre,
                                 Descripcion = u.Descripcion,
-                                UsuarioNombre = u.UsuarioNombre,
-                                UsuarioRol = u.UsuarioRol
-
+                                UsuarioNombre = u.IdUsuarioPropietario == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioPropietario).Nombre,
                             }).ToList();
 
                             return View(model);
                         }
                         else
                         {
-                            string id = HttpContext.Session.GetString("Id");
-                            int idUsuarioConectado = int.Parse(id);
-                            var tableros = _servicioTablero.ListarTablerosPropiosYConTareas(idUsuarioConectado);
-                            
-                            var model = tableros.Select(u => new TableroViewModel
-                            {
-                                IdUsuarioConectado=idUsuarioConectado,  
-                                IdUsuarioAsignado = u.IdUsuarioPropietario,
-                                Id = u.Id,
-                                Nombre = u.Nombre,
-                                Descripcion = u.Descripcion,
-                                UsuarioNombre = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Nombre ?? "-",
-                                UsuarioRol = _servicioUsuario.GetById(u.IdUsuarioPropietario)?.Rol ?? "-"
-                            }).ToList();
-                            
-                            return View(model);
+
+                           return RedirectToRoute(new { controller = "Tablero", action = "IndexOperador" });
+
                         }
                     }
                     catch (Exception e)
                     {
-                    var errorViewModel = new ErrorViewModel
-                    {
-                        ErrorMessage = e.Message,
-                        RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                        
-                    };
                         _logger.LogError(e.Message);
-                        return RedirectToAction("Error", errorViewModel);
-                    }
+                        TempData["ErrorMessage"] = "Error al obtener los tableros, consulte con el administrador.";
+                        return RedirectToRoute(new { controller = "Home", action = "Index" });
+                }
 
             }
             else
             {
                 return RedirectToRoute(new { controller = "Login", action = "Index" });
             }
+        }
+
+        public IActionResult IndexOperador()
+        {
+            try
+            {
+                int id = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+                var tabs = _servicioTablero.ListarPorUsuario(id);
+                if (tabs.Count == 0)
+                {
+                    TempData["SinTableros"] = "Usted no tiene tableros";
+                    return RedirectToRoute(new { controller = "Tablero", action = "AltaOperador" });
+                }
+                var model = tabs.Select(u => new TableroViewModel
+                {
+                    Id = u.IdTablero,
+                    Nombre = u.Nombre,
+                    Descripcion = u.Descripcion,
+                    UsuarioNombre = u.UsuarioNombre,
+                }).ToList();
+
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                TempData["ErrorMessage"] = "Error al obtener los tableros, consulte con el administrador.";
+                return RedirectToRoute(new { controller = "Home", action = "Index" });
+             
+            }
+            
         }
 
         [HttpGet]
@@ -115,7 +128,7 @@ namespace TableroKanban.Controllers
             {
                 try
                 {
-                    var idUSuario = _servicioUsuario.GetById(tablero.IdUsuarioPropietario).Id;
+                    
                     var tableroEditado = new Tablero(tablero);
                     _servicioTablero.Update(tableroEditado);
                     return RedirectToAction("Index");
@@ -170,6 +183,38 @@ namespace TableroKanban.Controllers
             return View(viewModel);
         }
 
+        public IActionResult AltaOperador()
+        {
+
+            var model = new CrearTableroViewModel();
+            model.IdUsuarioPropietario = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult AltaOperador(CrearTableroViewModel tab)
+        {
+            if (ModelState.IsValid)
+            {
+                var _tab = new Tablero(tab);
+
+                try
+                {
+                    _servicioTablero.Create(_tab);
+                    _logger.LogInformation("Se creo con éxito el tablero - Fecha: " + DateTime.Now.ToString());
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                }
+
+            }
+
+            return View(tab);
+        }
+
         [HttpPost]
         public IActionResult Alta(CrearTableroViewModel tab)
         {
@@ -179,21 +224,13 @@ namespace TableroKanban.Controllers
 
                 try
                 {
-                    var idUSuario = _servicioUsuario.GetById(tab.IdUsuarioPropietario).Id;
                     _servicioTablero.Create(_tab);
                     _logger.LogInformation("Se creo con éxito el tablero - Fecha: " + DateTime.Now.ToString());
                     return RedirectToAction("Index");
                 }
                 catch (Exception e)
                 {
-                    var errorViewModel = new ErrorViewModel
-                    {
-                        ErrorMessage = e.Message,
-                        RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                    };
-
                     _logger.LogError(e.Message);
-                    return RedirectToAction("Error", errorViewModel);
                 }
                 
             }

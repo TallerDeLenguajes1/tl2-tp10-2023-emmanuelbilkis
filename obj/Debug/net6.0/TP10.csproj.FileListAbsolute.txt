@@ -98,7 +98,6 @@ C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\stati
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\scopedcss\bundle\TP10.styles.css
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\scopedcss\projectbundle\TP10.bundle.scp.css
-C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\TP10.csproj.CopyComplete
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\TP10.dll
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\refint\TP10.dll
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\TP10.pdb
@@ -106,3 +105,10 @@ C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\TP10.
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\ref\TP10.dll
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\bin\Debug\net6.0\AutoMapper.dll
 C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\bin\Debug\net6.0\FluentAssertions.dll
+C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\TP10.sourcelink.json
+C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\staticwebassets\msbuild.TP10.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\staticwebassets\msbuild.build.TP10.props
+C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.TP10.props
+C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.TP10.props
+C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Repositorios-Taller2-2023\tl2-tp10-2023-emmanuelbilkis\obj\Debug\net6.0\TP10.csproj.Up2Date

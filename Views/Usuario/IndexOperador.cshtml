@@ -8,6 +8,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Rol</th>
+                <th>Editar</th>
             </tr>
         </thead>
         <tbody>
@@ -16,6 +17,9 @@
                 <tr>
                     <td>@usuario.Nombre</td>
                     <td>@usuario.Rol</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" asp-action="EditarOperador" asp-controller="Usuario" asp-route-id="@usuario.Id">Editar</a>
+                    </td>
                 </tr>
             }
         </tbody>

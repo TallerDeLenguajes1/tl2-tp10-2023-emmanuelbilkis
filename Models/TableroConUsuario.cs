@@ -1,4 +1,6 @@
-﻿namespace TP10.Models
+﻿using Kanban.Models;
+
+namespace TP10.Models
 {
     public class TableroConUsuario
     {
@@ -6,15 +8,21 @@
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public string UsuarioNombre { get; set; }
-        public string UsuarioRol { get; set; }
 
-        public TableroConUsuario(int IdTablero,string nombreTablero, string descripcionTablero, string nombreUsu, string rolUsu)
+        public TableroConUsuario(int IdTablero,string nombreTablero, string descripcionTablero, string nombreUsu)
         {
             this.IdTablero = IdTablero;
             Nombre = nombreTablero;
             Descripcion = descripcionTablero;
             UsuarioNombre = nombreUsu;
-            UsuarioRol = rolUsu;
+        }
+
+        public TableroConUsuario(int IDTablero, string nombreTablero,string descripcionTablero, string nombreUsu,string rol,int id_usu) 
+        {
+            IdTablero = IDTablero;
+            Nombre = nombreTablero;
+            Descripcion = descripcionTablero;
+            UsuarioNombre = nombreUsu;
         }
 
         public TableroConUsuario() { }

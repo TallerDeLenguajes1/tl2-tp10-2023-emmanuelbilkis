@@ -103,6 +103,54 @@ namespace TableroKanban.Controllers
             
         }
 
+        public IActionResult EditarOperador(int id) 
+        {
+            try
+            {
+                var usuario = _servicioUsuario.GetById(id);
+
+                var model = new ModificarUsuarioViewModel
+                {
+                    Id = usuario.Id,
+                    Nombre = usuario.Nombre,
+                    Contrasenia = usuario.Contrasenia,
+                    Rol = usuario.Rol
+                };
+
+                return View(model);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                TempData["ErrorMessage"] = e.Message;
+                return View();
+            }
+        }
+
+
+        [HttpPost]
+        public IActionResult EditarOperador(ModificarUsuarioViewModel usuarioEditado)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(usuarioEditado);
+            }
+
+            try
+            {
+                var usuario = new Usuario(usuarioEditado);
+                _servicioUsuario.Update(usuario);
+                return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                TempData["ErrorMessage"] = e.Message;
+                return View();
+            }
+
+        }
         public IActionResult Borrar(int id)
         {
             try

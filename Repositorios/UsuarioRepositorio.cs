@@ -2,6 +2,7 @@
 using System.IO;
 using System.Data.SQLite;
 using TP10.Models;
+using System.Data;
 
 namespace Kanban.Repositorios
 {
@@ -64,7 +65,7 @@ namespace Kanban.Repositorios
 
         public List<Usuario> GetAll()
         {
-            var queryString = @"SELECT * FROM Usuario;";
+            var queryString = @"SELECT * FROM Usuario WHERE activo = 1;";
             List<Usuario> usuarios = new List<Usuario>();
 
             try
@@ -162,16 +163,15 @@ namespace Kanban.Repositorios
                 connection.Open();
                 command.ExecuteNonQuery();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw new ApplicationException("Error al actualizar el usuario en la base de datos.", ex);
+                throw ;
             }
             finally
             {
                 connection.Close();
             }
         }
-
         public void Remove(int id)
         {
             if (id <= 0)
@@ -180,21 +180,36 @@ namespace Kanban.Repositorios
             }
 
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
-            SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"DELETE FROM Usuario WHERE id = '{id}';";
 
             try
             {
                 connection.Open();
-                command.ExecuteNonQuery();
+
+                // Primer comando para desactivar el usuario
+                using (SQLiteCommand commandUsuario = connection.CreateCommand())
+                {
+                    commandUsuario.CommandText = $"UPDATE Usuario SET activo = 0 WHERE id = '{id}';";
+                    commandUsuario.ExecuteNonQuery();
+                }
+
+                // Segundo comando para desvincular los tableros asignados al usuario
+                using (SQLiteCommand commandTableros = connection.CreateCommand())
+                {
+                    commandTableros.CommandText = $"UPDATE Tablero SET Id_usuario_propietario = null WHERE Id_usuario_propietario = '{id}';";
+                    commandTableros.ExecuteNonQuery();
+                }
             }
             catch (Exception ex)
             {
+                // Manejo de la excepción
                 throw new ApplicationException("Error al eliminar el usuario de la base de datos.", ex);
             }
             finally
             {
-                connection.Close();
+                if (connection.State != ConnectionState.Closed)
+                {
+                    connection.Close();
+                }
             }
         }
 

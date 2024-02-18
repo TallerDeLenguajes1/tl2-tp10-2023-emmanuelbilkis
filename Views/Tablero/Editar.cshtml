@@ -7,6 +7,7 @@
         <div class="mb-3">
             <label asp-for="@Model.IdUsuarioPropietario" class="form-label">Usuario Propietario:</label>
             <select asp-for="@Model.IdUsuarioPropietario" class="form-control">
+                <option value="0">Sin Usuario</option>
                 @foreach (var usuario in Model.ListaUsuarios)
                 {
                     <option value="@usuario.Id">@usuario.Nombre</option>

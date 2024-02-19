@@ -13,7 +13,6 @@
                 <th>Nombre</th>
                 <th>Estado</th>
                 <th>Descripción</th>
-                <th>Color</th>
                 <th>Usuario</th>
                 <th>Acciones</th>
             </tr>
@@ -21,27 +20,16 @@
         <tbody>
             @foreach (var tarea in Model)
             {
-                <tr>
+                <tr style="background-color: @tarea.Color;">
                     <td>@tarea.Id</td>
                     <td>@tarea.TableroAsignado</td>
                     <td>@tarea.Nombre</td>
                     <td>@tarea.Estado.ToString()</td>
                     <td>@tarea.Descripcion</td>
-                    <td>
-                        <span class="badge" style="background-color: @tarea.Color; color: white;">@tarea.Color</span>
-                    </td>
                     <td>@tarea.UsuarioAsignado</td>
                     <td>
-                        @if (String.IsNullOrEmpty(tarea.RolUsuarioConectado) || tarea.RolUsuarioConectado != "Operador")
-                        {
-                            <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tarea.Id">Editar</a>
-                            <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tarea.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
-                        }else
-                        {
-                            <a class="btn btn-warning btn-sm" asp-action="CambiarEstado" asp-controller="Tarea" asp-route-idTarea="@tarea.Id">Cambiar Estado</a>
-                        }
-                        
-                        
+                          <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tarea.Id">Editar</a>
+                          <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tarea.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
                     </td>
                 </tr>
             }

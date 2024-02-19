@@ -5,28 +5,29 @@
 
 @if (Model is not null)
 {
-   
     @foreach (var estado in Model.Select(t => t.Estado).Distinct())
     {
         var tareasPorEstado = Model.Where(t => t.Estado == estado).ToList();
 
         <section>
-            <h2>@estado</h2>
 
+            <h2>@estado</h2>
+            <h3>Tablero: @Model.FirstOrDefault().TableroAsignado</h3>
             <div class="row">
                 @foreach (var tar in tareasPorEstado)
                 {
                     <div class="col-md-4">
                         <div class="card" style="border-color: @tar.Color;">
                             <div class="card-body">
-                                <h5 class="card-title">@tar.Nombre</h5>
-                                <p class="card-text">@tar.Descripcion</p>
-                                <p class="card-text">Usuario: @tar.UsuarioAsignado</p>
-
-                                @if (tar.IdUsuarioConectado == tar.UsuarioTableroAsignadoId)
-                                {
-                                    <a class="btn btn-info btn-sm" asp-action="AsignarUsuarios" asp-controller="Tarea" asp-route-idTarea="@tar.Id" asp-route-usuarioAsignado="@tar.UsuarioAsignado">Asignar Usuario</a>
-                                }
+                                <h5 class="card-title">Tarea: @tar.Nombre</h5>
+                                <p class="card-text">Descripcion: @tar.Descripcion</p>
+                                <p class="card-text">Usuario asignado: @tar.UsuarioAsignado</p>
+                                <p>
+                                    <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tar.Id">Editar</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tar.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="CambiarEstado" asp-controller="Tarea" asp-route-idTarea="@tar.Id">Cambiar Estado</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="AsignarUsuario" asp-controller="Tarea" asp-route-idTarea="@tar.Id" asp-route-usuAsignado="@tar.UsuarioAsignado">Asignar Usuario</a>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -38,6 +39,7 @@
 else
 {
     <p>No hay tareas disponibles.</p>
+    <a class="btn btn-info btn-sm" asp-action="Index" asp-controller="Tablero" >Ir a Tableros</a>
 }
 
 @section Scripts {

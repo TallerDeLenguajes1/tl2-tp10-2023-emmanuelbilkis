@@ -138,11 +138,7 @@ namespace Kanban.Repositorios
 
         public void Update(Usuario usuario)
         {
-            if (usuario is null)
-            {
-                throw new ArgumentNullException(nameof(usuario), "El usuario no puede ser nulo.");
-            }
-
+            
             if (usuario.Rol != "Admin" && usuario.Rol != "Operador")
             {
                 throw new ArgumentException("El Rol del usuario debe ser Admin u Operador");
@@ -174,11 +170,7 @@ namespace Kanban.Repositorios
         }
         public void Remove(int id)
         {
-            if (id <= 0)
-            {
-                throw new ArgumentException("El ID del usuario no es válido.", nameof(id));
-            }
-
+            
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
 
             try
@@ -192,10 +184,15 @@ namespace Kanban.Repositorios
                     commandUsuario.ExecuteNonQuery();
                 }
 
-                // Segundo comando para desvincular los tableros asignados al usuario
                 using (SQLiteCommand commandTableros = connection.CreateCommand())
                 {
                     commandTableros.CommandText = $"UPDATE Tablero SET Id_usuario_propietario = null WHERE Id_usuario_propietario = '{id}';";
+                    commandTableros.ExecuteNonQuery();
+                }
+
+                using (SQLiteCommand commandTableros = connection.CreateCommand())
+                {
+                    commandTableros.CommandText = $"UPDATE Tarea SET id_usuario_asignado = 0 WHERE id_usuario_asignado = '{id}';";
                     commandTableros.ExecuteNonQuery();
                 }
             }

@@ -69,14 +69,14 @@ namespace Kanban.Repositorios
                     while (reader.Read())
                     {
                         var id = Convert.ToInt32((reader["Id"]));
-                        var id_tablero = Convert.ToInt32((reader["Id_tablero"]));
+                        var id_tablero = reader["Id_tablero"] != DBNull.Value && Convert.ToInt32(reader["Id_tablero"]) != 0 ? Convert.ToInt32(reader["Id_tablero"]) : 0;
                         var nombre = reader["nombre"].ToString();
                         var descripcion = reader["descripcion"].ToString();
                         var color = reader["color"].ToString();
                         var estado = Convert.ToInt32(reader["estado"]);
-                        var id_usu_asignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+                        var id_usu_propietario = reader["id_usuario_asignado"] != DBNull.Value && Convert.ToInt32(reader["id_usuario_asignado"]) != 0 ? Convert.ToInt32(reader["id_usuario_asignado"]) : 0; 
                         
-                        var tarea = new Tarea(id,id_tablero ,nombre ,descripcion ,color ,estado , id_usu_asignado);   
+                        var tarea = new Tarea(id,id_tablero ,nombre ,descripcion ,color ,estado , id_usu_propietario);   
                         
                         tareas.Add(tarea);
                     }
@@ -118,9 +118,9 @@ namespace Kanban.Repositorios
                                 Color = reader["color"].ToString(),
                                 Estado = (TP10.Models.EstadoTarea)Convert.ToInt32(reader["estado"]),
                                 UsuarioAsignado = reader["nombre_de_usuario"].ToString(),
-                                RolUsu = reader["rol"].ToString(),
+                                //RolUsu = reader["rol"].ToString(),
                                 TableroAsignado = reader["nombreTab"].ToString(),
-                                TableroDesc = reader["descTab"].ToString()
+                                //TableroDesc = reader["descTab"].ToString()
                             };
 
                             tareas.Add(tareaViewModel);
@@ -168,9 +168,9 @@ namespace Kanban.Repositorios
                             var descripcion = reader["descripcion"].ToString();
                             var color = reader["color"].ToString();
                             var estado = Convert.ToInt32(reader["estado"]);
-                            var id_usu_asignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+                            var id_usu_propietario = reader["id_usuario_asignado"] != DBNull.Value && Convert.ToInt32(reader["id_usuario_asignado"]) != 0 ? Convert.ToInt32(reader["id_usuario_asignado"]) : 0;
 
-                            tarea = new Tarea(id, id_tablero, nombre, descripcion, color, estado, id_usu_asignado);
+                            tarea = new Tarea(id, id_tablero, nombre, descripcion, color, estado, id_usu_propietario);
                         }
                     }
 
@@ -196,109 +196,6 @@ namespace Kanban.Repositorios
             }
         }
 
-       /* public Tarea GetByIdConTablero(int idTab)
-        {
-            try
-            {
-                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
-                {
-                    SQLiteCommand command = connection.CreateCommand();
-                    command.CommandText = "SELECT * FROM Tarea t INNER JOIN Tablero tab on tab.Id = t.Id_tablero WHERE t.Id_tablero = @idTab;";
-                    command.Parameters.Add(new SQLiteParameter("@idTab", idTab));
-                    connection.Open();
-
-                    Tarea tarea = null;
-
-                    using (SQLiteDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            var id = Convert.ToInt32(reader["Id"]);
-                            var id_tablero = Convert.ToInt32(reader["Id_tablero"]);
-                            var nombre = reader["nombre"].ToString();
-                            var descripcion = reader["descripcion"].ToString();
-                            var color = reader["color"].ToString();
-                            var estado = Convert.ToInt32(reader["estado"]);
-                            var id_usu_asignado = Convert.ToInt32(reader["id_usuario_asignado"]);
-
-                            tarea = new Tarea(id, id_tablero, nombre, descripcion, color, estado, id_usu_asignado);
-                        }
-                    }
-
-                    connection.Close();
-
-                    if (tarea == null)
-                    {
-                        throw new InvalidOperationException($"No se encontró una tarea asociada al tablero con el ID de tablero {idTab}.");
-                    }
-
-                    return tarea;
-                }
-            }
-            catch (SQLiteException ex)
-            {
-                Console.WriteLine($"Error SQLite al obtener tarea por ID: {ex.Message}");
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error general al obtener tarea por ID: {ex.Message}");
-                throw;
-            }
-        }
-
-        public Tarea GetByIdConUsuario(int idUsu)
-        {
-            try
-            {
-                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
-                {
-                    SQLiteCommand command = connection.CreateCommand();
-                    command.CommandText = "SELECT * FROM Tarea t INNER JOIN Usuario usu on usu.id = t.id_usuario_asignado WHERE t.id_usuario_asignado = @idUsu;";
-                    command.Parameters.Add(new SQLiteParameter("@idTab", idUsu));
-                    connection.Open();
-
-                    Tarea tarea = null;
-
-                    using (SQLiteDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            var id = Convert.ToInt32(reader["Id"]);
-                            var id_tablero = Convert.ToInt32(reader["Id_tablero"]);
-                            var nombre = reader["nombre"].ToString();
-                            var descripcion = reader["descripcion"].ToString();
-                            var color = reader["color"].ToString();
-                            var estado = Convert.ToInt32(reader["estado"]);
-                            var id_usu_asignado = Convert.ToInt32(reader["id_usuario_asignado"]);
-
-                            tarea = new Tarea(id, id_tablero, nombre, descripcion, color, estado, id_usu_asignado);
-                        }
-                    }
-
-                    connection.Close();
-
-                    if (tarea == null)
-                    {
-                        throw new InvalidOperationException($"No se encontró una tarea asociada al usuario con el ID de usuario {idUsu}.");
-                    }
-
-                    return tarea;
-                }
-            }
-            catch (SQLiteException ex)
-            {
-                Console.WriteLine($"Error SQLite al obtener tarea por ID: {ex.Message}");
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error general al obtener tarea por ID: {ex.Message}");
-                throw;
-            }
-        }
-       */
-
         public List<Tarea> ListarPorTablero(int idTablero)
         {
             try
@@ -323,16 +220,10 @@ namespace Kanban.Repositorios
                                 reader["descripcion"].ToString(),
                                 reader["color"].ToString(),
                                 Convert.ToInt32(reader["estado"]),
-                                Convert.ToInt32(reader["id_usuario_asignado"])
+                                reader["id_usuario_asignado"] != DBNull.Value && Convert.ToInt32(reader["id_usuario_asignado"]) != 0 ? Convert.ToInt32(reader["id_usuario_asignado"]) : 0
                             );
                             lista.Add(tarea);
                         }
-                    }
-
-                    
-                    if (lista.Count == 0)
-                    {
-                        throw new InvalidOperationException("La consulta no devolvió resultados para el tablero especificado.");
                     }
 
                     return lista;
@@ -383,11 +274,6 @@ namespace Kanban.Repositorios
                         }
                     }
 
-                    if (lista.Count == 0)
-                    {
-                        throw new InvalidOperationException($"La consulta no devolvió tareas para el usuario con ID {idUsuario}.");
-                    }
-
                     return lista;
                 }
             }
@@ -403,14 +289,9 @@ namespace Kanban.Repositorios
             }
         }
 
-
         public void Remove(int id)
         {
-            if (id <= 0)
-            {
-                throw new ArgumentException("El ID del usuario no es válido.", nameof(id));
-            }
-
+            
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
             command.CommandText = $"DELETE FROM Tarea WHERE id = '{id}';";
@@ -431,17 +312,8 @@ namespace Kanban.Repositorios
 
         public void Update(Tarea tarea)
         {
-            if (tarea is null)
-            {
-                throw new ArgumentNullException(nameof(tarea), "La tarea no puede ser nulo.");
-            }
-
+           
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
-
-            if (tarea.Id <= 0)
-            {
-                throw new ArgumentException("El ID del usuario no es válido.", nameof(tarea));
-            }
 
             SQLiteCommand command = connection.CreateCommand();
 
@@ -456,7 +328,7 @@ namespace Kanban.Repositorios
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Error al actualizar la tarea en la base de datos.", ex);
+                throw ;
             }
             finally
             {
@@ -464,14 +336,8 @@ namespace Kanban.Repositorios
             }
         }
 
-
-        public void Asignar(int idUsuario, int idTarea)
+        public void AsignarUsuario(int idUsuario, int idTarea)
         {
-            if (idUsuario < 0 || idTarea < 0)
-            {
-                throw new ArgumentException("El ID del usuario o tarea no es válido.");
-            }
-
             using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
             {
                 string query = "UPDATE Tarea SET id_usuario_asignado = @idUsuario WHERE Id = @idTarea;";
@@ -479,6 +345,30 @@ namespace Kanban.Repositorios
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@idUsuario", idUsuario);
+                    command.Parameters.AddWithValue("@idTarea", idTarea);
+
+                    try
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ApplicationException("Error al actualizar la tarea en la base de datos.", ex);
+                    }
+                }
+            }
+        }
+
+        public void AsignarTablero(int idTab, int idTarea)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
+            {
+                string query = "UPDATE Tarea SET Id_tablero = @Id_tablero WHERE Id = @idTarea;";
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id_tablero", idTab);
                     command.Parameters.AddWithValue("@idTarea", idTarea);
 
                     try

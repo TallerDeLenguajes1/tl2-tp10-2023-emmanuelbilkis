@@ -12,7 +12,8 @@ namespace Kanban.Repositorios
         public void Update(Tarea tarea);
         public List<Tarea> ListarPorUsuario(int idUsuario);
         public List<Tarea> ListarPorTablero(int idTablero);
-        public void Asignar(int idUsuario,int idTarea);
+        public void AsignarUsuario(int idUsuario,int idTarea);
+        public void AsignarTablero(int idTab, int idTarea);
         public List<TareaViewModel> ObtenerTareasConUsuTablero();
     }
 }

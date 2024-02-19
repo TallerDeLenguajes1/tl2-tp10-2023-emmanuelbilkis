@@ -204,28 +204,33 @@ namespace Kanban.Repositorios
         }
         public void Remove(int id)
         {
-            if (id < 0)
+            using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
             {
-                throw new ArgumentException("El ID del Tablero no es válido.", nameof(id));
-            }
-
-            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
-            SQLiteCommand command = connection.CreateCommand();
-            try
-            {
-                command.CommandText = $"DELETE FROM Tablero WHERE id = '{id}';";
                 connection.Open();
-                command.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException($"No se puedo borrar el tablero | Información: {e.Data} + {e.StackTrace}");
-            }
-            finally 
-            {
-                connection.Close();
+
+                // Actualizar las tareas relacionadas para desvincularlas del tablero
+                using (SQLiteCommand commandTareas = connection.CreateCommand())
+                {
+                    commandTareas.CommandText = $"UPDATE Tarea SET Id_tablero = 0 WHERE Id_tablero = '{id}';";
+                    commandTareas.ExecuteNonQuery();
+                }
+
+                // Eliminar el tablero
+                using (SQLiteCommand command = connection.CreateCommand())
+                {
+                    try
+                    {
+                        command.CommandText = $"DELETE FROM Tablero WHERE id = '{id}';";
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new InvalidOperationException($"No se pudo borrar el tablero | Información: {e.Message}");
+                    }
+                }
             }
         }
+
 
         public void Update(Tablero tablero)
         {

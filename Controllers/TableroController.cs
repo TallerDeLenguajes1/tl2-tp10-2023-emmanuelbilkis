@@ -157,18 +157,10 @@ namespace TableroKanban.Controllers
             }
             catch (Exception e)
             {
-                var errorViewModel = new ErrorViewModel
-                {
-                    ErrorMessage = e.Message,
-                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                };
-
                 _logger.LogError(e.Message);
-                return RedirectToAction("Error", errorViewModel);
             }
 
             return RedirectToAction("Index");
-            
         }
 
         public IActionResult Alta()

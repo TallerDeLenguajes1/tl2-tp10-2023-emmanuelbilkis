@@ -26,52 +26,68 @@ namespace TableroKanban.Controllers
         {
             if (IsUser())
             {
-
-            
                     try
                     {
                         if (IsAdmin())
                         {
-                            var tareas = _servicioTarea.ObtenerTareasConUsuTablero();
-                            return View(tareas);
+                            var tareas = _servicioTarea.GetAll();
+                            
+                            if (tareas.Count == 0) 
+                            {
+                                TempData["SinTareas"] = "No hay tareas para mostrar, aquí puede crear una";
+                                return RedirectToAction("Alta");  
+                            }
+
+                            var model = tareas.Select(u => new TareaViewModel
+                            {
+                                Id = u.Id,
+                                Nombre = u.Nombre,
+                                Descripcion = u.Descripcion,
+                                Color = u.Color,
+                                Estado = u.Estado,  
+                                UsuarioAsignado = u.IdUsuarioAsignado == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioAsignado).Nombre,
+                                TableroAsignado = u.IdTablero == 0 ? "Sin tablero asignado" : _servicioTablero.GetById(u.IdTablero).Nombre
+                            }).ToList();
+
+                             return View(model);
+
                         }
                         else
                         {
-
-                            string id = HttpContext.Session.GetString("Id");
-                            string rolConectado = HttpContext.Session.GetString("Rol");
-                            var tareas = _servicioTarea.ListarPorUsuario(int.Parse(id));
-                            var model = tareas.Select(u => new TareaViewModel
-                            {
-                                RolUsuarioConectado = rolConectado,
-                                Id = u.Id,
-                                Nombre = u.Nombre,
-                                Estado = u.Estado,
-                                Color = u.Color,
-                                Descripcion = u.Descripcion,
-                                UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
-                                TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
-                                
-                            }).ToList();
-                            return View(model);
+                           return RedirectToAction("IndexOperador");
                         }
                     }
                     catch (Exception e)
                     {
-
-                        var errorViewModel = new ErrorViewModel
-                        {
-                            ErrorMessage = e.Message,
-                            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                        };
-                            _logger.LogError(e.Message);
-                            return View("~/Views/Shared/Error.cshtml", errorViewModel);
+                       _logger.LogError(e.Message);
+                       return RedirectToRoute(new { controller = "Home", action = "Index" });
                     }
             }
             else
             {
                 return RedirectToRoute(new { controller = "Login", action = "Index" });
             }
+        }
+
+        public IActionResult IndexOperador()
+        {
+            string id = HttpContext.Session.GetString("Id");
+            string rolConectado = HttpContext.Session.GetString("Rol");
+            var tareas = _servicioTarea.ListarPorUsuario(int.Parse(id));
+            var model = tareas.Select(u => new TareaViewModel
+            {
+                //RolUsuarioConectado = rolConectado,
+                Id = u.Id,
+                Nombre = u.Nombre,
+                Estado = u.Estado,
+                Color = u.Color,
+                Descripcion = u.Descripcion,
+                UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
+                TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
+
+            }).ToList();
+
+            return View(model);
         }
         public IActionResult Editar(int id)
         {
@@ -92,22 +108,14 @@ namespace TableroKanban.Controllers
 
             try
             {
-                valdiadIdTablero(tareaEditada.IdTablero);
-                valdiadIdUsuario(tareaEditada.IdUsuarioAsignado);
                 var tarea = new Tarea(tareaEditada);
                 _servicioTarea.Update(tarea);
                 return RedirectToAction("Index");
-
             }
             catch (Exception e)
             {
-                var errorViewModel = new ErrorViewModel
-                {
-                    ErrorMessage = e.Message,
-                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                };
                 _logger.LogError(e.Message);
-                return View("~/Views/Shared/Error.cshtml", errorViewModel);
+                return RedirectToAction("Index");
             }
         }
 
@@ -120,14 +128,8 @@ namespace TableroKanban.Controllers
             }
             catch (Exception e)
             {
-
-                var errorViewModel = new ErrorViewModel
-                {
-                    ErrorMessage = e.Message,
-                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                };
                 _logger.LogError(e.Message);
-                return View("~/Views/Shared/Error.cshtml", errorViewModel);
+                return RedirectToAction("Index");
             }
           
         }
@@ -150,30 +152,19 @@ namespace TableroKanban.Controllers
 
             try
             {
-                valdiadIdTablero(tar.IdTablero);
-                valdiadIdUsuario(tar.IdUsuarioAsignado);
-                var TablerosConUsus = _servicioTablero.ObtenerTablerosConUsuario(tar.IdUsuarioAsignado,tar.IdTablero);
-                if (TablerosConUsus is null || TablerosConUsus.Count==0 )
-                {
-                    throw new InvalidOperationException("El tablero no es administrado por el usuario seleccionado");
-                }
-
                 var tarea = new Tarea(tar);
                 _servicioTarea.Create(tarea);
                 _logger.LogInformation("Se creó con éxito la tarea | Fecha: "+ DateTime.Now.ToString());
-                return RedirectToAction("Index");
+                
             }
             catch (Exception e)
             {
-                var errorViewModel = new ErrorViewModel
-                {
-                    ErrorMessage = e.Message,
-                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                };
+                
                 _logger.LogError(e.Message);
-                return View("~/Views/Shared/Error.cshtml", errorViewModel);
+                
             }
-            
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -181,24 +172,24 @@ namespace TableroKanban.Controllers
         {
             try
             {
-                int idUsuarioConectado = int.Parse(HttpContext.Session.GetString("Id"));
                 var tareas = _servicioTarea.ListarPorTablero(Id);
 
-                /*if (tareas.Count == 0 || tareas is null)
+                if (tareas.Count == 0 || tareas is null)
                 {
-                    return en este caso mandare para crear tareas 
-                }*/
+                    TempData["SinTareas"] = "Esta tablero no tiene tareas - Aquí puede crear tareas";
+                    return RedirectToAction("Alta");
+                }
 
                 var model = tareas.Select(u => new TareaViewModel
-                {
-                    IdUsuarioConectado=idUsuarioConectado,  
+                { 
                     Id = u.Id,
                     Nombre = u.Nombre,
                     Estado = u.Estado,
                     Color = u.Color,
                     Descripcion = u.Descripcion,
                     UsuarioAsignado = u.IdUsuarioAsignado == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioAsignado).Nombre,
-                    TableroAsignado = u.IdTablero == 0 ? "Sin tablero asignado": _servicioTablero.GetById(u.IdTablero)?.Nombre 
+                    TableroAsignado = u.IdTablero == 0 ? "Sin tablero asignado" : _servicioTablero.GetById(u.IdTablero).Nombre
+
                 }).ToList();
 
                 return View(model);
@@ -212,12 +203,12 @@ namespace TableroKanban.Controllers
             
         }
 
-        public IActionResult AsignarUsuarios(int idTarea,string usuarioAsignado)
+        public IActionResult AsignarUsuario(int idTarea, string usuAsignado)
         {
             
             var tarea = _servicioTarea.GetById(idTarea);
             var usuarios = _servicioUsuario.GetAll().Where(a => a.Id != tarea.IdUsuarioAsignado);
-            var model = new TareaUsuarioViewModel(idTarea,tarea.Nombre,"descripcion",usuarios,usuarioAsignado);
+            var model = new TareaUsuarioViewModel(idTarea,tarea.Nombre,tarea.Descripcion,usuarios, usuAsignado);
             return View(model);
         }
 
@@ -226,22 +217,14 @@ namespace TableroKanban.Controllers
         {
             try
             {
-                valdiadIdUsuario(idUsuario);
-
-                _servicioTarea.Asignar(idUsuario,idTarea);
+                _servicioTarea.AsignarUsuario(idUsuario,idTarea);
                 return RedirectToAction("Index");
 
             }
             catch (Exception e)
             {
-                var errorViewModel = new ErrorViewModel
-                {
-                    ErrorMessage = e.Message,
-                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                };
-
                 _logger.LogWarning(e.Message);
-                return View("~/Views/Shared/Error.cshtml", errorViewModel);
+                return RedirectToAction("Index");
             }
 
         }
@@ -269,17 +252,5 @@ namespace TableroKanban.Controllers
 
             return false;
         }
-
-        private void valdiadIdUsuario(int idUsu) 
-        {
-            _servicioUsuario.GetById(idUsu);
-        }
-
-        private void valdiadIdTablero(int idTablero)
-        
-        {
-            _servicioTablero.GetById(idTablero);
-        }
-
     }
 }

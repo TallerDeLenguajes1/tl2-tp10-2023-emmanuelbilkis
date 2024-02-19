@@ -1,0 +1,57 @@
+﻿@model List<TP10.ViewModels.TareaOperadorViewModel>
+
+<div class="container mt-4">
+    <h1>Listado de Tareas - Operador</h1>
+    <nav class="mb-3">
+        <a class="btn btn-primary" asp-action="Alta" asp-controller="Tarea">Agregar Tarea</a>
+    </nav>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Tablero</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Usuario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tarea in Model)
+            {
+                <tr style="background-color: @tarea.Color;">
+                    
+                    <td>@tarea.TableroAsignado</td>
+                    <td>@tarea.Nombre</td>
+                    <td>@tarea.Estado.ToString()</td>
+                    <td>@tarea.Descripcion</td>
+                    <td>@tarea.UsuarioAsignado</td>
+                    <td>
+
+                        @if(tarea.UsuarioConectado == tarea.UsuPropTableroAsignadoId)
+                        {
+                            <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tarea.Id">Editar</a>
+                            <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tarea.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
+                            <a class="btn btn-danger btn-sm" asp-action="CambiarEstado" asp-controller="Tarea" asp-route-idTarea="@tarea.Id">Cambiar Estado</a>
+                        }
+
+                        @if (tarea.UsuarioConectado != tarea.UsuPropTableroAsignadoId)
+                        {
+                            <a class="btn btn-danger btn-sm" asp-action="CambiarEstado" asp-controller="Tarea" asp-route-idTarea="@tarea.Id">Cambiar Estado</a>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.hidden-menu').removeClass('hidden-menu');
+        });
+    </script>
+}

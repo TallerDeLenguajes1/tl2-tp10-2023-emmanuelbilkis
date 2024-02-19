@@ -48,9 +48,7 @@ namespace TableroKanban.Controllers
                         }
                         else
                         {
-
                            return RedirectToRoute(new { controller = "Tablero", action = "IndexOperador" });
-
                         }
                     }
                     catch (Exception e)
@@ -72,18 +70,19 @@ namespace TableroKanban.Controllers
             try
             {
                 int id = Convert.ToInt32(HttpContext.Session.GetString("Id"));
-                var tabs = _servicioTablero.ListarPorUsuario(id);
-                if (tabs.Count == 0)
+                var tabs = _servicioTablero.ListarTablerosPropiosYConTareas(id);    
+                if (tabs.Count == 0 || tabs is null)
                 {
-                    TempData["SinTableros"] = "Usted no tiene tableros";
+                    TempData["SinTableros"] = "Usted no tiene tableros ni tareas en algun tablero";
                     return RedirectToRoute(new { controller = "Tablero", action = "AltaOperador" });
                 }
                 var model = tabs.Select(u => new TableroViewModel
                 {
-                    Id = u.IdTablero,
+                    Id = u.Id,
                     Nombre = u.Nombre,
                     Descripcion = u.Descripcion,
-                    UsuarioNombre = u.UsuarioNombre,
+                    UsuarioNombre = u.IdUsuarioPropietario == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioPropietario).Nombre,
+                    EsPropietario = u.IdUsuarioPropietario == id
                 }).ToList();
 
                 return View(model);
@@ -168,10 +167,8 @@ namespace TableroKanban.Controllers
             
             var listaUsuarios = _servicioUsuario.GetAll(); 
 
-            
             var viewModel = new CrearTableroViewModel(listaUsuarios);
 
-            
             return View(viewModel);
         }
 

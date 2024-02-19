@@ -192,7 +192,7 @@ namespace Kanban.Repositorios
 
                 using (SQLiteCommand commandTableros = connection.CreateCommand())
                 {
-                    commandTableros.CommandText = $"UPDATE Tarea SET id_usuario_asignado = 0 WHERE id_usuario_asignado = '{id}';";
+                    commandTableros.CommandText = $"UPDATE Tarea SET id_usuario_asignado = null WHERE id_usuario_asignado = '{id}';";
                     commandTableros.ExecuteNonQuery();
                 }
             }

@@ -189,16 +189,14 @@ namespace Kanban.Repositorios
             {
                 while (reader.Read())
                 {
-                    var tablero = new Tablero(Convert.ToInt32(reader["Id"]), Convert.ToInt32(reader["Id_usuario_propietario"]), reader["nombre"].ToString(), reader["descripcion"].ToString());
+                    var idUsu = reader["Id_usuario_propietario"] != DBNull.Value ? Convert.ToInt32(reader["Id_usuario_propietario"]) : 0;
+                    var tablero = new Tablero(Convert.ToInt32(reader["Id"]), idUsu, reader["nombre"].ToString(), reader["descripcion"].ToString());
                     lista.Add(tablero);
                 }
             }
             connection.Close();
 
-            if (lista is null || lista.Count == 0)
-            {
-                throw new InvalidOperationException($"No se encontraron tableros con el id {idUsuario} solicitado, ni tableros con tareas asignadas a este usuario");
-            }
+           
 
             return (lista);
         }
@@ -208,14 +206,14 @@ namespace Kanban.Repositorios
             {
                 connection.Open();
 
-                // Actualizar las tareas relacionadas para desvincularlas del tablero
+                
                 using (SQLiteCommand commandTareas = connection.CreateCommand())
                 {
                     commandTareas.CommandText = $"UPDATE Tarea SET Id_tablero = 0 WHERE Id_tablero = '{id}';";
                     commandTareas.ExecuteNonQuery();
                 }
 
-                // Eliminar el tablero
+                
                 using (SQLiteCommand command = connection.CreateCommand())
                 {
                     try

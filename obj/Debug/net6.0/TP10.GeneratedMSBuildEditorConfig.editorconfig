@@ -78,8 +78,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tarea/IndexOperador.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcSW5kZXhPcGVyYWRvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tarea/TareasDeTablero.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcVGFyZWFzRGVUYWJsZXJvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tarea/TareasDeTableroOperador.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcVGFyZWFzRGVUYWJsZXJvT3BlcmFkb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Usuario/Alta.cshtml]

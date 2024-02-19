@@ -71,19 +71,25 @@ namespace TableroKanban.Controllers
 
         public IActionResult IndexOperador()
         {
-            string id = HttpContext.Session.GetString("Id");
-            string rolConectado = HttpContext.Session.GetString("Rol");
-            var tareas = _servicioTarea.ListarPorUsuario(int.Parse(id));
-            var model = tareas.Select(u => new TareaViewModel
+            int id = Convert.ToInt32( HttpContext.Session.GetString("Id"));
+            var tareas = _servicioTarea.ListarPorUsuario(id);
+            if (tareas.Count==0)
             {
-                //RolUsuarioConectado = rolConectado,
+                TempData["SinTareas"] = "No hay tareas para mostrar, aquí puede crear una";
+                return RedirectToAction("Alta");
+            }
+            var model = tareas.Select(u => new TareaOperadorViewModel
+            {
                 Id = u.Id,
                 Nombre = u.Nombre,
                 Estado = u.Estado,
                 Color = u.Color,
                 Descripcion = u.Descripcion,
-                UsuarioAsignado = _servicioUsuario.GetById(u.IdUsuarioAsignado)?.Nombre ?? "-",
-                TableroAsignado = _servicioTablero.GetById(u.IdTablero)?.Nombre ?? "-"
+                UsuarioAsignado = u.IdUsuarioAsignado == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioAsignado).Nombre,
+                TableroAsignado = u.IdTablero == 0 ? "Sin tablero asignado" : _servicioTablero.GetById(u.IdTablero).Nombre,
+                UsuarioAsignadoId = u.IdUsuarioAsignado,
+                UsuPropTableroAsignadoId = u.IdTablero == 0 ? 0 : _servicioTablero.GetById(u.IdTablero).IdUsuarioPropietario,
+                UsuarioConectado = id
 
             }).ToList();
 
@@ -201,6 +207,46 @@ namespace TableroKanban.Controllers
                 return RedirectToAction("Index");
             }
             
+        }
+
+        [HttpGet]
+        public IActionResult TareasDeTableroOperador(int Id)
+        {
+            try
+            {
+                var tareas = _servicioTarea.ListarPorTablero(Id);
+                int id = Convert.ToInt32( HttpContext.Session.GetString("Id"));
+
+                if (tareas.Count == 0 || tareas is null)
+                {
+                    TempData["SinTareas"] = "Esta tablero no tiene tareas - Aquí puede crear tareas";
+                    return RedirectToAction("Alta");
+                }
+
+                var model = tareas.Select(u => new TareaOperadorViewModel
+                {
+                    Id = u.Id,
+                    Nombre = u.Nombre,
+                    Estado = u.Estado,
+                    Color = u.Color,
+                    Descripcion = u.Descripcion,
+                    UsuarioAsignado = u.IdUsuarioAsignado == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioAsignado).Nombre,
+                    TableroAsignado = u.IdTablero == 0 ? "Sin tablero asignado" : _servicioTablero.GetById(u.IdTablero).Nombre,
+                    UsuarioAsignadoId = u.IdUsuarioAsignado,
+                    UsuPropTableroAsignadoId = u.IdTablero == 0 ? 0 : _servicioTablero.GetById(u.IdTablero).IdUsuarioPropietario,
+                    UsuarioConectado = id
+
+                }).ToList();
+
+                return View(model);
+            }
+            catch (Exception e)
+            {
+
+                _logger.LogError(e.Message);
+                return RedirectToAction("IndexOperador");
+            }
+
         }
 
         public IActionResult AsignarUsuario(int idTarea, string usuAsignado)

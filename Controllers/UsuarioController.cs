@@ -158,7 +158,16 @@ namespace TableroKanban.Controllers
             try
             {
                 _servicioUsuario.Remove(id);
-                return RedirectToAction("Index");
+                int idUsuConec = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+                if (id == idUsuConec)
+                {
+                    return RedirectToRoute(new { controller = "Login", action = "Index" });
+                }
+                else
+                {
+                    return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+                }
+                
             }
             catch (Exception e)
             {

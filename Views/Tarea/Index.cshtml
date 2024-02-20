@@ -14,19 +14,21 @@
                 <th>Estado</th>
                 <th>Descripción</th>
                 <th>Usuario</th>
+                <th>Color</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var tarea in Model)
             {
-                <tr style="background-color: @tarea.Color;">
+                <tr>
                     <td>@tarea.Id</td>
                     <td>@tarea.TableroAsignado</td>
                     <td>@tarea.Nombre</td>
                     <td>@tarea.Estado.ToString()</td>
                     <td>@tarea.Descripcion</td>
                     <td>@tarea.UsuarioAsignado</td>
+                    <td><div class="color-box" style="background-color: @tarea.Color;"></div></td>
                     <td>
                           <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tarea.Id">Editar</a>
                           <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tarea.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
@@ -37,6 +39,15 @@
     </table>
 </div>
 
+<style>
+    .color-box {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+</style>
 
 @section Scripts {
     <script>

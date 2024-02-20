@@ -202,7 +202,6 @@ namespace TableroKanban.Controllers
             }
             catch (Exception e )
             {
-              
                 _logger.LogError(e.Message);
                 return RedirectToAction("Index");
             }

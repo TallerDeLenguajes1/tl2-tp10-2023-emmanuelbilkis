@@ -13,19 +13,21 @@
                 <th>Estado</th>
                 <th>Descripción</th>
                 <th>Usuario</th>
+                <th>Color</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var tarea in Model)
             {
-                <tr style="background-color: @tarea.Color;">
+                <tr>
                     
                     <td>@tarea.TableroAsignado</td>
                     <td>@tarea.Nombre</td>
                     <td>@tarea.Estado.ToString()</td>
                     <td>@tarea.Descripcion</td>
                     <td>@tarea.UsuarioAsignado</td>
+                    <td><div class="color-box" style="background-color: @tarea.Color;"></div></td>
                     <td>
 
                         @if(tarea.UsuarioConectado == tarea.UsuPropTableroAsignadoId)
@@ -47,6 +49,15 @@
     </table>
 </div>
 
+<style>
+    .color-box {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+</style>
 
 @section Scripts {
     <script>

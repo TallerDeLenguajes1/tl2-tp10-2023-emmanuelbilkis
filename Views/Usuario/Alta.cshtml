@@ -19,9 +19,14 @@
 
         <div class="mb-3">
             <label asp-for="@Model.Rol" class="form-label">Rol:</label>
-            <input asp-for="@Model.Rol" class="form-control" />
+            <select asp-for="@Model.Rol" class="form-control">
+                <option value="">Selecciona un rol</option>
+                <option value="Admin">Admin</option>
+                <option value="Operador">Operador</option>
+            </select>
             <span asp-validation-for="@Model.Rol" class="text-danger"></span>
         </div>
+
 
         <div class="mb-3">
             <button class="btn btn-primary" type="submit">Crear</button>

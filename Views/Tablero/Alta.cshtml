@@ -41,7 +41,7 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     <script>
-        var errorMessage = '@Html.Raw(TempData["ErrorMessage"])'; // Utiliza Html.Raw para evitar el escape de caracteres especiales
+        var errorMessage = '@Html.Raw(TempData["ErrorMessage"])'; 
         if (errorMessage) {
             alert(errorMessage);
         }

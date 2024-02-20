@@ -65,7 +65,7 @@ namespace Kanban.Repositorios
 
         public List<Usuario> GetAll()
         {
-            var queryString = @"SELECT * FROM Usuario WHERE activo = 1;";
+            var queryString = @"SELECT * FROM Usuario;";
             List<Usuario> usuarios = new List<Usuario>();
 
             try
@@ -177,13 +177,6 @@ namespace Kanban.Repositorios
             {
                 connection.Open();
 
-                
-                using (SQLiteCommand commandUsuario = connection.CreateCommand())
-                {
-                    commandUsuario.CommandText = $"UPDATE Usuario SET activo = 0 WHERE id = '{id}';";
-                    commandUsuario.ExecuteNonQuery();
-                }
-
                 using (SQLiteCommand commandTableros = connection.CreateCommand())
                 {
                     commandTableros.CommandText = $"UPDATE Tablero SET Id_usuario_propietario = null WHERE Id_usuario_propietario = '{id}';";
@@ -195,6 +188,14 @@ namespace Kanban.Repositorios
                     commandTableros.CommandText = $"UPDATE Tarea SET id_usuario_asignado = null WHERE id_usuario_asignado = '{id}';";
                     commandTableros.ExecuteNonQuery();
                 }
+
+                using (SQLiteCommand commandUsuario = connection.CreateCommand())
+                {
+                    commandUsuario.CommandText = $"DELETE FROM Usuario WHERE id = '{id}';";
+                    commandUsuario.ExecuteNonQuery();
+                }
+
+
             }
             catch (Exception ex)
             {

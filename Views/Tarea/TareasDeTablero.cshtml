@@ -23,10 +23,10 @@
                                 <p class="card-text">Descripcion: @tar.Descripcion</p>
                                 <p class="card-text">Usuario asignado: @tar.UsuarioAsignado</p>
                                 <p>
-                                    <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tar.Id">Editar</a>
-                                    <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tar.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
-                                    <a class="btn btn-danger btn-sm" asp-action="CambiarEstado" asp-controller="Tarea" asp-route-idTarea="@tar.Id">Cambiar Estado</a>
-                                    <a class="btn btn-danger btn-sm" asp-action="AsignarUsuario" asp-controller="Tarea" asp-route-idTarea="@tar.Id" asp-route-usuAsignado="@tar.UsuarioAsignado">Asignar Usuario</a>
+                                    <a class="btn btn-warning btn-sm mt-1" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tar.Id">Editar</a>
+                                    <a class="btn btn-warning btn-sm mt-1" asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tar.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
+                                    <a class="btn btn-warning btn-sm mt-1" asp-action="CambiarEstado" asp-controller="Tarea" asp-route-idTarea="@tar.Id">Cambiar Estado</a>
+                                    <div><a class="btn btn-warning btn-sm mt-1" asp-action="AsignarUsuario" asp-controller="Tarea" asp-route-idTarea="@tar.Id" asp-route-usuAsignado="@tar.UsuarioAsignado">Asignar Usuario</a></div>
                                 </p>
                             </div>
                         </div>

@@ -86,6 +86,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcVGFyZWFzRGVUYWJsZXJvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tarea/TareasDeTableroOpe.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcVGFyZWFzRGVUYWJsZXJvT3BlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Tarea/TareasDeTableroOperador.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcVGFyZWFzRGVUYWJsZXJvT3BlcmFkb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Usuario/Alta.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xBbHRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -104,10 +112,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Usuario/IndexOperador.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xJbmRleE9wZXJhZG9yLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/Usuario/TareasDeTableroOperador.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xUYXJlYXNEZVRhYmxlcm9PcGVyYWRvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Repositorios-Taller2-2023/tl2-tp10-2023-emmanuelbilkis/Views/_ViewImports.cshtml]

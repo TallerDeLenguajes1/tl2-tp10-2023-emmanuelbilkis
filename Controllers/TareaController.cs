@@ -209,7 +209,7 @@ namespace TableroKanban.Controllers
         }
 
         [HttpGet]
-        public IActionResult TareasDeTableroOperador(int Id)
+        public IActionResult TareasDeTableroOpe(int Id)
         {
             try
             {

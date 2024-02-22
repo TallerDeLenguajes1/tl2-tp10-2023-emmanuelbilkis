@@ -209,7 +209,9 @@ namespace Kanban.Repositorios
                 
                 using (SQLiteCommand commandTareas = connection.CreateCommand())
                 {
-                    commandTareas.CommandText = $"UPDATE Tarea SET Id_tablero = 0 WHERE Id_tablero = '{id}';";
+                    commandTareas.CommandText = "UPDATE Tarea SET Id_tablero = @newTableroId WHERE Id_tablero = @id";
+                    commandTareas.Parameters.AddWithValue("@newTableroId", 0); 
+                    commandTareas.Parameters.AddWithValue("@id", id);
                     commandTareas.ExecuteNonQuery();
                 }
 
@@ -218,7 +220,8 @@ namespace Kanban.Repositorios
                 {
                     try
                     {
-                        command.CommandText = $"DELETE FROM Tablero WHERE id = '{id}';";
+                        command.CommandText = "DELETE FROM Tablero WHERE id = @id";
+                        command.Parameters.AddWithValue("@id", id);
                         command.ExecuteNonQuery();
                     }
                     catch (Exception e)
@@ -228,6 +231,7 @@ namespace Kanban.Repositorios
                 }
             }
         }
+
 
 
         public void Update(Tablero tablero)

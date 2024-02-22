@@ -170,46 +170,61 @@ namespace Kanban.Repositorios
         }
         public void Remove(int id)
         {
-            
-            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
-
-            try
+            using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
             {
                 connection.Open();
-
-                using (SQLiteCommand commandTableros = connection.CreateCommand())
+                using (SQLiteTransaction transaction = connection.BeginTransaction())
                 {
-                    commandTableros.CommandText = $"UPDATE Tablero SET Id_usuario_propietario = null WHERE Id_usuario_propietario = '{id}';";
-                    commandTableros.ExecuteNonQuery();
-                }
+                    try
+                    {
+                        
+                        UpdateTableros(connection, id);
 
-                using (SQLiteCommand commandTableros = connection.CreateCommand())
-                {
-                    commandTableros.CommandText = $"UPDATE Tarea SET id_usuario_asignado = null WHERE id_usuario_asignado = '{id}';";
-                    commandTableros.ExecuteNonQuery();
-                }
+                        UpdateTareas(connection, id);
 
-                using (SQLiteCommand commandUsuario = connection.CreateCommand())
-                {
-                    commandUsuario.CommandText = $"DELETE FROM Usuario WHERE id = '{id}';";
-                    commandUsuario.ExecuteNonQuery();
-                }
+                        DeleteUsuario(connection, id);
 
-
-            }
-            catch (Exception ex)
-            {
-              
-                throw new ApplicationException("Error al eliminar el usuario de la base de datos.", ex);
-            }
-            finally
-            {
-                if (connection.State != ConnectionState.Closed)
-                {
-                    connection.Close();
+                        transaction.Commit();
+                    }
+                    catch (SQLiteException ex)
+                    {
+                        transaction.Rollback();
+                        throw new ApplicationException("Error al eliminar el usuario de la base de datos.", ex);
+                    }
                 }
             }
         }
+
+        private void UpdateTableros(SQLiteConnection connection, int userId)
+        {
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE Tablero SET Id_usuario_propietario = null WHERE Id_usuario_propietario = @id";
+                command.Parameters.AddWithValue("@id", userId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private void UpdateTareas(SQLiteConnection connection, int userId)
+        {
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE Tarea SET id_usuario_asignado = 0 WHERE id_usuario_asignado = @id";
+                command.Parameters.AddWithValue("@id", userId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private void DeleteUsuario(SQLiteConnection connection, int userId)
+        {
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "DELETE FROM Usuario WHERE id = @id";
+                command.Parameters.AddWithValue("@id", userId);
+                command.ExecuteNonQuery();
+            }
+        }
+
 
     }
 }

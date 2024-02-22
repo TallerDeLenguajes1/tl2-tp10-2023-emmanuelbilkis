@@ -13,6 +13,7 @@
 
             <h2>@estado</h2>
             <h3>Tablero: @Model.FirstOrDefault().TableroAsignado</h3>
+            <a class="btn btn-primary" asp-action="Alta" asp-controller="Tarea" asp-route-id="@Model.FirstOrDefault().TableroAsignado">Agregar Tarea</a>
             <div class="row">
                 @foreach (var tar in tareasPorEstado)
                 {

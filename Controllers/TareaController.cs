@@ -140,6 +140,14 @@ namespace TableroKanban.Controllers
           
         }
 
+        public IActionResult AltaDesdeTablero(int id)
+        {
+            var usuarios = _servicioUsuario.GetAll();
+            var tab = _servicioTablero.GetById(id);
+            var model = new CrearTareaViewModel(usuarios,tab);
+            return View(model);
+        }
+
         public IActionResult Alta()
         {
             var tableros = _servicioTablero.GetAll();

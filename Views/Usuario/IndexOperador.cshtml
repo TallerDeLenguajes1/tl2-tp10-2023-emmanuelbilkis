@@ -21,6 +21,7 @@
                     {
                         <td>
                             <a class="btn btn-warning btn-sm" asp-action="EditarSinRol" asp-controller="Usuario" asp-route-id="@usuario.Id">Editar</a>
+                            <a class="btn btn-danger btn-sm" asp-action="Borrar" asp-controller="Usuario" asp-route-id="@usuario.Id" onclick="return confirm('¿Estás seguro de que deseas borrar este usuario?')">Eliminar cuenta</a>
                         </td>
                     }
                 </tr>

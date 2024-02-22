@@ -29,6 +29,13 @@ namespace TP10.ViewModels
             Usuarios = usuarios;
         }
 
+        public CrearTareaViewModel(List<Usuario> usuarios, Tablero tab)
+        {
+            Tableros = new List<Tablero>();
+            this.Tableros.Add(tab);
+            Usuarios = usuarios;
+        }
+
         [Required (ErrorMessage ="Numero de id requerido.")]
         [Range(0, int.MaxValue, ErrorMessage = "El valor de {0} debe ser mayor o igual que cero.")]
         public int Id { get; set; }

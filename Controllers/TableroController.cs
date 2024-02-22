@@ -8,7 +8,6 @@ using TP10.Models;
 using TP10.Servicios;
 using TP10.ViewModels;
 using Microsoft.Extensions.Logging;
-//using AspNetCore;
 using System;
 
 namespace TableroKanban.Controllers
@@ -61,40 +60,47 @@ namespace TableroKanban.Controllers
             }
             else
             {
+                TempData["noTieneSesion"] = "Acceso restringido | Ingrese desde una cuenta para poder acceder";
                 return RedirectToRoute(new { controller = "Login", action = "Index" });
             }
         }
 
         public IActionResult IndexOperador()
         {
-            try
+            if (!IsAdmin())
             {
-                int id = Convert.ToInt32(HttpContext.Session.GetString("Id"));
-                var tabs = _servicioTablero.ListarTablerosPropiosYConTareas(id);    
-                if (tabs.Count == 0 || tabs is null)
+                try
                 {
-                    TempData["SinTableros"] = "Usted no tiene tableros ni tareas en algun tablero";
-                    return RedirectToRoute(new { controller = "Tablero", action = "AltaOperador" });
-                }
-                var model = tabs.Select(u => new TableroViewModel
-                {
-                    Id = u.Id,
-                    Nombre = u.Nombre,
-                    Descripcion = u.Descripcion,
-                    UsuarioNombre = u.IdUsuarioPropietario == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioPropietario).Nombre,
-                    EsPropietario = u.IdUsuarioPropietario == id
-                }).ToList();
+                    int id = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+                    var tabs = _servicioTablero.ListarTablerosPropiosYConTareas(id);
+                    if (tabs.Count == 0 || tabs is null)
+                    {
+                        TempData["SinTableros"] = "Usted no tiene tableros ni tareas en algun tablero";
+                        return RedirectToRoute(new { controller = "Tablero", action = "AltaOperador" });
+                    }
+                    var model = tabs.Select(u => new TableroViewModel
+                    {
+                        Id = u.Id,
+                        Nombre = u.Nombre,
+                        Descripcion = u.Descripcion,
+                        UsuarioNombre = u.IdUsuarioPropietario == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioPropietario).Nombre,
+                        EsPropietario = u.IdUsuarioPropietario == id
+                    }).ToList();
 
-                return View(model);
+                    return View(model);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    TempData["ErrorMessage"] = "Error al obtener los tableros, consulte con el administrador.";
+                    return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+                }
             }
-            catch (Exception e)
+            else
             {
-                _logger.LogError(e.Message);
-                TempData["ErrorMessage"] = "Error al obtener los tableros, consulte con el administrador.";
                 return RedirectToRoute(new { controller = "Home", action = "Index" });
-             
             }
-            
         }
 
         [HttpGet]

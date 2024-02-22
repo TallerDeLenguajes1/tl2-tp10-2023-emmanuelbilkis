@@ -48,6 +48,13 @@ public class LoginController : Controller
         return RedirectToRoute(new { controller = "Home", action = "Index" });
     }
 
+    public IActionResult CerrarSesion()
+    {
+        HttpContext.Session.Clear();
+        HttpContext.Session.Remove("Usuario");
+        HttpContext.Session.Remove("Contrasenia");
+        return RedirectToAction("Index", "Login"); 
+    }
     private void logearUsuario(Usuario user)
     {
         HttpContext.Session.SetString("Usuario", user.Nombre);

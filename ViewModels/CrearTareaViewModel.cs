@@ -33,6 +33,7 @@ namespace TP10.ViewModels
         {
             Tableros = new List<Tablero>();
             this.Tableros.Add(tab);
+            this.IdTablero = tab.Id;
             Usuarios = usuarios;
         }
 

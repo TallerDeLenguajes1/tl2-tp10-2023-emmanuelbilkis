@@ -298,6 +298,49 @@ namespace Kanban.Repositorios
             return tableros;
         }
 
+        public List<TableroConUsuario> ObtenerTablerosConUsuario(int idTab)
+        {
+            var queryString = $@"SELECT tab.Id,tab.nombre,tab.descripcion,usu.nombre_de_usuario,usu.rol,usu.id,tab.Id_usuario_propietario FROM Tablero as tab
+                                inner join Usuario as usu ON tab.Id_usuario_propietario = usu.id
+                                WHERE tab.Id = '{idTab}';";
+
+            List<TableroConUsuario> tableros = new List<TableroConUsuario>();
+
+            try
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
+                {
+                    SQLiteCommand command = new SQLiteCommand(queryString, connection);
+                    connection.Open();
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var IDTablero = Convert.ToInt32(reader["Id"]);
+                            var nombreTablero = reader["nombre"].ToString();
+                            var descripcionTablero = reader["descripcion"].ToString();
+                            var nombreUsu = reader["nombre_de_usuario"].ToString();
+                            var rolUsuario = reader["rol"].ToString();
+                            var idUsuarioAsignado = Convert.ToInt32(reader["Id_usuario_propietario"]);
+                            var tablero = new TableroConUsuario(IDTablero, nombreTablero, descripcionTablero, nombreUsu, rolUsuario, idUsuarioAsignado);
+
+                            tableros.Add(tablero);
+
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new InvalidOperationException($"No se pudo obtener los tableros con usuarios | Información: {e.Data} + {e.StackTrace}");
+            }
+
+            return tableros;
+        }
+
         public List<TableroConUsuario> ObtenerTablerosConUsuario(int idUsuario, int idTab)
         {
             var queryString = $@"SELECT tab.Id,tab.nombre,tab.descripcion,usu.nombre_de_usuario,usu.rol FROM Tablero as tab

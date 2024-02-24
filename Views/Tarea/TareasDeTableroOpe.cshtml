@@ -1,10 +1,16 @@
 ﻿@model List<TP10.ViewModels.TareaOperadorViewModel>
 
     <h1>Listado de Tareas</h1>
-
+    <h2>@Model.FirstOrDefault().UsuPropTableroAsignado</h2>
 
     @if (Model is not null)
     {
+        @if (Model.FirstOrDefault().UsuarioConectado == Model.FirstOrDefault().UsuPropTableroAsignadoId)
+        {
+            <a class="btn-group-sm asp-action="AltaDesdeTablero" asp-controller="Tarea" asp-route-id="@Model.FirstOrDefault().TableroID">Agregar Tarea</a>
+        }
+        
+
         @foreach (var estado in Model.Select(t => t.Estado).Distinct())
         {
             var tareasPorEstado = Model.Where(t => t.Estado == estado).ToList();
@@ -12,7 +18,6 @@
             <section>
 
                 <h2>@estado</h2>
-                <h3>Tablero: @Model.FirstOrDefault().TableroAsignado</h3>
                 <div class="row">
                     @foreach (var tar in tareasPorEstado)
                     {

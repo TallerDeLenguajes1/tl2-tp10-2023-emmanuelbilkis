@@ -202,7 +202,9 @@ namespace TableroKanban.Controllers
                     Color = u.Color,
                     Descripcion = u.Descripcion,
                     UsuarioAsignado = u.IdUsuarioAsignado == 0 ? "Sin usuario asignado" : _servicioUsuario.GetById(u.IdUsuarioAsignado).Nombre,
-                    TableroAsignado = u.IdTablero == 0 ? "Sin tablero asignado" : _servicioTablero.GetById(u.IdTablero).Nombre
+                    TableroAsignado = u.IdTablero == 0 ? "Sin tablero asignado" : _servicioTablero.GetById(u.IdTablero).Nombre,
+                    TableroAsignadoId = u.IdTablero,
+                    UsuPropTableroAsignado = _servicioTablero.ObtenerTablerosConUsuario(Id).Count == 0 ? "Este tablero no tiene usuario propietario" : _servicioTablero.ObtenerTablerosConUsuario(Id).FirstOrDefault().UsuarioNombre
 
                 }).ToList();
 
@@ -224,6 +226,7 @@ namespace TableroKanban.Controllers
                 var tareas = _servicioTarea.ListarPorTablero(Id);
                 int id = Convert.ToInt32( HttpContext.Session.GetString("Id"));
 
+
                 if (tareas.Count == 0 || tareas is null)
                 {
                     TempData["SinTareas"] = "Esta tablero no tiene tareas - Aquí puede crear tareas";
@@ -241,7 +244,9 @@ namespace TableroKanban.Controllers
                     TableroAsignado = u.IdTablero == 0 ? "Sin tablero asignado" : _servicioTablero.GetById(u.IdTablero).Nombre,
                     UsuarioAsignadoId = u.IdUsuarioAsignado,
                     UsuPropTableroAsignadoId = u.IdTablero == 0 ? 0 : _servicioTablero.GetById(u.IdTablero).IdUsuarioPropietario,
-                    UsuarioConectado = id
+                    UsuarioConectado = id,
+                    TableroID = u.IdTablero,
+                    UsuPropTableroAsignado = _servicioTablero.ObtenerTablerosConUsuario(Id).Count == 0 ? "Este tablero no tiene usuario propietario" : _servicioTablero.ObtenerTablerosConUsuario(Id).FirstOrDefault().UsuarioNombre
 
                 }).ToList();
 

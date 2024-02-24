@@ -15,22 +15,26 @@ namespace TP10.ViewModels
         public string TableroAsignado { get; set; }
         public int UsuPropTableroAsignadoId { get; set; }
         public int UsuarioConectado { get; set; }
+        public int TableroID { get; set; }
+        public string UsuPropTableroAsignado { get; set; }
 
 
-        public TareaOperadorViewModel(int id, string nombre, string desc, string color, EstadoTarea estado, string usuAsignado, int usuAsignadoId, string tabAsignado,int tabAsig, int usuarioConectado)
+        public TareaOperadorViewModel() { }
+
+        public TareaOperadorViewModel(int id, string nombre, string descripcion, string color, EstadoTarea estado, string usuarioAsignado, int usuarioAsignadoId, string tableroAsignado, int usuPropTableroAsignadoId, int usuarioConectado, int tableroID, string usuPropTableroAsignado)
         {
             Id = id;
             Nombre = nombre;
-            Descripcion = desc;
+            Descripcion = descripcion;
             Color = color;
             Estado = estado;
-            UsuarioAsignado = usuAsignado;
-            UsuarioAsignadoId = usuAsignadoId;
-            TableroAsignado = tabAsignado;
-            UsuPropTableroAsignadoId = tabAsig;
-            UsuarioConectado = usuarioConectado;    
+            UsuarioAsignado = usuarioAsignado;
+            UsuarioAsignadoId = usuarioAsignadoId;
+            TableroAsignado = tableroAsignado;
+            UsuPropTableroAsignadoId = usuPropTableroAsignadoId;
+            UsuarioConectado = usuarioConectado;
+            TableroID = tableroID;
+            UsuPropTableroAsignado = usuPropTableroAsignado;
         }
-
-        public TareaOperadorViewModel() { }
     }
 }

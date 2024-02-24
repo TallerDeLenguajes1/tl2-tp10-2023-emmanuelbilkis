@@ -46,9 +46,8 @@
         </div>
 
         <div class="mb-3">
-            <input asp-for="@Model.IdTablero" type="hidden" />
-            <input asp-for="@Model.Tableros.FirstOrDefault().Nombre" class="form-control" readonly />
-            <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
+            <label class="form-label" asp-for="@Model.IdTablero">Tablero:</label>
+            <input class="form-control" asp-for="@Model.Tableros.FirstOrDefault().Nombre" class="form-control" readonly />
         </div>
 
         <div class="mb-3">
@@ -64,6 +63,7 @@
         </div>
 
         <input type="hidden" asp-for="@Model.Id" />
+        <input type="hidden" asp-for="@Model.IdTablero" />
 
         <button type="submit" class="btn btn-primary">Crear</button>
 

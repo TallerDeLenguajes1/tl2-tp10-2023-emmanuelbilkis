@@ -177,10 +177,9 @@ namespace Kanban.Repositorios
                 {
                     try
                     {
-                        
-                        UpdateTableros(connection, id);
+                       // UpdateTareas(connection, id);
 
-                        UpdateTareas(connection, id);
+                        UpdateTableros(connection, id);
 
                         DeleteUsuario(connection, id);
 
@@ -199,7 +198,7 @@ namespace Kanban.Repositorios
         {
             using (SQLiteCommand command = connection.CreateCommand())
             {
-                command.CommandText = "UPDATE Tablero SET Id_usuario_propietario = null WHERE Id_usuario_propietario = @id";
+                command.CommandText = "UPDATE Tablero SET Id_usuario_propietario = null WHERE Id_usuario_propietario = @id;";
                 command.Parameters.AddWithValue("@id", userId);
                 command.ExecuteNonQuery();
             }
@@ -209,9 +208,33 @@ namespace Kanban.Repositorios
         {
             using (SQLiteCommand command = connection.CreateCommand())
             {
-                command.CommandText = "UPDATE Tarea SET id_usuario_asignado = 0 WHERE id_usuario_asignado = @id";
+                command.CommandText = "UPDATE Tarea SET id_usuario_asignado = 0 WHERE id_usuario_asignado = @id;";
                 command.Parameters.AddWithValue("@id", userId);
                 command.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateTareaUsu(int id)
+        {
+
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
+
+            SQLiteCommand command = connection.CreateCommand();
+
+            command.CommandText = $"UPDATE Tarea SET id_usuario_asignado = '{0}' WHERE id = '{id}';";
+
+            try
+            {
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
@@ -219,12 +242,10 @@ namespace Kanban.Repositorios
         {
             using (SQLiteCommand command = connection.CreateCommand())
             {
-                command.CommandText = "DELETE FROM Usuario WHERE id = @id";
+                command.CommandText = "DELETE FROM Usuario WHERE id = @id;";
                 command.Parameters.AddWithValue("@id", userId);
                 command.ExecuteNonQuery();
             }
         }
-
-
     }
 }

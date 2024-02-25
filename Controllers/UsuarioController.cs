@@ -10,11 +10,13 @@ namespace TableroKanban.Controllers
     public class UsuarioController : Controller
     {
         private readonly IUsuarioRepositorio _servicioUsuario;
+        private readonly ITareaRepositorio _tareaRepositorio;
         private readonly ILogger<LoginController> _logger;
-        public UsuarioController(IUsuarioRepositorio usuarioRepositorio, ILogger<LoginController> logger)
+        public UsuarioController(IUsuarioRepositorio usuarioRepositorio, ILogger<LoginController> logger, ITareaRepositorio tareaRepositorio)
         {
             _servicioUsuario = usuarioRepositorio;
             _logger = logger;
+            _tareaRepositorio = tareaRepositorio;
         }
 
         public IActionResult Index() 
@@ -158,6 +160,17 @@ namespace TableroKanban.Controllers
             try
             {
                 int idUsuConec = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+                // _servicioUsuario.UpdateTareaUsu(id);
+                var tareas = _tareaRepositorio.ListarPorUsuario(id);
+                if (tareas.Count !=0 )
+                {
+                    foreach (var tar in tareas)
+                    {
+                        tar.IdUsuarioAsignado = 0;
+                        _tareaRepositorio.Update(tar);
+                    }
+                }
+                
                 _servicioUsuario.Remove(id);
                 
                 if (id == idUsuConec)

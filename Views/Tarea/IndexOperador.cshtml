@@ -3,8 +3,8 @@
 <div class="container mt-4">
     <h1>Listado de Tareas</h1>
     <p class="alert-info">Aquí puede encontrar todas las tareas que estan asignadas a usted.</p>
-    <div class="alert-info">Si desea ver las tareas organizadas por tableros presione el botón. <a class="btn btn-danger btn-sm" asp-area="" asp-controller="Tablero" asp-action="Index">Ir</a> </div>
-    <nav class="mb-4">
+    <div class="alert-info">Si desea ver las tareas que creo puedo redirigirse al siguiente enlace. <a class="btn btn-danger btn-sm" asp-area="" asp-controller="Tablero" asp-action="Index">Ir</a> </div>
+    <nav class="mb-3">
         <a class="btn btn-primary" asp-action="Alta" asp-controller="Tarea">Agregar Tarea</a>
     </nav>
     <table class="table table-striped">
@@ -42,6 +42,11 @@
                         @if (tarea.UsuarioConectado != tarea.UsuPropTableroAsignadoId)
                         {
                             <a class="btn btn-danger btn-sm" asp-action="CambiarEstado" asp-controller="Tarea" asp-route-idTarea="@tarea.Id">Cambiar Estado</a>
+                        }
+
+                        @if (tarea.TableroAsignado == "Sin tablero asignado")
+                        {
+                            <a class="btn btn-warning btn-sm" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tarea.Id">AsignarTablero</a>
                         }
 
                     </td>

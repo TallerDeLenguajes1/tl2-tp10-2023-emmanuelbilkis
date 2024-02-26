@@ -2,7 +2,7 @@
 
 <div class="container mt-4">
     <h1>Modificar Tarea</h1>
-
+    <div class="alert-info">Recuerde que no puede asignar un tablero si no es propietario de uno. Para crear un tablero: <a class="btn btn-danger btn-sm" asp-area="" asp-controller="Tablero" asp-action="Index">Ir</a> </div>
     <form asp-action="Editar" asp-controller="Tarea" method="post">
 
         <div class="mb-3">

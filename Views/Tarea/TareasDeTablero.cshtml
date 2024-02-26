@@ -1,8 +1,8 @@
 ﻿@model List<TP10.ViewModels.TareaViewModel>
 
 <h1>Listado de Tareas</h1>
-<h2>@Model.FirstOrDefault().TableroAsignado</h2>
-<h2>@Model.FirstOrDefault().UsuPropTableroAsignado</h2>
+<h2>Tablero: @Model.FirstOrDefault().TableroAsignado</h2>
+<h2>Usuario propietario del tablero: @Model.FirstOrDefault().UsuPropTableroAsignado</h2>
 @if (Model is not null)
 {
     <a class="btn btn-primary" asp-action="AltaDesdeTablero" asp-controller="Tarea" asp-route-id="@Model.FirstOrDefault().TableroAsignadoId">Agregar Tarea</a>
@@ -13,14 +13,14 @@
 
         <section>
 
-            <h2>@estado</h2>
+            <h3>@estado</h3>
             <div class="row">
                 @foreach (var tar in tareasPorEstado)
                 {
                     <div class="col-md-4">
                         <div class="card" style="border-color: @tar.Color;">
                             <div class="card-body">
-                                <h5 class="card-title">Tarea: @tar.Nombre</h5>
+                                <h4 class="card-title">Tarea: @tar.Nombre </h4>
                                 <p class="card-text">Descripcion: @tar.Descripcion</p>
                                 <p class="card-text">Usuario asignado: @tar.UsuarioAsignado</p>
                                 <p>

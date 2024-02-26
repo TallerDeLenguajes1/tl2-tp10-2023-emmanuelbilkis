@@ -5,12 +5,17 @@
     <div class="alert alert-info">@TempData["sinSesion"]</div>
 }
 
+@if (!string.IsNullOrEmpty(TempData["usuInvalido"] as string))
+{
+    <div class="alert alert-info">@TempData["usuInvalido"]</div>
+}
+
 <div class="container mt-4">
     <h1 class="text-center mb-4">Iniciar Sesión</h1>
-    <form asp-controller="Login" asp-action="Login" method="post" class="needs-validation" novalidate>
+    <form id="myForm" asp-controller="Login" asp-action="Login" method="post" class="needs-validation" novalidate>
         <div class="mb-3">
             <label asp-for="@Model.Nombre" class="form-label font-weight-bold">Nombre de Usuario:</label>
-            <input asp-for="@Model.Nombre" class="form-control" required />
+            <input asp-for="@Model.Nombre" class="form-control" id="username" required />
             <div class="invalid-feedback">
                 Por favor ingrese su nombre de usuario.
             </div>
@@ -18,7 +23,7 @@
 
         <div class="mb-3">
             <label asp-for="@Model.Contrasenia" class="form-label font-weight-bold">Contraseña:</label>
-            <input asp-for="@Model.Contrasenia" type="password" class="form-control" required />
+            <input asp-for="@Model.Contrasenia" type="password" class="form-control" id="contra" required />
             <div class="invalid-feedback">
                 Por favor ingrese su contraseña.
             </div>
@@ -28,10 +33,32 @@
     </form>
 </div>
 
-
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function (event) {
+            var username = document.getElementById('username').value;
+            var contra = document.getElementById('contra').value;
+            var usernameError = document.getElementById('username').nextElementSibling;
+            var contraError = document.getElementById('contra').nextElementSibling;
+
+            if (username.trim() === '') {
+                usernameError.style.display = 'block';
+                event.preventDefault(); // Evita que el formulario se envíe si hay errores
+            } else {
+                usernameError.style.display = 'none';
+            }
+
+            if (contra.trim() === '') {
+                contraError.style.display = 'block';
+                event.preventDefault();
+            } else {
+                contraError.style.display = 'none';
+            }
+        });
+    </script>
 }
+
 
 

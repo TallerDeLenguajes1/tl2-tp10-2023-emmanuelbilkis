@@ -12,6 +12,7 @@ namespace Kanban.Repositorios
         public void Remove(int id);
         public void Update(Tablero tablero);
         public List<TableroConUsuario> ListarPorUsuario(int idUsuario);
+        public List<Tablero> ListarTablerosPorUsuario(int idUsuario);
         public List<TableroConUsuario> ObtenerTablerosConUsuario();
         public List<TableroConUsuario> ObtenerTablerosConUsuario(int idTab);
         public List<TableroConUsuario> ObtenerTablerosConUsuario(int idUsuario,int idTab);

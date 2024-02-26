@@ -54,8 +54,8 @@ namespace TableroKanban.Controllers
                         }
                         else
                         {
-                           return RedirectToAction("IndexOperador");
-                        }
+                           return RedirectToRoute(new { controller = "Tarea", action = "IndexOperador" });
+                         }
                     }
                     catch (Exception e)
                     {
@@ -72,7 +72,7 @@ namespace TableroKanban.Controllers
         public IActionResult IndexOperador()
         {
             int id = Convert.ToInt32( HttpContext.Session.GetString("Id"));
-            var tareas = _servicioTarea.ListarPorUsuario(id);
+            var tareas = _servicioTarea.ListarPorUsuario(id); // cambiar consulta a todas las tareas q estan en mis tableros y ademas las q me asignan a mi. 
             if (tareas.Count==0)
             {
                 TempData["SinTareas"] = "No hay tareas para mostrar, aquí puede crear una";
@@ -97,10 +97,26 @@ namespace TableroKanban.Controllers
         }
         public IActionResult Editar(int id)
         {
+            string rol = HttpContext.Session.GetString("Rol");
+            if (rol == "Operador")
+            {
+                return RedirectToAction("EditarOperador", new { id = id });
+            }
+
             var tarea = _servicioTarea.GetById(id);
             var usuarios = _servicioUsuario.GetAll();
             var tableros = _servicioTablero.GetAll();
             var model = new ModificarTareaViewModel(tarea,usuarios,tableros);
+            return View(model);
+        }
+
+        public IActionResult EditarOperador(int id)
+        {
+            var tarea = _servicioTarea.GetById(id);
+            var usuarios = _servicioUsuario.GetAll();
+            int idPropio = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+            var tablerosPropios = _servicioTablero.ListarTablerosPorUsuario(idPropio);
+            var model = new ModificarTareaViewModel(tarea, usuarios, tablerosPropios);
             return View(model);
         }
 
@@ -150,9 +166,35 @@ namespace TableroKanban.Controllers
 
         public IActionResult Alta()
         {
-            var tableros = _servicioTablero.GetAll();
+            string rol = HttpContext.Session.GetString("Rol");
+            
+            
+            var tableros = new List<Tablero>();
+            if (rol == "Operador")
+            {
+                return RedirectToAction("AltaOperador");
+            }
+
             var usuarios = _servicioUsuario.GetAll();
+            tableros = _servicioTablero.GetAll();
             var model = new CrearTareaViewModel(tableros,usuarios);
+
+            return View(model);
+        }
+
+        public IActionResult AltaOperador() 
+        {
+            int idPropio = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+            var tablerosPropios = _servicioTablero.ListarTablerosPorUsuario(idPropio);
+            
+            if (tablerosPropios.Count() == 0)
+            {
+                TempData["sinTableros"] = "No tiene tableros, debe tener al menos un tablero para crear tareas";
+                return RedirectToRoute(new { controller = "Tablero", action = "AltaOperador" });
+            }
+
+            var usuarios = _servicioUsuario.GetAll();
+            var model = new CrearTareaViewModel(tablerosPropios, usuarios);
             return View(model);
         }
 

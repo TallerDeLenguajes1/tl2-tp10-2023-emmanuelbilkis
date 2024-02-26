@@ -34,6 +34,7 @@ public class LoginController : Controller
         {
             string mensaje = $"Intento de acceso inválido - Usuario: {usuarioLogeado} ";
             _logger.LogWarning(mensaje);
+            TempData["usuInvalido"] = "Ingresó datos inválidos.";
             return RedirectToAction("Index");
         }
         else

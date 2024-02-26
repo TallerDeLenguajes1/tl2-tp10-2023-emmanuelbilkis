@@ -5,6 +5,10 @@
 <nav class="mb-3">
     <a class="btn btn-primary" asp-action="Alta" asp-controller="Tablero">Agregar Tablero</a>
 </nav>
+@if (!string.IsNullOrEmpty(TempData["sinTab"] as string))
+{
+    <div class="alert alert-info">@TempData["sinTab"]</div>
+}
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>

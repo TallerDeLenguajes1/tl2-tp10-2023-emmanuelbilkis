@@ -12,5 +12,6 @@ namespace Kanban.Repositorios
         public void Remove(int id);
         public void Update(Usuario usuario);
         public void UpdateTareaUsu(int id);
+        public int CountAdmins();
     }
 }

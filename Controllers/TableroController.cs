@@ -35,6 +35,10 @@ namespace TableroKanban.Controllers
                         if (IsAdmin())
                         {
                             var tabs = _servicioTablero.GetAll();
+                            if (tabs.Count()==0)
+                            {
+                                TempData["sinTab"] = "No hay tableros en el sistema";
+                            }
                             var model = tabs.Select(u => new TableroViewModel
                             {
                                 Id = u.Id,
@@ -75,7 +79,7 @@ namespace TableroKanban.Controllers
                     var tabs = _servicioTablero.ListarTablerosPropiosYConTareas(id);
                     if (tabs.Count == 0 || tabs is null)
                     {
-                        TempData["SinTableros"] = "Usted no tiene tableros ni tareas en algun tablero";
+                        TempData["SinTableros"] = "Usted no tiene tableros ni tareas en algun tablero. Aquí puede crear un tablero.";
                         return RedirectToRoute(new { controller = "Tablero", action = "AltaOperador" });
                     }
                     var model = tabs.Select(u => new TableroViewModel

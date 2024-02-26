@@ -17,6 +17,7 @@ namespace TP10.ViewModels
         public int UsuarioConectado { get; set; }
         public int TableroID { get; set; }
         public string UsuPropTableroAsignado { get; set; }
+        public bool CreadaPorMi { get; set; }
 
 
         public TareaOperadorViewModel() { }

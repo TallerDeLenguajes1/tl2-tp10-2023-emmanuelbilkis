@@ -1,0 +1,89 @@
+﻿@model TP10.ViewModels.ModificarTareaViewModel
+
+<div class="container mt-4">
+    <h1>Modificar Tarea</h1>
+
+    <form asp-action="Editar" asp-controller="Tarea" method="post">
+
+        <div class="mb-3">
+            <label asp-for="@Model.Nombre" class="form-label">Nombre:</label>
+            <input asp-for="@Model.Nombre" class="form-control" />
+            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="@Model.Descripcion" class="form-label">Descripción:</label>
+            <input asp-for="@Model.Descripcion" class="form-control" />
+            <span asp-validation-for="@Model.Descripcion" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="@Model.Color" class="form-label">Color:</label>
+            <select asp-for="@Model.Color" class="form-control">
+                <option value="">Selecciona un color</option>
+                <option value="red">Rojo</option>
+                <option value="blue">Azul</option>
+                <option value="orange">Naranja</option>
+                <option value="black">Negro</option>
+            </select>
+            <span asp-validation-for="@Model.Color" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="@Model.Estado" class="form-label">Estado:</label>
+            <select asp-for="@Model.Estado" class="form-control">
+                <option value="">Selecciona un estado</option>
+                @foreach (var value in Enum.GetValues(typeof(EstadoTarea)))
+                {
+                    <option value="@value">@value</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.Estado" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="@Model.IdTablero" class="form-label">Tablero:</label>
+            <select asp-for="@Model.IdTablero" class="form-control">
+                @foreach (var tablero in Model.Tableros)
+                {
+                    <option value="@tablero.Id">@tablero.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="@Model.IdUsuarioAsignado" class="form-label">Usuario Propietario:</label>
+            <select asp-for="@Model.IdUsuarioAsignado" class="form-control">
+                <option value="0">Sin Usuario</option>
+                @foreach (var usuario in Model.Usuarios)
+                {
+                    <option value="@usuario.Id">@usuario.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.IdUsuarioAsignado" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="@Model.Id" />
+
+        <button type="submit" class="btn btn-primary">Modificar</button>
+
+    </form>
+</div>
+
+@section Scripts
+    {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        var errorMessage = '@Html.Raw(TempData["ErrorMessage"])'; // Utiliza Html.Raw para evitar el escape de caracteres especiales
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+
+        $(document).ready(function () {
+            $('.hidden-menu').removeClass('hidden-menu');
+        });
+    </script>
+}
+ 

@@ -162,6 +162,7 @@ namespace TableroKanban.Controllers
                 int idUsuConec = Convert.ToInt32(HttpContext.Session.GetString("Id"));
                 // _servicioUsuario.UpdateTareaUsu(id);
                 var tareas = _tareaRepositorio.ListarPorUsuario(id);
+
                 if (tareas.Count !=0 )
                 {
                     foreach (var tar in tareas)
@@ -170,18 +171,27 @@ namespace TableroKanban.Controllers
                         _tareaRepositorio.Update(tar);
                     }
                 }
-                
-                _servicioUsuario.Remove(id);
-                
-                if (id == idUsuConec)
+
+                string rol = HttpContext.Session.GetString("Rol");
+                if (_servicioUsuario.CountAdmins() == 1 && rol == "Admin")
                 {
-                    return RedirectToRoute(new { controller = "Login", action = "Index" });
+                    TempData["unUsu"] = "Queda solo un usuario admin en el sistema, no es posible borrar esta cuenta.";
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+                    _servicioUsuario.Remove(id);
+
+                    if (id == idUsuConec)
+                    {
+                        return RedirectToRoute(new { controller = "Login", action = "Index" });
+                    }
+                    else
+                    {
+                        return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+                    }
                 }
-                
+              
             }
             catch (Exception e)
             {

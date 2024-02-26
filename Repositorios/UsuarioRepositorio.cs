@@ -135,6 +135,29 @@ namespace Kanban.Repositorios
             return usuario;
         }
 
+        public int CountAdmins()
+        {
+            var queryString = @"SELECT COUNT(*) FROM Usuario WHERE rol = 'Admin';";
+            int count = 0;
+
+            try
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(_cadenaConexion))
+                {
+                    SQLiteCommand command = new SQLiteCommand(queryString, connection);
+                    connection.Open();
+
+                    count = Convert.ToInt32(command.ExecuteScalar());
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error al contar la cantidad de usuarios con rol 'admin' en la base de datos.", ex);
+            }
+
+            return count;
+        }
+
 
         public void Update(Usuario usuario)
         {

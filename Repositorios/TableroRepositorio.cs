@@ -156,7 +156,32 @@ namespace Kanban.Repositorios
                 throw;
             }
         }
-        
+
+        public List<Tablero> ListarTablerosPorUsuario(int idUsuario) 
+        {
+            SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);
+            SQLiteCommand command = connection.CreateCommand();
+            command.CommandText = @"SELECT * FROM Tablero t
+                                   INNER JOIN Usuario u ON (u.id = t.Id_usuario_propietario)
+                                   WHERE Id_usuario_propietario = @idUsu;";
+            command.Parameters.Add(new SQLiteParameter("@idUsu", idUsuario));
+            connection.Open();
+            var lista = new List<Tablero>();
+
+            using (SQLiteDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var idUsu = reader["Id_usuario_propietario"] != DBNull.Value ? Convert.ToInt32(reader["Id_usuario_propietario"]) : 0;
+                    var tablero = new Tablero(Convert.ToInt32(reader["Id"]), idUsu, reader["nombre"].ToString(), reader["descripcion"].ToString());
+                    lista.Add(tablero);
+                }
+            }
+            connection.Close();
+
+            return (lista);
+        }
+
         public List<Tablero> ListarTablerosPropiosYConTareas(int idUsuario)
         {
             SQLiteConnection connection = new SQLiteConnection(_cadenaConexion);

@@ -1,7 +1,7 @@
 ﻿@model List<TP10.ViewModels.TareaOperadorViewModel>
 
     <h1>Listado de Tareas</h1>
-    <h2>@Model.FirstOrDefault().UsuPropTableroAsignado</h2>
+    <h2>Usuario: @Model.FirstOrDefault().UsuPropTableroAsignado</h2>
 
     @if (Model is not null)
     {
@@ -17,20 +17,20 @@
 
             <section>
 
-                <h2>@estado</h2>
+                <h3>@estado</h3>
                 <div class="row">
                     @foreach (var tar in tareasPorEstado)
                     {
                         <div class="col-md-4">
                             <div class="card" style="border-color: @tar.Color;">
                                 <div class="card-body">
-                                    <h5 class="card-title">Tarea: @tar.Nombre</h5>
-                                    <p class="card-text">Descripcion: @tar.Descripcion</p>
-                                    <p class="card-text">Usuario asignado: @tar.UsuarioAsignado</p>
+                                <h4 class="card-title">Tarea: @tar.Nombre</h4>
+                                <p class="card-text">Descripcion: @tar.Descripcion</p>
+                                <p class="card-text">Usuario asignado: @tar.UsuarioAsignado</p>
                                     @if (tar.UsuarioConectado == tar.UsuPropTableroAsignadoId)
                                     {
                                         <p>
-                                            <a class="btn btn-warning btn-sm mt-1" asp-action="Editar" asp-controller="Tarea" asp-route-id="@tar.Id">Editar</a>
+                                            <a class="btn btn-warning btn-sm mt-1" asp-action="EditarOperador" asp-controller="Tarea" asp-route-id="@tar.Id">Editar</a>
                                             <a class="btn btn-warning btn-sm mt-1" asp-action="Borrar" asp-controller="Tarea" asp-route-id="@tar.Id" onclick="return confirm('¿Estás seguro de que deseas borrar esta Tarea?')">Borrar</a>
                                             <a class="btn btn-warning btn-sm mt-1" asp-action="CambiarEstado" asp-controller="Tarea" asp-route-idTarea="@tar.Id">Cambiar Estado</a>
                                             <div style="margin-top:0.5 em"><a class="btn btn-warning btn-sm mt-1" asp-action="AsignarUsuario" asp-controller="Tarea" asp-route-idTarea="@tar.Id" asp-route-usuAsignado="@tar.UsuarioAsignado">Asignar Usuario</a></div>

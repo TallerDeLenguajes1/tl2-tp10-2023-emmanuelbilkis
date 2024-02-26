@@ -1,6 +1,11 @@
 ﻿@using TP10.ViewModels
 @model List<UsuarioViewModel>
 
+@if (!string.IsNullOrEmpty(TempData["unUsu"] as string))
+{
+    <div class="alert alert-info">@TempData["unUsu"]</div>
+}
+
 <div class="container mt-4">
     <h1>Listado de Usuarios</h1>
     <nav class="mb-3">

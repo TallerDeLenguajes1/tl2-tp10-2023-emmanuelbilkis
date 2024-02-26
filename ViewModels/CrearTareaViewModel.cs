@@ -58,7 +58,6 @@ namespace TP10.ViewModels
         [Range(0, int.MaxValue, ErrorMessage = "El valor de {0} debe ser mayor o igual que cero.")]
         public int IdUsuarioAsignado { get; set; }
         public List<Usuario> Usuarios { get; set; }
-
         public List<Tablero> Tableros { get; set; }
     }
 }

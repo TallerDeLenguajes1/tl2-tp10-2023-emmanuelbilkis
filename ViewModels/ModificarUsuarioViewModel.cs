@@ -15,6 +15,7 @@ namespace TP10.ViewModels
         public string Contrasenia { get; set; }
         [Required(ErrorMessage = "Campo requerido")] // hacer el rol con un enum despues
         public string Rol { get; set; }
+
        
         public ModificarUsuarioViewModel(Usuario usu)
         {

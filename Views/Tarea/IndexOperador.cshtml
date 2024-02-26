@@ -1,8 +1,10 @@
 ﻿@model List<TP10.ViewModels.TareaOperadorViewModel>
 
 <div class="container mt-4">
-    <h1>Listado de Tareas - Operador</h1>
-    <nav class="mb-3">
+    <h1>Listado de Tareas</h1>
+    <p class="alert-info">Aquí puede encontrar todas las tareas que estan asignadas a usted.</p>
+    <div class="alert-info">Si desea ver las tareas organizadas por tableros presione el botón. <a class="btn btn-danger btn-sm" asp-area="" asp-controller="Tablero" asp-action="Index">Ir</a> </div>
+    <nav class="mb-4">
         <a class="btn btn-primary" asp-action="Alta" asp-controller="Tarea">Agregar Tarea</a>
     </nav>
     <table class="table table-striped">
